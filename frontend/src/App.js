@@ -2,11 +2,14 @@ import React from 'react';
 import { ThemeProvider, Button } from '@material-ui/core';
 import { theme } from './theme';
 import Home from './pages/Home.page';
+import { RecoilRoot } from 'recoil';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Home/>
+      <RecoilRoot>
+        <Home />
+      </RecoilRoot>
     </ThemeProvider>
   );
 }

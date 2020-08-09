@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { AppBar, Toolbar, IconButton, makeStyles, MenuList, MenuItem, Container } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu';
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
 import Search from '../molecules/Search.mole';
+import { useRecoilState } from 'recoil';
+import { searchOpenState } from '../recoil/atoms';
 
 const createStyle = makeStyles(theme => ({
     mainHeader: {
@@ -32,7 +33,7 @@ export default function Header() {
 
     const classes = createStyle();
 
-    const [searchOpen,setSearchOpen] = useState(false);
+    const [searchOpen,setSearchOpen] = useRecoilState(searchOpenState);
 
 
     return (
@@ -73,7 +74,7 @@ export default function Header() {
                 </IconButton>
             </MenuList>
         </AppBar>
-        <Search open={searchOpen}/>
+        <Search/>
         </Container>
     )
 }

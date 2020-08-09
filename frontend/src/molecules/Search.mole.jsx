@@ -3,6 +3,8 @@ import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typograp
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { searchOpenState } from '../recoil/atoms';
 
 const createStyles = makeStyles(theme => ({
     search: {
@@ -24,20 +26,21 @@ const createStyles = makeStyles(theme => ({
     icon:{ fontSize: 30 }
 }))
 
-export default function Search({ open }) {
+export default function Search() {
 
     const classes = createStyles()
     const [searchKey,setSearchKey] = useState('');
+    const [searchOpen,setSearchOpen] = useRecoilState(searchOpenState);
 
     return (
-        <Drawer open={true} anchor="top">
+        <Drawer open={searchOpen} anchor="top">
             <Container maxWidth="md">
                 <div className={classes.content}>
                     <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between'}}>
                         <Typography style={{color: 'lightgray'}}>
                             What are you looking for?
                         </Typography>
-                        <IconButton style={{marginRight: 15}}>
+                        <IconButton style={{marginRight: 15}} onClick={()=>setSearchOpen(false)}>
                             <CloseIcon />
                         </IconButton>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuList, MenuItem, Container, Menu, ClickAwayListener } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuList, MenuItem, Container, Menu, ClickAwayListener, Box, Tooltip } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -7,7 +7,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
 import Search from '../molecules/Search.mole';
 import { useRecoilState } from 'recoil';
-import { searchOpenState } from '../recoil/atoms';
+import { searchOpenState, mainDrawerState } from '../recoil/atoms';
+import NavMenu from '../molecules/NavMenu.mole';
+import MenuIcon from '@material-ui/icons/Menu';
+import MainDrawer from '../molecules/MainDrawer.mole';
 
 const createStyle = makeStyles(theme => ({
     mainHeader: {
@@ -18,96 +21,100 @@ const createStyle = makeStyles(theme => ({
     regular: {
         minHeight: 52
     },
-    listItem: {
-        color: '#191919',
-        fontSize: 14
-    },
     list: {
         display: 'flex',
         flexDirection: 'row',
-        flexGrow: 1
+        justifyContent: 'end',
+        alignItems: 'center',
+        [theme.breakpoints.up('md')]: {
+            flexGrow: 1
+        }
     },
     container: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        [theme.breakpoints.down('md')]: {
+            justifyContent: 'space-between'
+        }
     },
     icon: {
         fontSize: 25
     },
-    selected: {
-        color: theme.palette.primary.main,
-        '&$selected': {
-            backgroundColor: 'transparent'
+    logo: {
+        [theme.breakpoints.down('md')]: {
+            margin: 'auto',
+            marginBottom: 18,
+
         }
     }
+
 }));
 
-const navItems = ['home', 'shop', 'blog', 'women', 'men']
 
 export default function Header() {
 
     const classes = createStyle();
 
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
-    const [selected, setSelected] = useState(0);
+    const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
     const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleNavClick = (event, index) => {
-        setSelected(index)
-    }
 
 
     return (
         <React.Fragment>
             <AppBar className={classes.mainHeader} >
                 <Container maxWidth="lg" className={classes.container}>
+                    <Box display={{ xs: 'block', md: 'none' }}>
+                        <IconButton onClick={() => setDrawerOpen(true)}>
+                            <MenuIcon className={classes.icon} />
+                        </IconButton>
+                    </Box>
                     <Toolbar classes={{ regular: classes.regular }}>
-                        <img src={logo} />
+                        <img className={classes.logo} src={logo} />
                     </Toolbar>
-                    <MenuList className={classes.list}>
-                        {navItems.map((item, i) =>
-                            <MenuItem
-                                key={i}
-                                onClick={e => handleNavClick(e, i)}
-                                className={[classes.listItem]}
-                                selected={i === selected}
-                                classes={{ selected: classes.selected }}
-                            >
-                                {item.toUpperCase()}
-                            </MenuItem>
-                        )}
-                    </MenuList>
-                    <div className={[classes.list]} style={{ justifyContent: 'end' }}>
+                    <Box display={{ xs: 'none', md: 'flex' }}>
+                        <NavMenu />
+                    </Box>
+                    <div className={[classes.list]}>
                         <div className="">
-                            <IconButton onClick={() => setSearchOpen(!searchOpen)}>
-                                <SearchIcon className={classes.icon} />
-                            </IconButton>
-                        </div>
-                        <div className="">
-                            <IconButton>
-                                <ShoppingBasketIcon className={classes.icon} />
-                            </IconButton>
-                        </div>
-                        <div className="">
-                            <IconButton>
-                                <PersonIcon className={classes.icon} />
-                            </IconButton>
-                        </div>
-                        <div style={{ position: 'relative' }}>
-                            <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-                                <IconButton onClick={e => setAnchorEl(e.currentTarget)}>
-                                    <TuneIcon className={classes.icon} />
+                            <Tooltip title="Search" arrow>
+                                <IconButton onClick={() => setSearchOpen(!searchOpen)}>
+                                    <SearchIcon className={classes.icon} />
                                 </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div className="">
+                            <Tooltip title="Cart" arrow>
+                                <IconButton>
+                                    <ShoppingBasketIcon className={classes.icon} />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <Box display={{ xs: 'none', md: 'block' }} className="">
+                            <Tooltip title="My Account" arrow>
+                                <IconButton>
+                                    <PersonIcon className={classes.icon} />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                        <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
+                            <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+                                <Tooltip title="Settings" arrow>
+                                    <IconButton onClick={e => setAnchorEl(e.currentTarget)}>
+                                        <TuneIcon className={classes.icon} />
+                                    </IconButton>
+                                </Tooltip>
                             </ClickAwayListener>
                             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)}>
-                                <MenuItem onClick={(e)=>console.log(e)}>Hello</MenuItem>
+                                <MenuItem onClick={(e) => console.log(e)}>Hello</MenuItem>
                                 <MenuItem>Hello</MenuItem>
                             </Menu>
-                        </div>
+                        </Box>
                     </div>
                 </Container>
             </AppBar>
             <Search />
+            <MainDrawer />
         </React.Fragment>
     )
 }

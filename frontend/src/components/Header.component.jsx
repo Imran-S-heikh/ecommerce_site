@@ -7,10 +7,15 @@ import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
 import Search from '../molecules/Search.mole';
 import { useRecoilState } from 'recoil';
-import { searchOpenState, mainDrawerState } from '../recoil/atoms';
+import { searchOpenState, mainDrawerState, cartDrawerState } from '../recoil/atoms';
 import NavMenu from '../molecules/NavMenu.mole';
 import MenuIcon from '@material-ui/icons/Menu';
 import MainDrawer from '../molecules/MainDrawer.mole';
+import MenuContainer from '../molecules/MenuContainer.mole';
+import CartPreview from '../molecules/CartPreview.mole';
+import CartDrawer from '../molecules/CartDrawer.mole';
+import { useSetRecoilState } from 'recoil';
+
 
 const createStyle = makeStyles(theme => ({
     mainHeader: {
@@ -38,9 +43,16 @@ const createStyle = makeStyles(theme => ({
         }
     },
     icon: {
-        fontSize: 25
+        fontSize: 25,
+
+    },
+    button: {
+        '&:hover $icon,&:focus': {
+            color: theme.palette.primary.main
+        }
     },
     logo: {
+
         [theme.breakpoints.down('md')]: {
             margin: 'auto',
             marginBottom: 18,
@@ -57,7 +69,10 @@ export default function Header() {
 
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
     const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [personOpen, setPersonOpen] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
+    const setCartDrawerOpen = useSetRecoilState(cartDrawerState);
 
 
     return (
@@ -65,7 +80,7 @@ export default function Header() {
             <AppBar className={classes.mainHeader} >
                 <Container maxWidth="lg" className={classes.container}>
                     <Box display={{ xs: 'block', md: 'none' }}>
-                        <IconButton onClick={() => setDrawerOpen(true)}>
+                        <IconButton className={classes.button} onClick={() => setDrawerOpen(true)}>
                             <MenuIcon className={classes.icon} />
                         </IconButton>
                     </Box>
@@ -78,43 +93,65 @@ export default function Header() {
                     <div className={[classes.list]}>
                         <div className="">
                             <Tooltip title="Search" arrow>
-                                <IconButton onClick={() => setSearchOpen(!searchOpen)}>
+                                <IconButton className={classes.button} onClick={() => setSearchOpen(!searchOpen)}>
                                     <SearchIcon className={classes.icon} />
                                 </IconButton>
                             </Tooltip>
                         </div>
                         <div className="">
+
+                        </div>
+                        <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
+                            <ClickAwayListener onClickAway={() => setCartOpen(false)}>
+                                <Tooltip title="Cart" arrow>
+                                    <IconButton onClick={() => setCartOpen(true)} className={classes.button}>
+                                        <ShoppingBasketIcon className={classes.icon} />
+                                    </IconButton>
+                                </Tooltip>
+                            </ClickAwayListener>
+                            <MenuContainer open={cartOpen}>
+                                <CartPreview />
+                            </MenuContainer>
+                        </Box>
+                        <Box display={{ xs: 'block', md: 'none' }}>
                             <Tooltip title="Cart" arrow>
-                                <IconButton>
+                                <IconButton onClick={() => setCartDrawerOpen(true)} className={classes.button}>
                                     <ShoppingBasketIcon className={classes.icon} />
                                 </IconButton>
                             </Tooltip>
-                        </div>
-                        <Box display={{ xs: 'none', md: 'block' }} className="">
-                            <Tooltip title="My Account" arrow>
-                                <IconButton>
-                                    <PersonIcon className={classes.icon} />
-                                </IconButton>
-                            </Tooltip>
+                        </Box>
+
+                        <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
+                            <ClickAwayListener onClickAway={() => setPersonOpen(false)}>
+                                <Tooltip title="My Account" arrow>
+                                    <IconButton className={classes.button} onClick={() => setPersonOpen(!personOpen)}>
+                                        <PersonIcon className={classes.icon} />
+                                    </IconButton>
+                                </Tooltip>
+                            </ClickAwayListener>
+                            <MenuContainer open={personOpen}>
+                                Hello
+                            </MenuContainer>
                         </Box>
                         <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
-                            <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+                            <ClickAwayListener onClickAway={() => setSettingsOpen(false)}>
                                 <Tooltip title="Settings" arrow>
-                                    <IconButton onClick={e => setAnchorEl(e.currentTarget)}>
+                                    <IconButton className={classes.button} onClick={() => setSettingsOpen(!settingsOpen)}>
                                         <TuneIcon className={classes.icon} />
                                     </IconButton>
                                 </Tooltip>
                             </ClickAwayListener>
-                            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)}>
+                            <MenuContainer open={settingsOpen}>
                                 <MenuItem onClick={(e) => console.log(e)}>Hello</MenuItem>
                                 <MenuItem>Hello</MenuItem>
-                            </Menu>
+                            </MenuContainer>
                         </Box>
                     </div>
                 </Container>
             </AppBar>
             <Search />
             <MainDrawer />
+            <CartDrawer />
         </React.Fragment>
     )
 }

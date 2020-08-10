@@ -1,2 +1,3 @@
 export const SEARCH_OPEN = 'SEARCH_OPEN';
 export const MAIN_DRAWER_OPEN = 'MAIN_DRAWER_OPEN';
+export const CART_DRAWER_OPEN = 'CART_DRAWER_OPEN';

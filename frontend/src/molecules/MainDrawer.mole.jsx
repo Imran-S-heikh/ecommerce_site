@@ -1,13 +1,10 @@
 import React from 'react'
-import { useRecoilState } from 'recoil'
-import { mainDrawerState } from '../recoil/atoms'
 import { Drawer, makeStyles, ClickAwayListener, Divider, Button, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import NavMenu from './NavMenu.mole';
 
 const createStyles = makeStyles(theme => ({
     mainContainer: {
-        width: 270
+        minWidth: 270
     },
     container: {
         margin: 10
@@ -18,22 +15,21 @@ const createStyles = makeStyles(theme => ({
     
 }))
 
-export default function MainDrawer() {
+export default function MainDrawer({children,open,setOpen}) {
     const classes = createStyles();
-    const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
 
     return (
-        <Drawer open={drawerOpen}>
-            <ClickAwayListener onClickAway={()=>setDrawerOpen(false)}>
+        <Drawer open={open}>
+            <ClickAwayListener onClickAway={()=>setOpen(false)}>
                 <div className={classes.mainContainer} >
                     <div className={classes.container}>
-                        <Button onClick={()=>setDrawerOpen(false)} startIcon={<CloseIcon/>} fullWidth className={classes.closeButton} >
+                        <Button onClick={()=>setOpen(false)} startIcon={<CloseIcon/>} fullWidth className={classes.closeButton} >
                             Close
                         </Button>
                     </div>
                     <Divider/>
                     <div className={classes.container}>
-                        <NavMenu styleProp={{flxd: 'column',py: 10, fz: 12}} showIcon={true}/>
+                        {children}
                     </div>
                 </div>
             </ClickAwayListener>

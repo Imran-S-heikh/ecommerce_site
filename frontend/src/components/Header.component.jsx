@@ -13,8 +13,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MainDrawer from '../molecules/MainDrawer.mole';
 import MenuContainer from '../molecules/MenuContainer.mole';
 import CartPreview from '../molecules/CartPreview.mole';
-import CartDrawer from '../molecules/CartDrawer.mole';
-import { useSetRecoilState } from 'recoil';
 
 
 const createStyle = makeStyles(theme => ({
@@ -29,7 +27,7 @@ const createStyle = makeStyles(theme => ({
     list: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'end',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         [theme.breakpoints.up('md')]: {
             flexGrow: 1
@@ -69,10 +67,10 @@ export default function Header() {
 
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
     const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
+    const [cartDrawerOpen,setCartDrawerOpen] = useRecoilState(cartDrawerState);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
-    const setCartDrawerOpen = useSetRecoilState(cartDrawerState);
 
 
     return (
@@ -104,7 +102,7 @@ export default function Header() {
                         <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
                             <ClickAwayListener onClickAway={() => setCartOpen(false)}>
                                 <Tooltip title="Cart" arrow>
-                                    <IconButton onClick={() => setCartOpen(true)} className={classes.button}>
+                                    <IconButton onClick={() => setCartOpen(!cartOpen)} className={classes.button}>
                                         <ShoppingBasketIcon className={classes.icon} />
                                     </IconButton>
                                 </Tooltip>
@@ -115,7 +113,7 @@ export default function Header() {
                         </Box>
                         <Box display={{ xs: 'block', md: 'none' }}>
                             <Tooltip title="Cart" arrow>
-                                <IconButton onClick={() => setCartDrawerOpen(true)} className={classes.button}>
+                                <IconButton onClick={() => setCartDrawerOpen(!cartOpen)} className={classes.button}>
                                     <ShoppingBasketIcon className={classes.icon} />
                                 </IconButton>
                             </Tooltip>
@@ -150,8 +148,12 @@ export default function Header() {
                 </Container>
             </AppBar>
             <Search />
-            <MainDrawer />
-            <CartDrawer />
+            <MainDrawer open={drawerOpen} setOpen={setDrawerOpen}>
+                <NavMenu styleProp={{ flxd: 'column', py: 10, fz: 12 }} showIcon={true} />
+            </MainDrawer>
+            <MainDrawer open={cartDrawerOpen} setOpen={setCartDrawerOpen}>
+                <CartPreview/>
+            </MainDrawer>
         </React.Fragment>
     )
 }

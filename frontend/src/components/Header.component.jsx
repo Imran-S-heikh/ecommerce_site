@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuList, MenuItem, Container, Menu, ClickAwayListener, Box, Tooltip } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuList, MenuItem, Container, Menu, ClickAwayListener, Box, Tooltip, Badge } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -67,7 +67,7 @@ export default function Header() {
 
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
     const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
-    const [cartDrawerOpen,setCartDrawerOpen] = useRecoilState(cartDrawerState);
+    const [cartDrawerOpen, setCartDrawerOpen] = useRecoilState(cartDrawerState);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
@@ -75,7 +75,7 @@ export default function Header() {
 
     return (
         <React.Fragment>
-            <AppBar className={classes.mainHeader} >
+            <AppBar className={classes.mainHeader} position="sticky">
                 <Container maxWidth="lg" className={classes.container}>
                     <Box display={{ xs: 'block', md: 'none' }}>
                         <IconButton className={classes.button} onClick={() => setDrawerOpen(true)}>
@@ -88,7 +88,7 @@ export default function Header() {
                     <Box display={{ xs: 'none', md: 'flex' }}>
                         <NavMenu />
                     </Box>
-                    <div className={[classes.list]}>
+                    <div className={classes.list}>
                         <div className="">
                             <Tooltip title="Search" arrow>
                                 <IconButton className={classes.button} onClick={() => setSearchOpen(!searchOpen)}>
@@ -96,14 +96,13 @@ export default function Header() {
                                 </IconButton>
                             </Tooltip>
                         </div>
-                        <div className="">
-
-                        </div>
                         <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
                             <ClickAwayListener onClickAway={() => setCartOpen(false)}>
                                 <Tooltip title="Cart" arrow>
                                     <IconButton onClick={() => setCartOpen(!cartOpen)} className={classes.button}>
-                                        <ShoppingBasketIcon className={classes.icon} />
+                                        <Badge badgeContent={4}  color="primary">
+                                            <ShoppingBasketIcon className={classes.icon} />
+                                        </Badge>
                                     </IconButton>
                                 </Tooltip>
                             </ClickAwayListener>
@@ -114,7 +113,9 @@ export default function Header() {
                         <Box display={{ xs: 'block', md: 'none' }}>
                             <Tooltip title="Cart" arrow>
                                 <IconButton onClick={() => setCartDrawerOpen(!cartOpen)} className={classes.button}>
-                                    <ShoppingBasketIcon className={classes.icon} />
+                                    <Badge badgeContent={4} color="primary">
+                                        <ShoppingBasketIcon className={classes.icon} />
+                                    </Badge>
                                 </IconButton>
                             </Tooltip>
                         </Box>
@@ -152,7 +153,7 @@ export default function Header() {
                 <NavMenu styleProp={{ flxd: 'column', py: 10, fz: 12 }} showIcon={true} />
             </MainDrawer>
             <MainDrawer open={cartDrawerOpen} setOpen={setCartDrawerOpen}>
-                <CartPreview/>
+                <CartPreview />
             </MainDrawer>
         </React.Fragment>
     )

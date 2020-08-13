@@ -6,6 +6,7 @@ import slideOne from '../assets/slide-1.png';
 import slideTwo from '../assets/slide-2.png';
 import HeroItem from '../molecules/HeroItem.mole';
 import LinkGallary from '../components/LinkGallary.component';
+import Showcase from '../components/Showcase.component';
 
 
 const createStyle = makeStyles(theme => ({
@@ -17,7 +18,7 @@ export default function Home() {
 
 
     return (
-        <div>
+        <div style={{marginBottom: 300}}>
             <div className="">
                 <Header />
             </div>
@@ -26,6 +27,9 @@ export default function Home() {
             </div>
             <div className="">
                 <LinkGallary/>
+            </div>
+            <div className="">
+                <Showcase/>
             </div>
         </div>
     )

@@ -5,6 +5,7 @@ import Carousel from '../components/Carousel.component';
 import slideOne from '../assets/slide-1.png';
 import slideTwo from '../assets/slide-2.png';
 import HeroItem from '../molecules/HeroItem.mole';
+import LinkGallary from '../components/LinkGallary.component';
 
 
 const createStyle = makeStyles(theme => ({
@@ -22,6 +23,9 @@ export default function Home() {
             </div>
             <div>
                 <Carousel component={<HeroItem/>} data={[{image:slideOne},{image: slideTwo}]} />
+            </div>
+            <div className="">
+                <LinkGallary/>
             </div>
         </div>
     )

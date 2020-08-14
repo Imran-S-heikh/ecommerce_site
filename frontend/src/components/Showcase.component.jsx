@@ -26,9 +26,24 @@ export default function Showcase() {
                     Top Products Of This Week
                 </Typography>
             </div>
-            <Grid container>
-                <Grid item xs={12}>
-                    <ShopCard/>
+            <Grid container justifyContent="center" spacing={2}>
+                <Grid item xs={12} sm={4} md={3}>
+                    <ShopCard width="95%"/>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <ShopCard width="95%"/>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <ShopCard width="95%"/>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <ShopCard width="95%"/>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <ShopCard width="95%"/>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <ShopCard width="95%"/>
                 </Grid>
             </Grid>
         </Container>

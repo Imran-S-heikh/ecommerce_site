@@ -21,25 +21,26 @@ const createClasses = makeStyles(theme => ({
             marginLeft: '0 !important',
             backgroundColor: fade(theme.palette.grey[400], .5),
             marginBottom: 8,
+            transition: 'all 300ms',
             '&:hover': {
                 backgroundColor: theme.palette.primary.main,
                 color: theme.palette.common.white
             }
 
+        },
+        [theme.breakpoints.down('sm')]: {
+            display: 'none'
         }
     },
     container: {
         position: 'relative',
+        margin: 'auto',
         '&:hover $actions': {
             opacity: 1
         },
         '&:hover $cartButton': {
             opacity: 1,
-        },
-        // '&:hover $cardContent': {
-        //     transform: 'translateY: -30px',
-        //     // display: 'none'
-        // }
+        }
     },
     brand: {
         fontSize: 12,
@@ -103,22 +104,27 @@ const createClasses = makeStyles(theme => ({
         transition: 'all 300ms',
         paddingBottom: '0 !important',
         '$container:hover &': {
-            transform: 'translateY(-50px)'
+            [theme.breakpoints.up('sm')]: {
+                transform: 'translateY(-50px)'
+            }
         }
     },
     cardMedia: {
-        height: 350,
-        width: 280,
+        height: 'auto',
+        width: '100%',
+        // [theme.breakpoints.down('xs')]: {
+        //     height: 250,
+        // }
     }
 }))
 
-export default function ShopCard() {
+export default function ShopCard({width= 280}) {
 
     const classes = createClasses()
 
 
     return (
-        <Card className={classes.container}>
+        <Card className={classes.container} style={{width: width}}>
             <CardActions className={classes.actions} >
                 <IconButton>
                     <VisibilityIcon />
@@ -131,7 +137,7 @@ export default function ShopCard() {
                 </IconButton>
             </CardActions>
             <CardActionArea>
-                <CardMedia component="img" height={350} width={280} classes={{ media: classes.cardMedia }} image={image} />
+                <CardMedia component="img" classes={{ media: classes.cardMedia }} image={image} />
             </CardActionArea>
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>
@@ -155,7 +161,7 @@ export default function ShopCard() {
                         <Avatar variant="rounded" src={image} />
                     </ButtonBase>
                 </Box>
-                <Box style={{display: 'flex',justifyContent: 'center',marginTop: 15}}>
+                {/* <Box style={{display: 'flex',justifyContent: 'center',marginTop: 15}}>
                     <ButtonBase className={classes.varientSize}>
                         H
                     </ButtonBase>
@@ -170,9 +176,23 @@ export default function ShopCard() {
                     <ButtonBase className={classes.varientSize} style={{width: 'max-content',padding: '0 4px'}}>
                         silk
                     </ButtonBase>
-                </Box>
-                <Box className={classes.cartButton}>
+                </Box> */}
+                <Box display={{ xs: 'none', md: 'block' }} className={classes.cartButton}>
                     <Button style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
+                </Box>
+                <Box display={{ xs: 'block', md: 'none' }}  style={{ margin: '15px 0' }}>
+                    <Button startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
+                    <Box>
+                        <IconButton>
+                            <VisibilityIcon />
+                        </IconButton>
+                        <IconButton>
+                            <FavoriteIcon />
+                        </IconButton>
+                        <IconButton>
+                            <CompareArrowsIcon />
+                        </IconButton>
+                    </Box>
                 </Box>
             </CardContent>
         </Card>

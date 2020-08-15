@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Grid, Typography, makeStyles } from '@material-ui/core'
 import ShopCard from '../molecules/ShopCard.mole';
 
-const createStyles = makeStyles(theme=>({
+const createStyles = makeStyles(theme => ({
     header: {
         margin: '40px 0',
         '& > *': {
@@ -11,8 +11,8 @@ const createStyles = makeStyles(theme=>({
     }
 }))
 
-export default function Showcase() {
-    
+export default function Showcase({ items,component,title,subTitle }) {
+
     const classes = createStyles();
 
 
@@ -20,31 +20,19 @@ export default function Showcase() {
         <Container maxWidth="lg">
             <div className={classes.header}>
                 <Typography variant="h5">
-                    Best Seller
+                    {title}
                 </Typography>
                 <Typography>
-                    Top Products Of This Week
+                    {subTitle}
                 </Typography>
             </div>
             <Grid container justifyContent="center" spacing={2}>
-                <Grid item xs={12} sm={4} md={3}>
-                    <ShopCard width="95%"/>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <ShopCard width="95%"/>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <ShopCard width="95%"/>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <ShopCard width="95%"/>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <ShopCard width="95%"/>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <ShopCard width="95%"/>
-                </Grid>
+                {items.map(item =>
+                    <Grid item xs={12} sm={4} md={3}>
+                        {console.log({component,item})}
+                        {React.cloneElement(component,item)}
+                    </Grid>
+                )}
             </Grid>
         </Container>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, makeStyles } from '@material-ui/core'
+import { Button, makeStyles, Box } from '@material-ui/core'
 
 const createStyles = makeStyles(theme => ({
     center: {
@@ -10,10 +10,10 @@ const createStyles = makeStyles(theme => ({
         zIndex: 2
     },
     img: {
-        width: '100%', 
+        width: '100%',
         height: '100%',
         transition: 'all 300ms',
-        '$container:hover &':{
+        '$container:hover &': {
             transform: 'scale(1.3)'
         },
     },
@@ -38,14 +38,16 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function LinkGallaryItem({ image }) {
+export default function LinkGallaryItem({ image, children }) {
 
     const classes = createStyles()
 
     return (
         <div className={classes.container}>
             <img src={image} className={classes.img} alt="" />
-            <Button color="primary" className={classes.center} variant="contained">Women</Button>
+            <Box className={classes.center}>
+                {children ? children : <Button color="primary"  variant="contained">Women</Button>}
+            </Box>
         </div>
     )
 }

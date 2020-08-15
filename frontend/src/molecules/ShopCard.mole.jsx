@@ -1,11 +1,12 @@
 import React from 'react'
-import image from '../assets/Faxon_Chambray_Low-Top_Sneaker_9_600x.jpg'
 import { Card, CardHeader, CardMedia, IconButton, CardActions, makeStyles, fade, CardActionArea, Typography, Button, CardContent, Box, Avatar, ButtonBase } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import Rating from '@material-ui/lab/Rating';
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
+
+
 
 const createClasses = makeStyles(theme => ({
     actions: {
@@ -118,13 +119,13 @@ const createClasses = makeStyles(theme => ({
     }
 }))
 
-export default function ShopCard({width= 280}) {
+export default function ShopCard({ width = 280, image, brand,name,rating,price }) {
 
     const classes = createClasses()
 
 
     return (
-        <Card className={classes.container} style={{width: width}}>
+        <Card className={classes.container} style={{ width: width }}>
             <CardActions className={classes.actions} >
                 <IconButton>
                     <VisibilityIcon />
@@ -141,14 +142,14 @@ export default function ShopCard({width= 280}) {
             </CardActionArea>
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>
-                    <span style={{ display: 'block' }}>Levis</span>
-                    <Rating value={4} size="small" />
+                    <span style={{ display: 'block' }}>{brand}</span>
+                    <Rating value={rating} size="small" />
                 </Typography>
                 <Typography className={classes.name}>
-                    Slim Fit Cotton Oxford Shirt
+                    {name}
                 </Typography>
                 <Typography className={classes.price}>
-                    $567
+                    ${price}
                 </Typography>
                 <Box >
                     <ButtonBase className={classes.varientColor}>
@@ -180,7 +181,7 @@ export default function ShopCard({width= 280}) {
                 <Box display={{ xs: 'none', md: 'block' }} className={classes.cartButton}>
                     <Button style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
                 </Box>
-                <Box display={{ xs: 'block', md: 'none' }}  style={{ margin: '15px 0' }}>
+                <Box display={{ xs: 'block', md: 'none' }} style={{ margin: '15px 0' }}>
                     <Button startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
                     <Box>
                         <IconButton>

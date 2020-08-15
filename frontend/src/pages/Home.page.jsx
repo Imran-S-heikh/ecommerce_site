@@ -15,20 +15,14 @@ import BigButton from '../molecules/BigButton.mole';
 import BlogCard from '../molecules/BlogCard.mole';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { assets } from '../utils';
+import Subscribe from '../molecules/Subscribe.mole';
+import Footer from '../components/Footer.component';
 
 
 
 const createStyles = makeStyles(theme => ({
-    instaPic: {
-        opacity: 0
-    },
     instaIcon: {
-        opacity: 0,
-        transition: 'all 300ms',
-        display: 'none',
-        '$instaPic:hover &': {
-            opacity: 1
-        }
+        color: theme.palette.common.white
     }
 }))
 
@@ -145,22 +139,27 @@ export default function Home() {
                 <Showcase
                     title={
                         <>
-                            <Typography color="primary" style={{fontSize: 'inherit'}} component="span">
+                            <Typography color="primary" style={{ fontSize: 'inherit' }} component="span">
                                 @Follow
                             </Typography >
                             <span> us on</span>
                         </>
                     }
                     subTitle="Instagram"
-                    items={assets.insta.map(item=>({image: item}))}
+                    items={assets.insta.map(item => ({ image: item }))}
                     component={
-                        <LinkGallaryItem className={classes.istaPic}>
-                            <VisibilityIcon className={classes.istaIcon} color="common" />
+                        <LinkGallaryItem hover={true}>
+                            <Box className={classes.instaIcon}>
+                                <VisibilityIcon  />
+                            </Box>
                         </LinkGallaryItem>
                     }
                     spacing="0"
-                    breakPoints={{xs:2,md: 2}}
+                    breakPoints={{ xs: 6, md: 2 }}
                 />
+            </div>
+            <div className="">
+                <Footer/>
             </div>
         </div>
     )

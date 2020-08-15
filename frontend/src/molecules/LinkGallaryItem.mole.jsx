@@ -35,17 +35,24 @@ const createStyles = makeStyles(theme => ({
                 backgroundColor: 'rgba(0,0,0,.5)',
             }
         }
+    },
+    hoverClass: {
+        opacity: 0,
+        transition: 'all 300ms',
+        '$container:hover &': {
+            opacity: 1
+        }
     }
 }))
 
-export default function LinkGallaryItem({ image, children }) {
+export default function LinkGallaryItem({ image, children,hover }) {
 
     const classes = createStyles()
 
     return (
         <div className={classes.container}>
             <img src={image} className={classes.img} alt="" />
-            <Box className={classes.center}>
+            <Box className={[classes.center,hover && classes.hoverClass]}>
                 {children ? children : <Button color="primary"  variant="contained">Women</Button>}
             </Box>
         </div>

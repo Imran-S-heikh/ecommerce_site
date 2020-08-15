@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Box, Container, Grid } from '@material-ui/core';
+import { makeStyles, Box, Container, Grid, Typography } from '@material-ui/core';
 import Header from '../components/Header.component';
 import Carousel from '../components/Carousel.component';
 import slideOne from '../assets/slide-1.png';
@@ -12,60 +12,73 @@ import image1 from '../assets/Faxon_Chambray_Low-Top_Sneaker_9_600x.jpg'
 import ShopCard from '../molecules/ShopCard.mole';
 import LinkGallaryItem from '../molecules/LinkGallaryItem.mole';
 import BigButton from '../molecules/BigButton.mole';
+import BlogCard from '../molecules/BlogCard.mole';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import { assets } from '../utils';
 
 
 
-const createStyle = makeStyles(theme => ({
-
+const createStyles = makeStyles(theme => ({
+    instaPic: {
+        opacity: 0
+    },
+    instaIcon: {
+        opacity: 0,
+        transition: 'all 300ms',
+        display: 'none',
+        '$instaPic:hover &': {
+            opacity: 1
+        }
+    }
 }))
 
 const showcaseItems = [
     {
         "rating": "4.6",
         "name": "Premier Cropped Skinny Jean", "brand": "GAP", "price": "$380.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Premier_Cropped_Skinny_Jean_13_8d64f29d-9ef1-4cb1-9fa6-6193c913ccd0_100x.jpg"
+        "image": assets.product[0]
     },
     {
         "rating": "4.571428571428571",
         "name": "East Hampton Fleece Hoodie", "brand": "GAP", "price": "$440.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_100x.jpg"
+        "image": assets.product[1]
     },
     {
         "rating": "5.0",
         "name": "Relaxed-Fit Cotton Shirt", "brand": "GUESS", "price": "$480.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Relaxed-Fit_Cotton_Shirt_1_cb5951bf-ef65-4d30-84f4-f42135a58f69_100x.jpg"
+        "image": assets.product[2]
     },
     {
         "rating": "0.0", "name": "Tailored Fit Mesh-Panel Polo",
         "brand": "ZARA", "price": "$400.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Tailored_Fit_Mesh-Panel_Polo_4_fba54f8e-368e-4537-92ff-03fef8a6c09c_100x.jpg"
+        "image": assets.product[3]
     },
     {
         "rating": "0.0",
         "name": "Slim Fit Cotton Oxford Shirt", "brand": "LEVI'S",
         "price": "$500.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Relaxed-Fit_Cotton_Shirt_4_211x.jpg"
+        "image": assets.product[4]
     },
     {
         "rating": "0.0",
         "name": "Faxon Canvas Low-Top Sneaker", "brand": "ZARA", "price": "$460.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Faxon_Chambray_Low-Top_Sneaker_Featured_211x.jpg"
+        "image": assets.product[5]
     },
     {
         "rating": "5.0",
         "name": "Viscose-Cashmere Scarf", "brand": "LACOSTE", "price": "$440.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Viscose-Cashmere_Scarf_4_211x.jpg"
+        "image": assets.product[6]
     },
     {
         "rating": "5.0", "name": "Plaid Cotton Oxford Shirt", "brand": "LEVI'S",
         "price": "$20.00",
-        "image": "https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Ocean-Wash_Linen_Sport_Shirt_bf3d7287-c8bf-458e-bd19-8d583a4760d6_150x.jpg"
+        "image": assets.product[7]
     }
 ]
 
 export default function Home() {
 
-
+    const classes = createStyles()
 
     return (
         <div style={{ marginBottom: 300 }}>
@@ -90,22 +103,64 @@ export default function Home() {
                 <Container maxWidth="lg" style={{ marginTop: 40 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={4}>
-                            <LinkGallaryItem image="https://cdn.shopify.com/s/files/1/0130/5041/3114/files/demo01_10_423x.jpg">
+                            <LinkGallaryItem image={assets.collection[0]}>
                                 <BigButton title="Autumn 2019" subTitle="NEW ARRIVALS" />
                             </LinkGallaryItem>
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                            <LinkGallaryItem image="https://cdn.shopify.com/s/files/1/0130/5041/3114/files/demo01_11_423x.png">
+                            <LinkGallaryItem image={assets.collection[1]}>
                                 <BigButton title="Autumn 2019" subTitle="NEW ARRIVALS" />
                             </LinkGallaryItem>
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                            <LinkGallaryItem image="https://cdn.shopify.com/s/files/1/0130/5041/3114/files/demo01_09_423x.jpg">
+                            <LinkGallaryItem image={assets.collection[2]}>
                                 <BigButton title="Autumn 2019" subTitle="NEW ARRIVALS" />
                             </LinkGallaryItem>
                         </Grid>
                     </Grid>
                 </Container>
+            </div>
+            <div className="">
+                <Showcase
+                    title="TRENDING"
+                    subTitle="Top Wishes Of This Week"
+                    items={showcaseItems}
+                    component={<ShopCard />}
+                />
+            </div>
+            <div className="">
+                <Showcase
+                    title="Latest From Our Blog"
+                    subTitle="THE FRESHEST AND MOST EXCITING NEWS"
+                    items={[
+                        { image: assets.blog[0] },
+                        { image: assets.blog[1] },
+                        { image: assets.blog[2] }
+                    ]}
+                    component={<BlogCard />}
+                    breakPoints={{ md: 4 }}
+                />
+            </div>
+            <div className="">
+                <Showcase
+                    title={
+                        <>
+                            <Typography color="primary" style={{fontSize: 'inherit'}} component="span">
+                                @Follow
+                            </Typography >
+                            <span> us on</span>
+                        </>
+                    }
+                    subTitle="Instagram"
+                    items={assets.insta.map(item=>({image: item}))}
+                    component={
+                        <LinkGallaryItem className={classes.istaPic}>
+                            <VisibilityIcon className={classes.istaIcon} color="common" />
+                        </LinkGallaryItem>
+                    }
+                    spacing="0"
+                    breakPoints={{xs:2,md: 2}}
+                />
             </div>
         </div>
     )

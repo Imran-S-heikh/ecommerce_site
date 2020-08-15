@@ -11,7 +11,7 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Showcase({ items,component,title,subTitle }) {
+export default function Showcase({ items,component,title,subTitle,breakPoints,spacing }) {
 
     const classes = createStyles();
 
@@ -26,9 +26,9 @@ export default function Showcase({ items,component,title,subTitle }) {
                     {subTitle}
                 </Typography>
             </div>
-            <Grid container justifyContent="center" spacing={2}>
+            <Grid container justifyContent="center" spacing={spacing || 2}>
                 {items.map(item =>
-                    <Grid item xs={12} sm={4} md={3}>
+                    <Grid item xs={breakPoints?.xs || 12} sm={breakPoints?.sm || 4} md={breakPoints?.md || 3}>
                         {console.log({component,item})}
                         {React.cloneElement(component,item)}
                     </Grid>

@@ -75,7 +75,7 @@ export default function Header() {
 
     return (
         <React.Fragment>
-            <AppBar className={classes.mainHeader} position="sticky">
+            <AppBar className={classes.mainHeader}>
                 <Container maxWidth="lg" className={classes.container}>
                     <Box display={{ xs: 'block', md: 'none' }}>
                         <IconButton className={classes.button} onClick={() => setDrawerOpen(true)}>

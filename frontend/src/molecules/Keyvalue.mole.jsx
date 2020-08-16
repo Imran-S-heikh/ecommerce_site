@@ -4,8 +4,8 @@ import { Typography } from '@material-ui/core'
 export default function Keyvalue({ items }) {
     return (
         <React.Fragment>
-            {Object.keys(items).map(key=>
-            <Typography>
+            {Object.keys(items).map((key,i)=>
+            <Typography key={i}>
                 <Typography color="textPrimary" component="span">
                     {`${key}: `}
                 </Typography>

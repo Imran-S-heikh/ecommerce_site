@@ -29,7 +29,7 @@ export default function FooterContent({ title, content, keyValue }) {
                 <Typography variant="h6">
                     {title}
                 </Typography>
-                <List dense="true">
+                <List dense={true}>
                     {content.map((item, i) =>
                         <ListItem classes={{ dense: classes.dense, gutters: classes.gutters }} key={i}>
                             <ListItemText className={classes.text}>
@@ -42,7 +42,7 @@ export default function FooterContent({ title, content, keyValue }) {
 
             <Box display={{ xs: 'block', md: 'none' }}>
                 <ControlledAccordion title={title}>
-                    <List dense="true">
+                    <List dense={true}>
                         {content.map((item, i) =>
                             <ListItem classes={{ dense: classes.dense, gutters: classes.gutters }} key={i}>
                                 <ListItemText className={classes.text}>

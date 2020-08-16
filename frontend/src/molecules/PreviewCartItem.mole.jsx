@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, Box, Grid, ListItem, ListItemIcon, ListItemText, ListItemAvatar, Avatar, ListItemSecondaryAction, Typography, IconButton } from '@material-ui/core'
+import { makeStyles, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, Typography, IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
 import shoe from '../assets/shoe.jpg'
 
@@ -25,7 +25,7 @@ export default function PreviewCartItem() {
     return (
         <ListItem ContainerComponent="div">
             <ListItemAvatar>
-                <img style={{width: 80}} src={shoe} />
+                <img style={{width: 80}} src={shoe} alt="shoe"/>
             </ListItemAvatar>
             <ListItemText style={{ width: 'max-content',padding: '0 30px' }}>
                 <Typography>

@@ -58,8 +58,8 @@ export default function Carousel({ component, data }) {
 
     return (
         <Slider {...settings}>
-            {data.map(item =>
-                React.cloneElement(component, item)
+            {data.map((item,i) =>
+                React.cloneElement(component, {...item,key: i})
             )}
         </Slider>
     )

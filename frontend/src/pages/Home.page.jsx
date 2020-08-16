@@ -7,15 +7,12 @@ import slideTwo from '../assets/slide-2.png';
 import HeroItem from '../molecules/HeroItem.mole';
 import LinkGallary from '../components/LinkGallary.component';
 import Showcase from '../components/Showcase.component';
-import image1 from '../assets/Faxon_Chambray_Low-Top_Sneaker_9_600x.jpg'
-// import image2 from '../assets/Faxon_Chambray_Low-Top_Sneaker_Featured_280x.jpg'
 import ShopCard from '../molecules/ShopCard.mole';
 import LinkGallaryItem from '../molecules/LinkGallaryItem.mole';
 import BigButton from '../molecules/BigButton.mole';
 import BlogCard from '../molecules/BlogCard.mole';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { assets } from '../utils';
-import Subscribe from '../molecules/Subscribe.mole';
 import Footer from '../components/Footer.component';
 
 

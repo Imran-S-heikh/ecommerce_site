@@ -1,6 +1,5 @@
 import React from 'react'
-import { AppBar, Container, Typography, makeStyles, Grid, Box } from '@material-ui/core'
-import SocialIcons from '../molecules/SocialIcons.mole'
+import { Container, Typography, makeStyles, Grid, Box } from '@material-ui/core'
 import Subscribe from '../molecules/Subscribe.mole';
 import FooterContent from '../molecules/FooterContent.mole';
 import logo from '../assets/logo.png'

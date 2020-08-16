@@ -3,11 +3,7 @@ import { Button, makeStyles, Box } from '@material-ui/core'
 
 const createStyles = makeStyles(theme => ({
     center: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%,-50%)',
-        zIndex: 2
+
     },
     img: {
         width: '100%',
@@ -45,15 +41,21 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function LinkGallaryItem({ image, children,hover }) {
+export default function LinkGallaryItem({ image, children, hover }) {
 
     const classes = createStyles()
 
     return (
         <div className={classes.container}>
             <img src={image} className={classes.img} alt="" />
-            <Box className={[classes.center,hover && classes.hoverClass]}>
-                {children ? children : <Button color="primary"  variant="contained">Women</Button>}
+            <Box className={hover && classes.hoverClass} style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%,-50%)',
+                zIndex: 2
+            }}>
+                {children ? children : <Button color="primary" variant="contained">Women</Button>}
             </Box>
         </div>
     )

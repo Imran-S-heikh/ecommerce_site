@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, Button } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
 import { theme } from './theme';
 import Home from './pages/Home.page';
 import { RecoilRoot } from 'recoil';

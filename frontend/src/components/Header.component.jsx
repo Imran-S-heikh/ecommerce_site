@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuList, MenuItem, Container, Menu, ClickAwayListener, Box, Tooltip, Badge } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -83,7 +83,7 @@ export default function Header() {
                         </IconButton>
                     </Box>
                     <Toolbar classes={{ regular: classes.regular }}>
-                        <img className={classes.logo} src={logo} />
+                        <img className={classes.logo} src={logo} alt="logo" />
                     </Toolbar>
                     <Box display={{ xs: 'none', md: 'flex' }}>
                         <NavMenu />

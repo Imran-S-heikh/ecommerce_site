@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer, makeStyles, ClickAwayListener, Divider, Button, IconButton } from '@material-ui/core';
+import { Drawer, makeStyles, ClickAwayListener, Divider, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
 const createStyles = makeStyles(theme => ({

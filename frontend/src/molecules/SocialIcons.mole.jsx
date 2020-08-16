@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, MenuItem, IconButton, makeStyles } from '@material-ui/core'
+import { IconButton, makeStyles } from '@material-ui/core'
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';

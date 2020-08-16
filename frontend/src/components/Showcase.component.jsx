@@ -1,6 +1,5 @@
 import React from 'react'
 import { Container, Grid, Typography, makeStyles } from '@material-ui/core'
-import ShopCard from '../molecules/ShopCard.mole';
 
 const createStyles = makeStyles(theme => ({
     header: {
@@ -11,7 +10,7 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Showcase({ items,component,title,subTitle,breakPoints,spacing }) {
+export default function Showcase({ items,component,title,subTitle,breakPoints,spacing=2 }) {
 
     const classes = createStyles();
 
@@ -26,10 +25,9 @@ export default function Showcase({ items,component,title,subTitle,breakPoints,sp
                     {subTitle}
                 </Typography>
             </div>
-            <Grid container justifyContent="center" spacing={spacing || 2}>
-                {items.map(item =>
-                    <Grid item xs={breakPoints?.xs || 12} sm={breakPoints?.sm || 4} md={breakPoints?.md || 3}>
-                        {console.log({component,item})}
+            <Grid container  spacing={Number(spacing)}>
+                {items.map((item,i) =>
+                    <Grid key={i} item xs={breakPoints?.xs || 12} sm={breakPoints?.sm || 4} md={breakPoints?.md || 3}>
                         {React.cloneElement(component,item)}
                     </Grid>
                 )}

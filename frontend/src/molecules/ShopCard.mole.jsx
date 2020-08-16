@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardHeader, CardMedia, IconButton, CardActions, makeStyles, fade, CardActionArea, Typography, Button, CardContent, Box, Avatar, ButtonBase } from '@material-ui/core'
+import { Card, CardMedia, IconButton, CardActions, makeStyles, fade, CardActionArea, Typography, Button, CardContent, Box, Avatar, ButtonBase } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
@@ -112,10 +112,7 @@ const createClasses = makeStyles(theme => ({
     },
     cardMedia: {
         height: 'auto',
-        width: '100%',
-        // [theme.breakpoints.down('xs')]: {
-        //     height: 250,
-        // }
+        width: '100%'
     }
 }))
 
@@ -143,7 +140,7 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>
                     <span style={{ display: 'block' }}>{brand}</span>
-                    <Rating value={rating} size="small" />
+                    <Rating readOnly={true} value={Number(rating)} size="small" />
                 </Typography>
                 <Typography className={classes.name}>
                     {name}
@@ -162,22 +159,6 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                         <Avatar variant="rounded" src={image} />
                     </ButtonBase>
                 </Box>
-                {/* <Box style={{display: 'flex',justifyContent: 'center',marginTop: 15}}>
-                    <ButtonBase className={classes.varientSize}>
-                        H
-                    </ButtonBase>
-                    <ButtonBase className={classes.varientSize}>
-                        M
-                    </ButtonBase>
-                </Box>
-                <Box style={{display: 'flex',justifyContent: 'center',marginTop: 15}}>
-                    <ButtonBase className={classes.varientSize} style={{width: 'max-content',padding: '0 4px'}}>
-                        cotton
-                    </ButtonBase>
-                    <ButtonBase className={classes.varientSize} style={{width: 'max-content',padding: '0 4px'}}>
-                        silk
-                    </ButtonBase>
-                </Box> */}
                 <Box display={{ xs: 'none', md: 'block' }} className={classes.cartButton}>
                     <Button style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
                 </Box>

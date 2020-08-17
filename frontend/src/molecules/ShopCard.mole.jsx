@@ -5,6 +5,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import Rating from '@material-ui/lab/Rating';
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
+import VarientColor from './VarientColor.mole';
 
 
 
@@ -57,20 +58,6 @@ const createClasses = makeStyles(theme => ({
     small: {
         width: theme.spacing(4),
         height: theme.spacing(4)
-    },
-    varientColor: {
-        border: `2px solid transparent`,
-        borderRadius: 4,
-        transition: 'all 300ms',
-        '&:hover': {
-            border: `2px solid ${theme.palette.primary.main}`
-        },
-        '&:first-child': {
-            borderColor: theme.palette.primary.main
-        },
-        '&:not(:last-child)': {
-            marginRight: 3
-        }
     },
     varientSize: {
         borderRadius: 2,
@@ -149,15 +136,9 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                     ${price}
                 </Typography>
                 <Box >
-                    <ButtonBase className={classes.varientColor}>
-                        <Avatar variant="rounded" src={image} />
-                    </ButtonBase>
-                    <ButtonBase className={classes.varientColor}>
-                        <Avatar variant="rounded" src={image} />
-                    </ButtonBase>
-                    <ButtonBase className={classes.varientColor}>
-                        <Avatar variant="rounded" src={image} />
-                    </ButtonBase>
+                    <VarientColor image={image} />
+                    <VarientColor image={image} />
+                    <VarientColor image={image} />
                 </Box>
                 <Box display={{ xs: 'none', md: 'block' }} className={classes.cartButton}>
                     <Button style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>

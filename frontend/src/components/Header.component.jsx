@@ -155,6 +155,7 @@ export default function Header() {
             <MainDrawer open={cartDrawerOpen} setOpen={setCartDrawerOpen}>
                 <CartPreview />
             </MainDrawer>
+            <div style={{width: '100%',height: 52,visibility: 'hidden'}}>!!Fixer!!</div>
         </React.Fragment>
     )
 }

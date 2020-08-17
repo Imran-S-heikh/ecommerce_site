@@ -76,7 +76,6 @@ export default function Home() {
             <div className="">
                 <Header />
             </div>
-            <div style={{width: '100%',height: 52,visibility: 'hidden'}}>!!Fixer!!</div>
             <div>
                 <Carousel component={<HeroItem />} data={[{ image: slideOne }, { image: slideTwo }]} />
             </div>

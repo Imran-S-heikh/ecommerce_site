@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core'
 import { useState } from 'react';
 import { createRef } from 'react';
 import { useRef } from 'react';
+import { useRecoilValue } from 'recoil';
+import { slideChangeEvent } from '../recoil/atoms';
 
 const createStyles = makeStyles(theme => ({
     root: {
@@ -23,8 +25,9 @@ const createStyles = makeStyles(theme => ({
 export default function Magnifier({ image }) {
 
     const imageZoom = useRef(1);
-    const origin = useRef({ x: 50, y: 50 });
     const offset = useRef({x:0,y:0});
+
+    const slideEvent = useRecoilValue(slideChangeEvent);
 
     const imageRef = createRef();
     const containerRef = createRef();
@@ -44,10 +47,13 @@ export default function Magnifier({ image }) {
         imageZoom.current = zoom;
         imageRef.current.style.transform = `scale(${zoom})`
     }
+    useEffect(()=>{
+        console.log(image)
+    },[])
 
     useEffect(()=>{
         offset.current = {x: containerRef.current.getBoundingClientRect().x,y: containerRef.current.getBoundingClientRect().y}
-    },[])
+    },[slideEvent])
 
 
     const handleMouseMove = (e) => {
@@ -60,6 +66,7 @@ export default function Magnifier({ image }) {
 
     return (
         <div ref={containerRef}>
+            {console.log('count re-render')}
             <div  onWheel={handleZoom} onMouseMoveCapture={handleMouseMove} onMouseLeave={() => setZoom(1)} onMouseOver={() => setZoom(2)} className={classes.imageContainer}>
                 <img
                     ref={imageRef}

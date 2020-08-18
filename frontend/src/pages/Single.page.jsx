@@ -13,6 +13,8 @@ import AddIcon from '@material-ui/icons/Add';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+const img = 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg'; 
+
 export default function Single() {
 
     const theme = useTheme();
@@ -20,9 +22,6 @@ export default function Single() {
 
     return (
         <div>
-            <div className="">
-                <Header />
-            </div>
             <div className="">
                 <Container>
                     <div style={{ padding: '15px 0' }}>
@@ -41,26 +40,26 @@ export default function Single() {
                             <Grid container spacing={4}>
                                 <Grid item xs={12} md={6}>
                                     <Grid container>
-                                        <Grid style={{display: matches ? 'none': 'initial'}}  item xs={2}>
-                                            <div> 
+                                        <Grid style={{ display: matches ? 'none' : 'initial' }} item xs={2}>
+                                            <div>
                                                 <MenuList open={true} >
                                                     <MenuItem>
-                                                        <img style={{width: '100%'}} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
+                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
                                                     </MenuItem>
                                                     <MenuItem>
-                                                        <img style={{width: '100%'}} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
+                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
                                                     </MenuItem>
                                                     <MenuItem>
-                                                        <img style={{width: '100%'}} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
+                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
                                                     </MenuItem>
                                                     <MenuItem>
-                                                        <img style={{width: '100%'}} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
+                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
                                                     </MenuItem>
                                                 </MenuList>
                                             </div>
                                         </Grid>
                                         <Grid item xs={12} md={10} className="">
-                                            <Carousel component={<Magnifier />} data={[{ image: 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg' },{ image: 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg' }]} />
+                                            <Carousel component={<Magnifier />} data={[{ image: img},{ image: 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_7270f97f-f554-4568-bf1a-30e7490a5a92_2048x2048.jpg?v=1570224584'}]} />
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -97,7 +96,7 @@ export default function Single() {
                                             <VarientColor image="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" />
                                         </Box>
                                     </Box>
-                                    <Box display="flex" flexDirection={{xs: 'column',md: 'row'}} mt={5}>
+                                    <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} mt={5}>
                                         <ButtonGroup size="large" fullWidth>
                                             <Button>
                                                 <RemoveIcon />
@@ -109,18 +108,18 @@ export default function Single() {
                                                 <AddIcon />
                                             </Button>
                                         </ButtonGroup>
-                                        <div style={{ width: 20,height: 20 }} />
+                                        <div style={{ width: 20, height: 20 }} />
                                         <Button size="large" fullWidth variant="contained" color="primary">Add To Cart</Button>
                                     </Box>
                                     <Box mt={3}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="I agree with the terms and conditions "
-                                            />
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    color="primary"
+                                                />
+                                            }
+                                            label="I agree with the terms and conditions "
+                                        />
                                     </Box>
                                     <div className="">
                                         <Button size="large" fullWidth variant="contained" color="textSecondary">
@@ -133,9 +132,6 @@ export default function Single() {
                         </div>
                     </div>
                 </Container>
-            </div>
-            <div className="">
-                {/* <Footer/> */}
             </div>
         </div>
     )

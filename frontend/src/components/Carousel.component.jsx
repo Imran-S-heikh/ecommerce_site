@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { IconButton, makeStyles, Box } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { slideChangeEvent } from '../recoil/atoms';
 
 
 const createStyles = makeStyles(theme => ({
@@ -41,6 +43,7 @@ const PrevButton = ({ onClick }) => {
 export default function Carousel({ component, data }) {
 
     const classes = createStyles()
+    const setSlideEvent = useSetRecoilState(slideChangeEvent);
 
     const settings = {
         dots: true,
@@ -57,9 +60,12 @@ export default function Carousel({ component, data }) {
     };
 
     return (
-        <Slider {...settings}>
+        <Slider {...settings} afterChange={()=>setSlideEvent(prev=>!prev)}>
+            {console.log('Count the render here')}
             {data.map((item,i) =>
-                React.cloneElement(component, {...item,key: i})
+                <React.Fragment key={i}>
+                    {React.cloneElement(component, {...item})}
+                </React.Fragment>
             )}
         </Slider>
     )

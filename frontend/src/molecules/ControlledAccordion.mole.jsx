@@ -9,7 +9,7 @@ export default function ControlledAccordion({children,title}) {
 
 
     return (
-        <Accordion style={{marginBottom: 2}} expanded={!expandable} onChange={() => setExpandable(!expandable)}>
+        <Accordion  expanded={!expandable} onChange={() => setExpandable(!expandable)}>
             <AccordionSummary
                 expandIcon={expandable ? <AddIcon /> : <RemoveIcon />}
             >

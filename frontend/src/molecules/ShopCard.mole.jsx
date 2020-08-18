@@ -6,6 +6,7 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import Rating from '@material-ui/lab/Rating';
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 import VarientColor from './VarientColor.mole';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -106,6 +107,7 @@ const createClasses = makeStyles(theme => ({
 export default function ShopCard({ width = 280, image, brand,name,rating,price }) {
 
     const classes = createClasses()
+    const history = useHistory();
 
 
     return (
@@ -121,7 +123,7 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                     <CompareArrowsIcon />
                 </IconButton>
             </CardActions>
-            <CardActionArea>
+            <CardActionArea onClick={()=>history.push('/single')}>
                 <CardMedia component="img" classes={{ media: classes.cardMedia }} image={image} />
             </CardActionArea>
             <CardContent className={classes.cardContent}>

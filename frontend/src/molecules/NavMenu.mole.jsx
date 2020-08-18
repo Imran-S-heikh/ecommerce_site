@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { MenuList, MenuItem, makeStyles, Box } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { useHistory } from 'react-router-dom';
 
 const navItems = ['home', 'shop', 'blog', 'women', 'men']
 
@@ -29,10 +30,13 @@ export default function NavMenu({ styleProp, showIcon }) {
 
     const classes = createStyles(styleProp);
     const [selected, setSelected] = useState(0);
+    const history = useHistory();
 
 
-    const handleNavClick = (event, index) => {
+    const handleNavClick = (event, index,path) => {
+
         setSelected(index)
+        history.push(`/${path}`)
     }
 
     return (
@@ -40,7 +44,7 @@ export default function NavMenu({ styleProp, showIcon }) {
             {navItems.map((item, i) =>
                 <MenuItem
                     key={i}
-                    onClick={e => handleNavClick(e, i)}
+                    onClick={e => handleNavClick(e, i,item)}
                     className={classes.listItem}
                     selected={i === selected}
                     classes={{ selected: classes.selected }}

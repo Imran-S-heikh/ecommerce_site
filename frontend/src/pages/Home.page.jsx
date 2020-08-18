@@ -73,9 +73,6 @@ export default function Home() {
 
     return (
         <div>
-            <div className="">
-                <Header />
-            </div>
             <div>
                 <Carousel component={<HeroItem />} data={[{ image: slideOne }, { image: slideTwo }]} />
             </div>
@@ -129,7 +126,7 @@ export default function Home() {
                         { image: assets.blog[2] }
                     ]}
                     component={<BlogCard />}
-                    breakPoints={{ md: 4 }}
+                    breakPoints={{ xs: 12, md: 4,lg:4 }}
                 />
             </div>
             <div className="">
@@ -152,11 +149,8 @@ export default function Home() {
                         </LinkGallaryItem>
                     }
                     spacing="0"
-                    breakPoints={{ xs: 6, md: 2 }}
+                    breakPoints={{ xs: 6, md: 2,lg:2 }}
                 />
-            </div>
-            <div className="">
-                <Footer/>
             </div>
         </div>
     )

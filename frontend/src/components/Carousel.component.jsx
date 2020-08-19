@@ -17,20 +17,20 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-const NextButton = ({ onClick }) => {
+const NextButton = ({ onClick,customStyle }) => {
     return (
         <Box display={{ xs: 'none', sm: 'block' }}>
-            <IconButton onClick={onClick} style={{ position: 'absolute', right: 30, top: '50%' }}>
+            <IconButton onClick={onClick} style={customStyle ? customStyle : { position: 'absolute', right: 30, top: '50%' }}>
                 <ChevronRightIcon />
             </IconButton>
         </Box>
     )
 }
 
-const PrevButton = ({ onClick }) => {
+const PrevButton = ({ onClick,customStyle }) => {
     return (
         <Box display={{ xs: 'none', sm: 'block' }}>
-            <IconButton onClick={onClick} style={{ position: 'absolute', left: 30, top: '50%', zIndex: 5555 }}>
+            <IconButton onClick={onClick} style={customStyle ? customStyle : { position: 'absolute', left: 30, top: '50%', zIndex: 5555 }}>
                 <ChevronLeftIcon />
             </IconButton>
         </Box>
@@ -40,7 +40,7 @@ const PrevButton = ({ onClick }) => {
 
 
 
-export default function Carousel({ component, data }) {
+export default function Carousel({ component, data, customStyle }) {
 
     const classes = createStyles()
     const setSlideEvent = useSetRecoilState(slideChangeEvent);
@@ -51,17 +51,17 @@ export default function Carousel({ component, data }) {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        nextArrow: <NextButton />,
-        prevArrow: <PrevButton />,
+        nextArrow: <NextButton customStyle={customStyle?.buttonNext} />,
+        prevArrow: <PrevButton customStyle={customStyle?.buttonPrev} />,
+        infinite: false,
         appendDots: (dots) =>
-            <div style={{ position: 'absolute', bottom: 10 }}>
+            <div style={customStyle?.buttonDots || { position: 'absolute', bottom: 10 }}>
                 <ul className={classes.dot} >{dots}</ul>
             </div>
     };
 
     return (
         <Slider {...settings} afterChange={()=>setSlideEvent(prev=>!prev)}>
-            {console.log('Count the render here')}
             {data.map((item,i) =>
                 <React.Fragment key={i}>
                     {React.cloneElement(component, {...item})}

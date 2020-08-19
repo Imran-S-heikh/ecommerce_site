@@ -59,7 +59,7 @@ export default function Single() {
                                             </div>
                                         </Grid>
                                         <Grid item xs={12} md={10} className="">
-                                            <Carousel component={<Magnifier />} data={[{ image: img},{ image: 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_7270f97f-f554-4568-bf1a-30e7490a5a92_2048x2048.jpg?v=1570224584'}]} />
+                                            <Carousel component={<Magnifier />} customStyle={{buttonDots: {bottom: -60},buttonNext: {display: 'none'},buttonPrev: {display: 'none'}}} data={[{ image: img},{ image: 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_7270f97f-f554-4568-bf1a-30e7490a5a92_2048x2048.jpg?v=1570224584'}]} />
                                         </Grid>
                                     </Grid>
                                 </Grid>

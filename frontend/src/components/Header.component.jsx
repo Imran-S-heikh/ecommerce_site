@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -13,6 +13,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MainDrawer from '../molecules/MainDrawer.mole';
 import MenuContainer from '../molecules/MenuContainer.mole';
 import CartPreview from '../molecules/CartPreview.mole';
+import EnhancedEncryptionIcon from '@material-ui/icons/EnhancedEncryption';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { Link, useHistory } from 'react-router-dom';
 
 
 const createStyle = makeStyles(theme => ({
@@ -56,6 +59,10 @@ const createStyle = makeStyles(theme => ({
             marginBottom: 18,
 
         }
+    },
+    listIcon: {
+        minWidth: 'max-content',
+        marginRight: 10
     }
 
 }));
@@ -71,6 +78,9 @@ export default function Header() {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+
+
+    const history = useHistory();
 
 
     return (
@@ -129,7 +139,40 @@ export default function Header() {
                                 </Tooltip>
                             </ClickAwayListener>
                             <MenuContainer open={personOpen}>
-                                Hello
+                                <MenuList dense>
+                                    <MenuItem onClick={()=>history.push('/signin')}>
+                                        <ListItemIcon classes={{root: classes.listIcon}}>
+                                            <EnhancedEncryptionIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            Login
+                                        </ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={()=>history.push('/signup')}>
+                                        <ListItemIcon classes={{root: classes.listIcon}}>
+                                            <PersonIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            Register
+                                        </ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={()=>history.push('/cart')}>
+                                        <ListItemIcon classes={{root: classes.listIcon}}>
+                                            <ShoppingBasketIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            View Cart
+                                        </ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={()=>history.push('/signin')}>
+                                        <ListItemIcon classes={{root: classes.listIcon}}>
+                                            <FavoriteBorderIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            Wish List
+                                        </ListItemText>
+                                    </MenuItem>
+                                </MenuList>
                             </MenuContainer>
                         </Box>
                         <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>

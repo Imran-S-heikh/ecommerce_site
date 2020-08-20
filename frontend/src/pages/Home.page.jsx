@@ -14,6 +14,7 @@ import BlogCard from '../molecules/BlogCard.mole';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { assets } from '../utils';
 import Footer from '../components/Footer.component';
+import LazySkeleton from '../components/LazySkeleton.component';
 
 
 
@@ -67,7 +68,7 @@ const showcaseItems = [
     }
 ]
 
-export default function Home() {
+function Home() {
 
     const classes = createStyles()
 
@@ -114,6 +115,8 @@ export default function Home() {
                     subTitle="Top Wishes Of This Week"
                     items={showcaseItems}
                     component={<ShopCard />}
+                    fallback={<LazySkeleton width="100%" height={400} breakPoints={{ xs: 12, md: 4,lg:3 }} items={8}/>}
+
                 />
             </div>
             <div className="">
@@ -127,6 +130,7 @@ export default function Home() {
                     ]}
                     component={<BlogCard />}
                     breakPoints={{ xs: 12, md: 4,lg:4 }}
+                    fallback={<LazySkeleton width="100%" height={250} breakPoints={{ xs: 12, md: 4,lg:4 }} items={3}/>}
                 />
             </div>
             <div className="">
@@ -155,3 +159,6 @@ export default function Home() {
         </div>
     )
 }
+
+
+export default React.memo(Home);

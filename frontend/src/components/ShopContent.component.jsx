@@ -12,9 +12,11 @@ import ShopCard from '../molecules/ShopCard.mole';
 import SortIcon from '@material-ui/icons/Sort';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { sideDrawerState } from '../recoil/atoms';
+import LazySkeleton from './LazySkeleton.component';
+import { useEffect } from 'react';
 
 
-const showcaseItems = [
+const xxx = [
     {
         "rating": "4.6",
         "name": "Premier Cropped Skinny Jean", "brand": "GAP", "price": "$380.00",
@@ -67,6 +69,13 @@ export default function ShopContent() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [breakPoints,setBreakPoints] = useState(max);
     const setSideBarOpen = useSetRecoilState(sideDrawerState)
+    const [showcaseItems,setShowcaseItems] = useState(null);
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            setShowcaseItems(xxx)
+        },3000)
+    },[])
 
     return (
         <div>
@@ -106,8 +115,9 @@ export default function ShopContent() {
                     </Button>
                 </Box>
             </Box>
-            <Box mt={2}>
-                <Showcase 
+            <Box my={4}>
+                {showcaseItems ? 
+                    <Showcase 
                     component={
                         <ShopCard width="100%"/>
                     }
@@ -115,7 +125,9 @@ export default function ShopContent() {
                     title={null}
                     breakPoints={breakPoints}
 
-                />
+                />:
+                <LazySkeleton breakPoints={breakPoints} items={8} width="100%" height={400} />
+                }
             </Box>
             <Popover anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
                 <Paper>

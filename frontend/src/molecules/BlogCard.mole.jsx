@@ -6,7 +6,7 @@ const createStyles = makeStyles(theme => ({
     content: {
         width: "80%",
         backgroundColor: theme.palette.common.white,
-        transform: 'translateY(-90px)',
+        transform: props=>props.horizontal ? 'translateY(0)': 'translateY(-90px)',
         margin: 'auto',
         padding: 20,
         borderRadius: 5,
@@ -40,12 +40,12 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function BlogCard({ image }) {
+export default function BlogCard({ image,horizontal }) {
 
-    const classes = createStyles();
+    const classes = createStyles({horizontal});
 
     return (
-        <Card>
+        <Card style={horizontal&& {display: 'flex'}}>
             <CardActionArea>
                 <CardMedia component="img" src={image} />
             </CardActionArea>

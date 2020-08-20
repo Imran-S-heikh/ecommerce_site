@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Container, Grid, Typography, makeStyles } from '@material-ui/core'
+import LazySkeleton from './LazySkeleton.component';
+import Skeleton from '@material-ui/lab/Skeleton';
+import LazyLoad from 'react-lazyload';
 
 const createStyles = makeStyles(theme => ({
     header: {
@@ -10,7 +13,9 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Showcase({ items, component, title, subTitle, breakPoints, spacing = 2 }) {
+const GridLayout = lazy(() => import('./GridLayout.component'));
+
+export default function Showcase({ items, component, title, subTitle, breakPoints, spacing = 2, fallback }) {
 
     const classes = createStyles();
 
@@ -27,13 +32,11 @@ export default function Showcase({ items, component, title, subTitle, breakPoint
                     </Typography>
                 </div>
             }
-            <Grid container spacing={Number(spacing)}>
-                {items.map((item, i) =>
-                    <Grid key={i} item xs={breakPoints?.xs || 12} sm={breakPoints?.sm || 4} md={breakPoints?.md || 3} lg={breakPoints?.lg || 3}>
-                        {React.cloneElement(component, item)}
-                    </Grid>
-                )}
-            </Grid>
+            <Suspense fallback={fallback || <div>Loading...</div>}>
+                <LazyLoad offset={300} placeholder={fallback || <div>Loading...</div>}>
+                    <GridLayout items={items} component={component} breakPoints={breakPoints} spacing={spacing} />
+                </LazyLoad>
+            </Suspense>
         </Container>
     )
 }

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -21,6 +22,16 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
         select: false
     },
+    confirmPassword: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function(val){
+                return val === this.password
+            },
+            message: "Password didn't match"
+        }
+    },
     purchased: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Product'
@@ -32,6 +43,19 @@ const userSchema = new mongoose.Schema({
     totalTransaction: Number,
     transaction: Number
 });
+
+userSchema.pre('save',async function(next){
+    if (!this.isModified('password')) return next();
+
+    this.password = await bcrypt.hash(this.password,12);
+    this.confirmPassword = undefined;
+
+    next();
+});
+
+userSchema.methods.checkPassword = async function(givenPassword,storedPassword){
+    return await bcrypt.compare(givenPassword,storedPassword);
+}
 
 
 const User = mongoose.model('User',userSchema);

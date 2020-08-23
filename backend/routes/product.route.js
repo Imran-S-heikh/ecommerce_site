@@ -1,14 +1,16 @@
 const express = require('express');
+const { createProduct,getProducts, getSingleProduct } = require('../controllers/product.controller');
 
 
 const router = express.Router();
 
 
 router.route('/')
-      .get(/*'get last 10 Product*/);
+      .post(createProduct)
+      .get(getProducts);
     
 router.route('/:id')
-      .get(/*'Get single Product*/)
+      .get(getSingleProduct)
       .patch(/*Update Product*/)
       .delete(/* Deactivate Certain Product*/)
 

@@ -1,5 +1,6 @@
 const Product = require("../models/Product.model");
 const catchAsync = require("../utils/catchAsync.util");
+const ApiFeatures = require("../utils/apiFeatures");
 
 exports.createProduct = catchAsync(async function (req, res, next) {
     const newProduct = await Product.create(req.body)
@@ -11,7 +12,8 @@ exports.createProduct = catchAsync(async function (req, res, next) {
 });
 
 exports.getProducts = catchAsync(async function (req, res, next) {
-    const products = await Product.find()
+    const features = new ApiFeatures(Product.find(),req.query).filter().sort();
+    const products = await features.query;
 
     res.status(200).json({
         status: 'success',

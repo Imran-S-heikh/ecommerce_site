@@ -12,7 +12,7 @@ exports.createProduct = catchAsync(async function (req, res, next) {
 });
 
 exports.getProducts = catchAsync(async function (req, res, next) {
-    const features = new ApiFeatures(Product.find(),req.query).filter().sort();
+    const features = new ApiFeatures(Product.find(),req.query).filter().sort().paginate();
     const products = await features.query;
 
     res.status(200).json({
@@ -29,4 +29,13 @@ exports.getSingleProduct = catchAsync(async function (req, res, next) {
         status: 'success',
         product
     });
-})
+});
+
+exports.updateProduct = catchAsync(async function(req,res,next){
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id,req.body,{new: true})
+
+    res.status(200).json({
+        status: 'success',
+        product: updatedProduct
+    })
+});

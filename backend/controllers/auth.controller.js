@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync.util");
 const User = require("../models/User.model");
+const {promisify} = require('util');
 const jwt = require('jsonwebtoken');
 const createToken = require("../utils/createToken");
 const AppError = require("../utils/appError.util");
@@ -49,6 +50,22 @@ exports.signIn = catchAsync(async (req,res,next)=>{
         token,
         user
     });
+});
+
+exports.authenticate = catchAsync(async (req,res,next)=>{
+    const token = req.cookies.jwt;
+
+    if(!token)return next(new AppError('Please login to access',401));
+    
+    const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+    console.log({decoded})
+
+    const currentUser = await User.findById(decoded.id);
+
+    if(!currentUser) return next(new AppError('No User Found',404));
+
+    next();
+
 });
 
 

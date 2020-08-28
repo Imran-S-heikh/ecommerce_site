@@ -58,14 +58,25 @@ exports.authenticate = catchAsync(async (req,res,next)=>{
     if(!token)return next(new AppError('Please login to access',401));
     
     const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-    console.log({decoded})
 
     const currentUser = await User.findById(decoded.id);
 
     if(!currentUser) return next(new AppError('No User Found',404));
 
+    req.user = currentUser;
+
     next();
 
+});
+
+exports.checkAdmin = catchAsync( async (req,res,next)=>{
+    if(!req.user.role.includes('admin'))return next( new AppError('You Dont Have Permission To Do This Action',401));
+    next();
+});
+
+exports.checkModerator = catchAsync( async (req,res,next)=>{
+    if(!req.user.role.includes('moderator') && !req.user.role.includes('admin'))return next( new AppError('You Dont Have Permission To Do This Action',401));
+    next();
 });
 
 

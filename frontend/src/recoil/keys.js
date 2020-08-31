@@ -4,6 +4,7 @@ export const CART_DRAWER_OPEN = 'CART_DRAWER_OPEN';
 export const SIDE_DRAWER_OPEN = 'SIDE_DRAWER_OPEN';
 export const DASH_DRAWER_OPEN = 'DASH_DRAWER_OPEN';
 export const DARK_MODE = 'DARK_MODE';
+export const DASH_BOARD_ROUTES = 'DASH_BOARD_ROUTES';
 
 
 

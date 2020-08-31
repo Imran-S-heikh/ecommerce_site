@@ -25,7 +25,11 @@ const createStyles = makeStyles(theme => ({
         position: 'relative',
         '& > *': {
             textAlign: 'center'
+        },
+        [theme.breakpoints.down('xs')]: {
+            overflow: 'hidden'
         }
+
     },
     contentBack: {
         position: 'absolute',
@@ -34,6 +38,8 @@ const createStyles = makeStyles(theme => ({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%,-50%)',
+        width: '110%',
+        height: '110%'
     }
 }))
 

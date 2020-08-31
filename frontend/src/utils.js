@@ -24,6 +24,9 @@ import insta_5 from './assets/insta-5.jpg'
 import insta_6 from './assets/insta-6.jpg'
 
 
+import avatar from './assets/avatar.jpg'
+
+
 
 export const assets = {
     product: [
@@ -53,7 +56,8 @@ export const assets = {
         insta_4,
         insta_5,
         insta_6
-    ]
+    ],
+    avatar: [avatar]
 
 }
 
@@ -68,4 +72,10 @@ export const EventEmmiter = {
         if(!this.events[event]) this.events[event] = [];
         this.events[event].push(callback);
     }
+}
+
+
+export const routes = {
+    DASHBOARD: 'DASHBOARD',
+    CREATE_PRODUCT: 'CREATE_PRODUCT'
 }

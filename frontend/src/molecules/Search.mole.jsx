@@ -13,11 +13,11 @@ const createStyles = makeStyles(theme => ({
     searchIcon: {
         position: 'absolute',
         right: 10,
-        zIndex: 1
+        zIndex: 10
     },
     input: {
         fontSize: 30,
-        color: theme.palette.common.black,
+        color: theme.palette.text.primary,
         paddingRight: 60
     },
     content: {

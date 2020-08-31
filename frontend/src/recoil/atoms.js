@@ -1,5 +1,6 @@
 import { atom } from "recoil";
-import { SEARCH_OPEN, MAIN_DRAWER_OPEN, CART_DRAWER_OPEN, SIDE_DRAWER_OPEN, SLIDE_CHANGE, DASH_DRAWER_OPEN, DARK_MODE } from "./keys";
+import { SEARCH_OPEN, MAIN_DRAWER_OPEN, CART_DRAWER_OPEN, SIDE_DRAWER_OPEN, SLIDE_CHANGE, DASH_DRAWER_OPEN, DARK_MODE, DASH_BOARD_ROUTES } from "./keys";
+import { routes } from "../utils";
 
 export const searchOpenState = atom({
     key: SEARCH_OPEN,
@@ -34,4 +35,9 @@ export const dashDrawerState = atom({
 export const darkModeState = atom({
     key: DARK_MODE,
     default: true
+});
+
+export const dashboardRouteState = atom({
+    key: DASH_BOARD_ROUTES,
+    default: routes.CREATE_PRODUCT
 });

@@ -11,7 +11,7 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import PersonIcon from '@material-ui/icons/Person';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { useRecoilState } from 'recoil';
-import { dashDrawerState } from '../recoil/atoms';
+import { dashDrawerState, dashboardRouteState } from '../recoil/atoms';
 import clsx from 'clsx';
 import AddIcon from '@material-ui/icons/Add';
 import UpdateIcon from '@material-ui/icons/Update';
@@ -21,6 +21,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import TimelapseIcon from '@material-ui/icons/Timelapse';
 import WebIcon from '@material-ui/icons/Web';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import { routes } from '../utils';
 
 
 
@@ -36,7 +37,8 @@ const createStyles = makeStyles(theme => ({
         backgroundColor: '#1A1A27'
     },
     drawerRoot: {
-        backgroundColor: '#1E1E2D'
+        backgroundColor: '#1E1E2D',
+        zIndex: 6
     },
     accordionPaper: {
         backgroundColor: '#1A1A27 !important',
@@ -74,6 +76,7 @@ export default function DashboardDrawer() {
     const classes = createStyles();
     const [selected, setSelected] = useState('Dashboard');
     const [drawerOpen, setDrawerOpen] = useRecoilState(dashDrawerState)
+    const [route,setRoute] = useRecoilState(dashboardRouteState);
 
     return (
         <Drawer
@@ -94,18 +97,26 @@ export default function DashboardDrawer() {
             <div className={classes.drawerPaper}>
                 <div style={{ width: drawerWidth }}>
                     <div className={classes.drawerHeader}>
-                        <Typography style={{ fontWeight: 'bold' }} component="h5" align="center" variant="h5" color="inherit">
-                            WooKie
-                    </Typography>
+                        <Box ml={2}>
+                            <Typography style={{ fontWeight: 'bold' }} component="h5" align="center" variant="h5" color="inherit">
+                                WooKie
+                            </Typography>
+                        </Box>
                         <IconButton onClick={() => setDrawerOpen(!drawerOpen)} color="primary">
                             <KeyboardArrowRightIcon />
                         </IconButton>
                     </div>
                     <Box mt={2}>
-                        <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Dashboard" startIcon={<DashIcon />} />
+                        <ControlledAccordionBlack onClick={(title) => {
+                            setSelected(title);
+                            setRoute(routes.DASHBOARD)
+                            }} 
+                            selected={selected} 
+                            title="Dashboard" 
+                            startIcon={<DashIcon />} />
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Products" startIcon={<TshirtIcon />}>
                             <MenuList color="textPrimary">
-                                <MenuItem className={classes.menuItem} button={true} >
+                                <MenuItem onClick={()=>setRoute(routes.CREATE_PRODUCT)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <AddIcon />
                                     </ListItemIcon>

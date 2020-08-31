@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, AppBar, Toolbar, Drawer, CssBaseline, Box, Paper, Typography, IconButton, useTheme } from '@material-ui/core'
+import { makeStyles, AppBar, Toolbar, Drawer, CssBaseline, Box, Paper, Typography, IconButton, useTheme, Avatar, Badge } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ControlledAccordion from '../molecules/ControlledAccordion.mole';
 import StopIcon from '@material-ui/icons/Stop';
@@ -7,8 +7,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import DashboardDrawer from '../components/DashboardDrawer.component';
 import clsx from 'clsx';
 import { useRecoilState } from 'recoil';
-import { dashDrawerState } from '../recoil/atoms';
+import { dashDrawerState, searchOpenState } from '../recoil/atoms';
 import { useEffect } from 'react';
+import DashboardRoutes from '../components/DashboardRoutes.component';
+import { assets } from '../utils';
+import { green } from '@material-ui/core/colors';
+import SearchIcon from '@material-ui/icons/Search';
+import Search from '../molecules/Search.mole';
 
 const drawerWidth = 270;
 
@@ -19,8 +24,8 @@ const createStyles = makeStyles(theme => ({
     },
 
     contentRoot: {
-        marginTop: 52,
-        flexGrow: 1
+        flexGrow: 1,
+        marginTop: 60
     },
     shift: {
         marginLeft: drawerWidth,
@@ -31,10 +36,26 @@ const createStyles = makeStyles(theme => ({
         })
     },
     appBar: {
-        zIndex: 99999
+        zIndex: 8
     },
     menuIcon: {
         fontSize: 30
+    },
+    toolbarRegular: {
+        minHeight: 50
+    },
+    badgeColor: {
+        backgroundColor: theme.palette.success.light,
+        top: 6
+    },
+    avatar: {
+        height: theme.spacing(4),
+        width: theme.spacing(4)
+    },
+    searchIcon: {
+        '&:hover': {
+            color: theme.palette.primary.main
+        }
     }
 }))
 
@@ -44,12 +65,14 @@ export default function Dashboard() {
 
     const classes = createStyles();
     const [dashDrawer, setDashDrawer] = useRecoilState(dashDrawerState);
+    const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
+
 
     const theme = useTheme();
 
-    useEffect(()=>{
+    useEffect(() => {
         theme.palette.type = 'dark'
-    },[]);
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -62,20 +85,31 @@ export default function Dashboard() {
                 color="inherit"
 
             >
-                <Toolbar>
-                    <Box display={dashDrawer ? 'none': 'block'}>
-                        <IconButton onClick={() => setDashDrawer(true)}>
-                            <MenuIcon className={classes.menuIcon} />
-                        </IconButton>
+                <Toolbar classes={{ regular: classes.toolbarRegular }}>
+                    <Box display="flex" justifyContent="space-between" flexGrow={1}>
+                        <Box display={dashDrawer ? 'none' : 'block'}>
+                            <IconButton onClick={() => setDashDrawer(true)}>
+                                <MenuIcon className={classes.menuIcon} />
+                            </IconButton>
+                        </Box>
+                        <Box ml="auto">
+                            <IconButton onClick={()=>setSearchOpen(true)} className={classes.searchIcon}>
+                                <SearchIcon/>
+                            </IconButton>
+                            <IconButton>
+                                <Badge classes={{badge: classes.badgeColor}} variant="dot" size>
+                                    <Avatar className={classes.avatar} src={assets.avatar[0]} />
+                                </Badge>
+                            </IconButton>
+                        </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
             <DashboardDrawer />
             <div className={classes.contentRoot}>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe alias sint modi tenetur esse facilis. Facilis, totam quis repudiandae nesciunt officia minus obcaecati blanditiis officiis sint vero explicabo a repellendus.
-                </p>
+                <DashboardRoutes />
             </div>
+            <Search/>
         </div>
     )
 }

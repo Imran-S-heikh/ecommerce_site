@@ -16,6 +16,7 @@ import Cart from './pages/Cart.page';
 import Dashboard from './pages/Dashboard.page';
 import { darkModeState } from './recoil/atoms';
 import { blue } from '@material-ui/core/colors';
+import HideComponentOnRoute from './molecules/HideComponentOnRoute.mole';
 
 
 
@@ -37,51 +38,48 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <HideComponentOnRoute route="/dashboard" >
+          <Header />
+        </HideComponentOnRoute>
         <Switch>
           <Route path="/dashboard">
             <Dashboard />
           </Route>
           <Route path="/signup">
-            <Header />
             <Signup />
           </Route>
           <Route path="/signin">
-            <Header />
             <Signin />
           </Route>
           <Route path="/shop" exact>
-            <Header />
             <Shop />
           </Route>
           <Route path="/single" exact>
-            <Header />
             <Single />
           </Route>
           <Route path="/blog" exact>
-            <Header />
             <Blog />
           </Route>
           <Route path="/blogsingle" exact>
-            <Header />
             <SingleBlog />
           </Route>
           <Route path="/cart" exact>
-            <Header />
             <Cart />
           </Route>
           <Route path="/">
-            <Header />
             <Home />
           </Route>
         </Switch>
-        <Footer />
+        <HideComponentOnRoute route="/dashboard" >
+          <Footer />
+        </HideComponentOnRoute>
       </ThemeProvider>
     </BrowserRouter>
   );
 }
 
-export default ()=>(
+export default () => (
   <RecoilRoot>
-    <App/>
+    <App />
   </RecoilRoot>
 );

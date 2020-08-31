@@ -3,6 +3,7 @@ import { Accordion, AccordionSummary, Typography, AccordionDetails, makeStyles, 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { useRecoilState } from 'recoil';
 import { dashDrawerState } from '../recoil/atoms';
+import { useEffect } from 'react';
 
 
 const createStyles = makeStyles(theme=>({
@@ -30,10 +31,21 @@ export default function ControlledAccordionBlack({children,title,startIcon,selec
     const classes = createStyles({selected: selected == title,drawerOpen});
 
 
+    useEffect(()=>{
+        if(!drawerOpen){
+            setExpandable(true)
+        }
+    },[drawerOpen])
+
+
     return (
-        <Accordion onClick={()=>{onClick(title);setDrawerOpen(true)}} className={classes.selected} classes={{root: classes.root}}  expanded={!expandable} onChange={() => setExpandable(!expandable)}>
+        <Accordion 
+            onClick={()=>{onClick(title);setDrawerOpen(Boolean(children))}} 
+            className={classes.selected} classes={{root: classes.root}}  
+            expanded={!expandable && Boolean(children)} 
+            onChange={() => setExpandable(!expandable)}>
             <AccordionSummary
-                expandIcon={<KeyboardArrowDownIcon color="primary"/>}
+                expandIcon={children && <KeyboardArrowDownIcon color="primary"/>}
             >
                 <Box display="flex">
                     <div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { theme } from './theme';
 import Home from './pages/Home.page';
 import { RecoilRoot } from 'recoil';
@@ -22,6 +22,7 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
+        <CssBaseline/>
         <RecoilRoot>
           <Switch>
             <Route path="/dashboard">

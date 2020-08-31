@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, AppBar, Toolbar, Drawer, CssBaseline, Box, Paper, Typography, IconButton } from '@material-ui/core'
+import { makeStyles, AppBar, Toolbar, Drawer, CssBaseline, Box, Paper, Typography, IconButton, useTheme } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ControlledAccordion from '../molecules/ControlledAccordion.mole';
 import StopIcon from '@material-ui/icons/Stop';
@@ -8,6 +8,7 @@ import DashboardDrawer from '../components/DashboardDrawer.component';
 import clsx from 'clsx';
 import { useRecoilState } from 'recoil';
 import { dashDrawerState } from '../recoil/atoms';
+import { useEffect } from 'react';
 
 const drawerWidth = 270;
 
@@ -43,6 +44,12 @@ export default function Dashboard() {
 
     const classes = createStyles();
     const [dashDrawer, setDashDrawer] = useRecoilState(dashDrawerState);
+
+    const theme = useTheme();
+
+    useEffect(()=>{
+        theme.palette.type = 'dark'
+    },[]);
 
     return (
         <div className={classes.root}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles, Typography, Button } from '@material-ui/core'
-import contentBack from '../assets/heroBack.svg'
+import {ReactComponent as ContentBack} from '../assets/heroBack.svg'
 
 const createStyles = makeStyles(theme => ({
     root: {
@@ -18,13 +18,22 @@ const createStyles = makeStyles(theme => ({
     },
     content: {
         margin: 'auto',
-        backgroundImage: `url(${contentBack})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: 30,
+        zIndex: 4666,
+        position: 'relative',
         '& > *': {
             textAlign: 'center'
         }
+    },
+    contentBack: {
+        position: 'absolute',
+        zIndex: -1,
+        fill: theme.palette.background.paper,
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
     }
 }))
 
@@ -36,6 +45,7 @@ export default function HeroItem({ image }) {
         <div className={classes.root}>
             <div className={classes.container} style={{ backgroundImage: `url("${image}")` }}>
                 <div className={classes.content}>
+                    <ContentBack className={classes.contentBack} />
                     <Typography color="primary" variant="h6">
                         unique Watch
                     </Typography>

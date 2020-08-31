@@ -12,13 +12,13 @@ const createStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     listItem: {
-        color: '#191919',
+        color: theme.palette.text.primary,
         fontSize: props => props.fz || 14,
         paddingTop: props => props.py,
         paddingBottom: props => props.py
     },
     selected: {
-        color: theme.palette.primary.main,
+        color: theme.palette.primary.light,
         '&$selected': {
             backgroundColor: 'transparent',
         }

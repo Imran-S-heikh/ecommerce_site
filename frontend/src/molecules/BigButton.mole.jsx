@@ -3,7 +3,7 @@ import { ButtonBase, Typography, makeStyles, fade, Box } from '@material-ui/core
 
 const createStyle = makeStyles(theme => ({
     root: {
-        backgroundColor: fade(theme.palette.common.white, .8),
+        backgroundColor: fade(theme.palette.background.paper, .8),
         padding: '20px 30px',
         borderRadius: 5,
         transition: 'all 300ms',

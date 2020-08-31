@@ -89,7 +89,7 @@ const createClasses = makeStyles(theme => ({
     },
     cardContent: {
         textAlign: 'center',
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.background.paper,
         transition: 'all 300ms',
         paddingBottom: '0 !important',
         '$container:hover &': {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText, ListItemSecondaryAction, Switch, FormGroup, FormControlLabel } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -7,7 +7,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
 import Search from '../molecules/Search.mole';
 import { useRecoilState } from 'recoil';
-import { searchOpenState, mainDrawerState, cartDrawerState } from '../recoil/atoms';
+import { searchOpenState, mainDrawerState, cartDrawerState, darkModeState } from '../recoil/atoms';
 import NavMenu from '../molecules/NavMenu.mole';
 import MenuIcon from '@material-ui/icons/Menu';
 import MainDrawer from '../molecules/MainDrawer.mole';
@@ -20,7 +20,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 const createStyle = makeStyles(theme => ({
     mainHeader: {
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.background.paper,
         display: 'flex',
         flexDirection: 'row'
     },
@@ -74,6 +74,7 @@ export default function Header() {
 
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
     const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
+    const [darkMode,setDarkMode] = useRecoilState(darkModeState);
     const [cartDrawerOpen, setCartDrawerOpen] = useRecoilState(cartDrawerState);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
@@ -110,7 +111,7 @@ export default function Header() {
                             <ClickAwayListener onClickAway={() => setCartOpen(false)}>
                                 <Tooltip title="Cart" arrow>
                                     <IconButton onClick={() => setCartOpen(!cartOpen)} className={classes.button}>
-                                        <Badge badgeContent={4}  color="primary">
+                                        <Badge badgeContent={4} color="primary">
                                             <ShoppingBasketIcon className={classes.icon} />
                                         </Badge>
                                     </IconButton>
@@ -140,33 +141,33 @@ export default function Header() {
                             </ClickAwayListener>
                             <MenuContainer open={personOpen}>
                                 <MenuList dense>
-                                    <MenuItem onClick={()=>history.push('/signin')}>
-                                        <ListItemIcon classes={{root: classes.listIcon}}>
-                                            <EnhancedEncryptionIcon/>
+                                    <MenuItem onClick={() => history.push('/signin')}>
+                                        <ListItemIcon classes={{ root: classes.listIcon }}>
+                                            <EnhancedEncryptionIcon />
                                         </ListItemIcon>
                                         <ListItemText>
                                             Login
                                         </ListItemText>
                                     </MenuItem>
-                                    <MenuItem onClick={()=>history.push('/signup')}>
-                                        <ListItemIcon classes={{root: classes.listIcon}}>
-                                            <PersonIcon/>
+                                    <MenuItem onClick={() => history.push('/signup')}>
+                                        <ListItemIcon classes={{ root: classes.listIcon }}>
+                                            <PersonIcon />
                                         </ListItemIcon>
                                         <ListItemText>
                                             Register
                                         </ListItemText>
                                     </MenuItem>
-                                    <MenuItem onClick={()=>history.push('/cart')}>
-                                        <ListItemIcon classes={{root: classes.listIcon}}>
-                                            <ShoppingBasketIcon/>
+                                    <MenuItem onClick={() => history.push('/cart')}>
+                                        <ListItemIcon classes={{ root: classes.listIcon }}>
+                                            <ShoppingBasketIcon />
                                         </ListItemIcon>
                                         <ListItemText>
                                             View Cart
                                         </ListItemText>
                                     </MenuItem>
-                                    <MenuItem onClick={()=>history.push('/signin')}>
-                                        <ListItemIcon classes={{root: classes.listIcon}}>
-                                            <FavoriteBorderIcon/>
+                                    <MenuItem onClick={() => history.push('/signin')}>
+                                        <ListItemIcon classes={{ root: classes.listIcon }}>
+                                            <FavoriteBorderIcon />
                                         </ListItemIcon>
                                         <ListItemText>
                                             Wish List
@@ -175,19 +176,28 @@ export default function Header() {
                                 </MenuList>
                             </MenuContainer>
                         </Box>
-                        <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
-                            <ClickAwayListener onClickAway={() => setSettingsOpen(false)}>
+                        <ClickAwayListener onClickAway={() => setSettingsOpen(false)}>
+                            <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
                                 <Tooltip title="Settings" arrow>
                                     <IconButton className={classes.button} onClick={() => setSettingsOpen(!settingsOpen)}>
                                         <TuneIcon className={classes.icon} />
                                     </IconButton>
                                 </Tooltip>
-                            </ClickAwayListener>
-                            <MenuContainer open={settingsOpen}>
-                                <MenuItem onClick={(e) => console.log(e)}>Hello</MenuItem>
-                                <MenuItem>Hello</MenuItem>
-                            </MenuContainer>
-                        </Box>
+                                <MenuContainer open={settingsOpen} >
+                                    <Box mx={2}>
+                                        <FormGroup style={{ width: 'max-content' }}>
+                                            <FormControlLabel
+                                                control={<Switch checked={darkMode}
+                                                onChange={()=>setDarkMode(!darkMode)}
+                                                color="primary" />}
+                                                label="Dark Mode"
+                                                labelPlacement="start"
+                                            />
+                                        </FormGroup>
+                                    </Box>
+                                </MenuContainer>
+                            </Box>
+                        </ClickAwayListener>
                     </div>
                 </Container>
             </AppBar>
@@ -198,7 +208,7 @@ export default function Header() {
             <MainDrawer open={cartDrawerOpen} setOpen={setCartDrawerOpen}>
                 <CartPreview />
             </MainDrawer>
-            <div style={{width: '100%',height: 52,visibility: 'hidden'}}>!!Fixer!!</div>
+            <div style={{ width: '100%', height: 52, visibility: 'hidden' }}>!!Fixer!!</div>
         </React.Fragment>
     )
 }

@@ -5,7 +5,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 const createStyles = makeStyles(theme => ({
     content: {
         width: "80%",
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.background.default,
         transform: props=>props.horizontal ? 'translateY(0)': 'translateY(-90px)',
         margin: 'auto',
         padding: 20,
@@ -21,7 +21,7 @@ const createStyles = makeStyles(theme => ({
             height: '100%',
             top: 0,
             left: 0,
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.background.default,
             borderRadius: 5,
             transition: 'all 300ms',
 

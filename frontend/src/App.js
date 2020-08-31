@@ -13,6 +13,7 @@ import SingleBlog from './pages/SingleBlog.page';
 import Signin from './pages/Signin.page';
 import Signup from './pages/Signup.page';
 import Cart from './pages/Cart.page';
+import Dashboard from './pages/Dashboard.page';
 
 
 
@@ -22,37 +23,44 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <RecoilRoot>
-          <Header />
           <Switch>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
             <Route path="/signup">
+              <Header />
               <Signup />
             </Route>
             <Route path="/signin">
+              <Header />
               <Signin />
             </Route>
             <Route path="/shop" exact>
-              <Shop/>
+              <Header />
+              <Shop />
             </Route>
             <Route path="/single" exact>
+              <Header />
               <Single />
             </Route>
             <Route path="/blog" exact>
+              <Header />
               <Blog />
             </Route>
             <Route path="/blogsingle" exact>
-              <SingleBlog/>
+              <Header />
+              <SingleBlog />
             </Route>
             <Route path="/cart" exact>
-              <Cart/>
+              <Header />
+              <Cart />
             </Route>
-            <Route
-              path="/"
-              render={
-                ()=><Home/>
-              }
-            />
+            <Route path="/">
+              <Header />
+              <Home />
+            </Route>
           </Switch>
-          <Footer />
+          {/* <Footer /> */}
         </RecoilRoot>
       </ThemeProvider>
     </BrowserRouter>

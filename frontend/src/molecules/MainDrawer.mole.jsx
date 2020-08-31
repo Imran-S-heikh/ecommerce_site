@@ -21,7 +21,7 @@ export default function MainDrawer({children,open,setOpen}) {
     return (
         <Drawer open={open}>
             <ClickAwayListener onClickAway={()=>setOpen(false)}>
-                <div className={classes.mainContainer} >
+                <div className={classes.mainContainer}>
                     <div className={classes.container}>
                         <Button onClick={()=>setOpen(false)} startIcon={<CloseIcon/>} fullWidth className={classes.closeButton} >
                             Close

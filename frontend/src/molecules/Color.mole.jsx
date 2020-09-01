@@ -22,7 +22,7 @@ const createStyles = makeStyles(theme => ({
         },
         '&:hover': {
             border: `2px solid ${theme.palette.primary.main}`,
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.text.secondary,
             '&:after': {
                 transform: 'scale(.8)',
                 borderRadius: 0
@@ -31,10 +31,10 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Color({ color }) {
+export default function Color({ color,label }) {
     const classes = createStyles({ color });
     return (
-        <Tooltip title={color} arrow={true}>
+        <Tooltip title={label} arrow={true}>
             <div style={{ padding: '0 4px' }}>
                 <div className={classes.root}>
 

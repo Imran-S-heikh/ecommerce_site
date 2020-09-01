@@ -49,7 +49,8 @@ const createStyles = makeStyles(theme => ({
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
+        overflowX: 'hidden'
     },
     drawerClose: {
         width: theme.spacing(9),
@@ -57,7 +58,11 @@ const createStyles = makeStyles(theme => ({
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
+        [theme.breakpoints.down('sm')]: {
+            visibility: "hidden",
+            width: 0,
+        }
     },
     white: {
         color: fade(theme.palette.primary.contrastText, .7),

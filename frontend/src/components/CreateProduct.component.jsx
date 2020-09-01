@@ -4,14 +4,19 @@ import Color from '../molecules/Color.mole';
 import AddIcon from '@material-ui/icons/Add';
 import { useState } from 'react';
 import Hide from '../molecules/Hide.mole';
+import Carousel from './Carousel.component';
+import ImageUpload from './ImageUpload.component';
+import { useEffect } from 'react';
+import ImageIcon from '@material-ui/icons/Image';
 
 const createStyles = makeStyles(theme => ({
     root: {
-        // display: 'flex',
-        // flexGrow: 1,
-        // margin: 'auto',
-        // height: '100%',
-        // width: '100%'
+        margin: 'auto',
+        marginBottom: theme.spacing(4),
+        width: '80%',
+        [theme.breakpoints.down('sm')]: {
+            width: "100vw"
+        }
     },
     paper: {
         padding: theme.spacing(3),
@@ -22,6 +27,12 @@ const createStyles = makeStyles(theme => ({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%,-50%)'
+    },
+    image: {
+        width: 200
+    },
+    labelFix: {
+        marginTop: 3
     }
 }));
 
@@ -79,6 +90,20 @@ const types = [
 ];
 
 const sizes = ['XS', 'X', 'M', 'L', 'XL'];
+const cropSizes = [
+    {
+        value: [200, 500],
+        label: 'Card'
+    },
+    {
+        value: [400, 800],
+        label: 'Preview'
+    },
+    {
+        value: [40, 40],
+        label: 'Tiny'
+    }
+]
 const initialColors = [
     {
         value: 'red',
@@ -98,19 +123,74 @@ export default function CreateProduct() {
 
     const classes = createStyles();
     const [colors, setColors] = useState(initialColors);
+    const [productImage, setProductImage] = useState([]);
     const [colorPopoverOpen, setColorPopover] = useState(false);
-    const [newColor, setNewColor] = useState({ name: null, value: null });
+    const [newColor, setNewColor] = useState({ label: null, value: null });
+
+    useEffect(() => {
+        console.log(productImage)
+    }, [productImage])
+
+    const handleFile = (file, url) => {
+        setProductImage([...productImage, { src: url }])
+    }
 
     return (
         <div className={classes.root}>
             <Box mt={2}>
                 <Typography gutterBottom={3} align="center" component="h2" variant="h4">Create Product</Typography>
             </Box>
-            <Box display="flex" justifyContent="center" mx="auto" position="relative">
-                <Box style={{ width: '45%' }}>
-                    <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
-                </Box>
-                <Box width={400}>
+            <Grid container>
+                <Grid item xs={12} sm={6}>
+                    <Box mx="auto" width={400}>
+                        {productImage.length === 0 ?
+                            <Box height={470}>
+                                <Paper>
+                                    <Box justifyContent="center" alignItems="center" height={470} display="flex" m="auto">
+                                        <Box>
+                                            <ImageIcon style={{fontSize: 150}} />
+                                            <Typography>
+                                                Upload Product Image
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                </Paper>
+                            </Box> :
+                            <Carousel
+                                component={
+                                    <img width="100%" />
+                                }
+                                data={productImage}
+                            />
+                        }
+                    </Box>
+                    <Box mt={3} mx="auto" width={400}>
+                        <Paper>
+
+                            <Box p={3}>
+                                <Box mb={2}>
+                                    <FormControl>
+                                        <FormLabel>Select Crop Sizes</FormLabel>
+                                        <FormGroup row>
+                                            {cropSizes.map(size => (
+                                                <FormControlLabel
+                                                    key={size.label}
+                                                    classes={{ label: classes.labelFix }}
+                                                    control={
+                                                        <Checkbox color="primary" />
+                                                    }
+                                                    label={size.label}
+                                                />
+                                            ))}
+                                        </FormGroup>
+                                    </FormControl>
+                                </Box>
+                                <ImageUpload fullWidth onUpload={handleFile} />
+                            </Box>
+                        </Paper>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
@@ -194,6 +274,7 @@ export default function CreateProduct() {
                                             {sizes.map(size => (
                                                 <FormControlLabel
                                                     key={size}
+                                                    classes={{ label: classes.labelFix }}
                                                     control={
                                                         <Checkbox color="primary" />
                                                     }
@@ -215,7 +296,7 @@ export default function CreateProduct() {
                                                     key={color.value}
                                                     control={
                                                         <Box mt={1} ml={1}>
-                                                            <Color label={color.lebel} color={color.value} />
+                                                            <Color label={color.label} color={color.value} />
                                                         </Box>
                                                     }
                                                 />
@@ -235,7 +316,7 @@ export default function CreateProduct() {
                             <Button color="primary" fullWidth variant="contained">Create Product</Button>
                         </Box>
                     </Paper>
-                </Box>
+                </Grid>
                 <Hide open={colorPopoverOpen}>
                     <Box className={classes.center}>
                         <ClickAwayListener onClickAway={() => setColorPopover(false)}>
@@ -244,14 +325,14 @@ export default function CreateProduct() {
                                     Give a color name or hex value
                         </Typography>
                                 <Box>
-                                    <TextField label="Color Label" onChange={e => setNewColor({ ...newColor, name: e.currentTarget.value })} />
+                                    <TextField label="Color Label" onChange={e => setNewColor({ ...newColor, label: e.currentTarget.value })} />
                                     <Box width={10} display="inline-block" />
                                     <TextField label="Color Value" onChange={e => setNewColor({ ...newColor, value: e.currentTarget.value })} />
                                 </Box>
                                 <Box mt={2}>
                                     <Button onClick={() => {
                                         setColorPopover(false);
-                                        if (newColor.name && newColor.value) {
+                                        if (newColor.label && newColor.value) {
                                             setColors([...colors, newColor])
                                         }
                                     }}
@@ -265,7 +346,7 @@ export default function CreateProduct() {
                         </ClickAwayListener>
                     </Box>
                 </Hide>
-            </Box>
+            </Grid>
 
         </div>
     )

@@ -20,7 +20,7 @@ const createStyles = makeStyles(theme => ({
 const NextButton = ({ onClick,customStyle }) => {
     return (
         <Box display={{ xs: 'none', sm: 'block' }}>
-            <IconButton onClick={onClick} style={customStyle ? customStyle : { position: 'absolute', right: 30, top: '50%' }}>
+            <IconButton color="primary" onClick={onClick} style={customStyle ? customStyle : { position: 'absolute', right: 30, top: '50%' }}>
                 <ChevronRightIcon />
             </IconButton>
         </Box>
@@ -30,7 +30,7 @@ const NextButton = ({ onClick,customStyle }) => {
 const PrevButton = ({ onClick,customStyle }) => {
     return (
         <Box display={{ xs: 'none', sm: 'block' }}>
-            <IconButton onClick={onClick} style={customStyle ? customStyle : { position: 'absolute', left: 30, top: '50%', zIndex: 5555 }}>
+            <IconButton color="primary" onClick={onClick} style={customStyle ? customStyle : { position: 'absolute', left: 30, top: '50%', zIndex: 5555 }}>
                 <ChevronLeftIcon />
             </IconButton>
         </Box>

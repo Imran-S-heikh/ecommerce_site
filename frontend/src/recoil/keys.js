@@ -8,6 +8,11 @@ export const DASH_BOARD_ROUTES = 'DASH_BOARD_ROUTES';
 
 
 
+///Product
+export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+
+
+
 
 //For Event
 export const SLIDE_CHANGE = 'SLIDE_CHANGE';

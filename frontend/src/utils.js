@@ -77,5 +77,7 @@ export const EventEmmiter = {
 
 export const routes = {
     DASHBOARD: 'DASHBOARD',
-    CREATE_PRODUCT: 'CREATE_PRODUCT'
+    CREATE_PRODUCT: 'CREATE_PRODUCT',
+    VIEW_PRODUCTS: 'VIEW_PRODUCTS',
+    EDIT_PRODUCT:'EDIT_PRODUCT'
 }

@@ -129,7 +129,7 @@ export default function DashboardDrawer() {
                                         Create A Product
                                 </ListItemText>
                                 </MenuItem>
-                                <MenuItem className={classes.menuItem} button={true} >
+                                <MenuItem onClick={()=>setRoute(routes.EDIT_PRODUCT)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <UpdateIcon />
                                     </ListItemIcon>
@@ -137,7 +137,7 @@ export default function DashboardDrawer() {
                                         Update Product
                                 </ListItemText>
                                 </MenuItem>
-                                <MenuItem className={classes.menuItem} button={true} >
+                                <MenuItem onClick={()=>setRoute(routes.VIEW_PRODUCTS)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <ViewListIcon />
                                     </ListItemIcon>

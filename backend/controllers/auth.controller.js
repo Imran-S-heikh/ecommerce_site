@@ -21,7 +21,8 @@ exports.signUp = catchAsync(async (req,res,next)=>{
 
     res.cookie('jwt',token,{
         expires: new Date(Date.now() + (1000*60*60)),
-        sameSite: 'strict'
+        sameSite: 'none',
+        secure: true
     });
 
     res.status(200).json({
@@ -42,7 +43,8 @@ exports.signIn = catchAsync(async (req,res,next)=>{
 
     res.cookie('jwt',token,{
         expires: new Date(Date.now() + (1000*60*60)),
-        sameSite: 'strict'
+        sameSite: 'none',
+        secure: true
     });
 
     res.status(200).json({

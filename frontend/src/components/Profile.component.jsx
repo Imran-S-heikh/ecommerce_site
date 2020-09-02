@@ -1,5 +1,7 @@
 import React from 'react'
 import { Container, makeStyles, Box, Paper, Typography, Avatar } from '@material-ui/core'
+import { useRecoilState } from 'recoil';
+import { userState } from '../recoil/user/user.atoms';
 
 const createStyles = makeStyles(theme=>({
     root: {
@@ -24,6 +26,7 @@ const createStyles = makeStyles(theme=>({
 export default function Profile() {
 
     const classes = createStyles();
+    const [user,setUser] = useRecoilState(userState);
 
     return (
         <Container maxWidth="md">
@@ -42,10 +45,10 @@ export default function Profile() {
                         </Box>
                         <Box display="flex" justifyContent="end" mb={4} ml={2} mt={2} flexDirection="column">
                             <Typography variant="h4">
-                                Alex Doe
+                                {user?.name}
                             </Typography>
                             <Typography color="primary">
-                                Admin
+                                {user?.role[0]}
                             </Typography>
                         </Box>
                     </Box>

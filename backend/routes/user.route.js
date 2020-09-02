@@ -1,14 +1,14 @@
 const express = require('express');
 const { signUp, signIn, authenticate, checkAdmin } = require('../controllers/auth.controller');
-const { updateUser, updateAdmin, getAllUser } = require('../controllers/user.controller');
+const { updateUser, updateAdmin, getAllUser, sendUser } = require('../controllers/user.controller');
 
 
 const router = express.Router();
 
 
 router.route('/')
-    .post(/*Create product*/)
-    .get(authenticate,checkAdmin,getAllUser);
+    .post(authenticate,sendUser)
+    .get(authenticate,getAllUser);
 
 router.route('/:id')
     .get(/*'Get single user'*/)

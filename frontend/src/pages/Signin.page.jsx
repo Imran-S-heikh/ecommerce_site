@@ -6,14 +6,13 @@ import { userState } from '../recoil/user/user.atoms';
 import { useState } from 'react';
 import { catchAsync } from '../utils';
 import { userLogin } from '../request/user.requset';
-import { useEffect } from 'react';
 
 export default function Signin() {
 
     const history = useHistory();
     const [user,setUser] = useRecoilState(userState);
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
+    const [email,setEmail] = useState('imran@gmail.com');
+    const [password,setPassword] = useState('12345678');
 
 
     if(user) return <Redirect to="/home" />

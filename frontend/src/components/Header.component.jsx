@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText, ListItemSecondaryAction, Switch, FormGroup, FormControlLabel } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText, ListItemSecondaryAction, Switch, FormGroup, FormControlLabel, Avatar } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -16,6 +16,8 @@ import CartPreview from '../molecules/CartPreview.mole';
 import EnhancedEncryptionIcon from '@material-ui/icons/EnhancedEncryption';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Link, useHistory } from 'react-router-dom';
+import { userState } from '../recoil/user/user.atoms';
+import Hide from '../molecules/Hide.mole';
 
 
 const createStyle = makeStyles(theme => ({
@@ -74,7 +76,8 @@ export default function Header() {
 
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
     const [drawerOpen, setDrawerOpen] = useRecoilState(mainDrawerState);
-    const [darkMode,setDarkMode] = useRecoilState(darkModeState);
+    const [user, setUser] = useRecoilState(userState);
+    const [darkMode, setDarkMode] = useRecoilState(darkModeState);
     const [cartDrawerOpen, setCartDrawerOpen] = useRecoilState(cartDrawerState);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
@@ -141,22 +144,26 @@ export default function Header() {
                             </ClickAwayListener>
                             <MenuContainer open={personOpen}>
                                 <MenuList dense>
-                                    <MenuItem onClick={() => history.push('/signin')}>
-                                        <ListItemIcon classes={{ root: classes.listIcon }}>
-                                            <EnhancedEncryptionIcon />
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            Login
+                                    <Hide hide={user}>
+                                        <MenuItem onClick={() => history.push('/signin')}>
+                                            <ListItemIcon classes={{ root: classes.listIcon }}>
+                                                <EnhancedEncryptionIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Login
                                         </ListItemText>
-                                    </MenuItem>
-                                    <MenuItem onClick={() => history.push('/signup')}>
-                                        <ListItemIcon classes={{ root: classes.listIcon }}>
-                                            <PersonIcon />
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            Register
+                                        </MenuItem>
+                                    </Hide>
+                                    <Hide hide={user}>
+                                        <MenuItem onClick={() => history.push('/signup')}>
+                                            <ListItemIcon classes={{ root: classes.listIcon }}>
+                                                <PersonIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Register
                                         </ListItemText>
-                                    </MenuItem>
+                                        </MenuItem>
+                                    </Hide>
                                     <MenuItem onClick={() => history.push('/cart')}>
                                         <ListItemIcon classes={{ root: classes.listIcon }}>
                                             <ShoppingBasketIcon />
@@ -188,8 +195,8 @@ export default function Header() {
                                         <FormGroup style={{ width: 'max-content' }}>
                                             <FormControlLabel
                                                 control={<Switch checked={darkMode}
-                                                onChange={()=>setDarkMode(!darkMode)}
-                                                color="primary" />}
+                                                    onChange={() => setDarkMode(!darkMode)}
+                                                    color="primary" />}
                                                 label="Dark Mode"
                                                 labelPlacement="start"
                                             />

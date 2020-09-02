@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Box, Container, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Box, Container, Grid, Typography, Button } from '@material-ui/core';
 import Header from '../components/Header.component';
 import Carousel from '../components/Carousel.component';
 import slideOne from '../assets/slide-1.png';
@@ -12,9 +12,10 @@ import LinkGallaryItem from '../molecules/LinkGallaryItem.mole';
 import BigButton from '../molecules/BigButton.mole';
 import BlogCard from '../molecules/BlogCard.mole';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { assets } from '../utils';
+import { assets, catchAsync } from '../utils';
 import Footer from '../components/Footer.component';
 import LazySkeleton from '../components/LazySkeleton.component';
+import { getAllUser } from '../request/user.requset';
 
 
 
@@ -70,7 +71,12 @@ const showcaseItems = [
 
 function Home() {
 
-    const classes = createStyles()
+    const classes = createStyles();
+
+    const handleClick = catchAsync(async()=>{
+        const users = await getAllUser();
+        console.log(users)
+    });
 
     return (
         <div>

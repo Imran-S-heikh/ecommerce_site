@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ThemeProvider, CssBaseline, unstable_createMuiStrictModeTheme } from '@material-ui/core';
 // import { theme } from './theme';
 import Home from './pages/Home.page';
-import { RecoilRoot, useRecoilValue } from 'recoil';
+import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import Shop from './pages/Shop.page';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Single from './pages/Single.page';
@@ -17,6 +17,9 @@ import Dashboard from './pages/Dashboard.page';
 import { darkModeState } from './recoil/atoms';
 import { blue } from '@material-ui/core/colors';
 import HideComponentOnRoute from './molecules/HideComponentOnRoute.mole';
+import { catchAsync } from './utils';
+import {checkUser} from './request/user.requset';
+import { userState } from './recoil/user/user.atoms';
 
 
 
@@ -24,6 +27,7 @@ import HideComponentOnRoute from './molecules/HideComponentOnRoute.mole';
 function App() {
 
   const darkMode = useRecoilValue(darkModeState);
+  const setUser  = useSetRecoilState(userState);
 
   const theme = unstable_createMuiStrictModeTheme({
     palette: {
@@ -32,7 +36,20 @@ function App() {
         main: blue.A400
       }
     }
-  })
+  });
+
+  useEffect(()=>{
+    const checkMe = catchAsync(async()=>{
+      const response = await checkUser();
+      if (response.data.status === 'success') {
+        console.log(response,'==============================================')
+        setUser(response.data.user);
+      }else{
+        setUser(null);
+      }
+    });
+    checkMe()
+  },[])
 
   return (
     <BrowserRouter>

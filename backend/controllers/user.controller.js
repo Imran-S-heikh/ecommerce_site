@@ -14,6 +14,14 @@ exports.getUser = catchAsync(async (req,res,next)=>{
     })
 });
 
+exports.sendUser = catchAsync(async (req,res,next)=>{
+
+    res.status(200).json({
+        status: 'success',
+        user: req.user
+    });
+});
+
 exports.getAllUser = catchAsync(async (req,res,next)=>{
     const users = await User.find();
 

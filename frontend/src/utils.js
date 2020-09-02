@@ -79,5 +79,13 @@ export const routes = {
     DASHBOARD: 'DASHBOARD',
     CREATE_PRODUCT: 'CREATE_PRODUCT',
     VIEW_PRODUCTS: 'VIEW_PRODUCTS',
-    EDIT_PRODUCT:'EDIT_PRODUCT'
+    EDIT_PRODUCT:'EDIT_PRODUCT',
+    PROFILE:'PROFILE'
+}
+
+
+export const catchAsync = (fn,errBackup)=>{
+    return (...params)=>{
+        return fn(...params).then((res)=>res).catch(err=>console.log(err.message))
+    }
 }

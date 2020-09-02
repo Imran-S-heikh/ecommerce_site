@@ -1,10 +1,33 @@
 import React from 'react'
 import { Container, Paper, Typography, Button, Grid, Box, TextField, makeStyles, Link } from '@material-ui/core'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
+import { useRecoilState } from 'recoil';
+import { userState } from '../recoil/user/user.atoms';
+import { useState } from 'react';
+import { catchAsync } from '../utils';
+import { userLogin } from '../request/user.requset';
+import { useEffect } from 'react';
 
 export default function Signin() {
 
     const history = useHistory();
+    const [user,setUser] = useRecoilState(userState);
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+
+
+    if(user) return <Redirect to="/home" />
+
+   
+
+    const handleLogin = catchAsync(async()=>{
+        const response = await userLogin({email,password})
+
+        if(response.data.status === 'success'){
+            setUser(response.data.user);
+        }
+    });
+
 
     return (
         <Box my={6}>
@@ -40,10 +63,10 @@ export default function Signin() {
                                 </Typography>
                                 </Box>
                                 <Box my={3} width="70%">
-                                    <TextField label="Email Address" required fullWidth style={{ marginBottom: 10 }} />
-                                    <TextField label="Password" required fullWidth />
+                                    <TextField value={email} onChange={e=>setEmail(e.currentTarget.value)} label="Email Address" required fullWidth style={{ marginBottom: 10 }} />
+                                    <TextField value={password} onChange={e=>setPassword(e.currentTarget.value)} label="Password" required fullWidth />
                                 </Box>
-                                <Button variant="outlined" color="primary">
+                                <Button onClick={handleLogin} variant="outlined" color="primary">
                                     Login
                                 </Button>
                                 <Typography component="div" variant="subtitle2" color="priamry" align="right">

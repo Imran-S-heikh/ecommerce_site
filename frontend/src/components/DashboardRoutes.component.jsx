@@ -6,6 +6,7 @@ import CreateProduct from './CreateProduct.component';
 import Dashboard from './Dashboard.component';
 import ViewProducts from './ViewProducts.component';
 import EditProduct from './EditProduct.component';
+import Profile from './Profile.component';
 
 export default function DashboardRoutes() {
 
@@ -22,6 +23,9 @@ export default function DashboardRoutes() {
     }
     if(route === routes.EDIT_PRODUCT){
         return <EditProduct />
+    }
+    if(route === routes.PROFILE){
+        return <Profile />
     }
     return null;
 

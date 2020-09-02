@@ -7,7 +7,7 @@ export default function CreateProduct() {
     }
     return (
         <>
-            <MakeProduct getProduct={handleProduct} />
+            <MakeProduct title="Create Product" buttonTitle="Create Product" getProduct={handleProduct} />
         </>
     )
 }

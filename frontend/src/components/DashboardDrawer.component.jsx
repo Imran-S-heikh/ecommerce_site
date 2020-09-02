@@ -204,7 +204,7 @@ export default function DashboardDrawer() {
                             </MenuList>
                             SettingsApplicationsIcon
                         </ControlledAccordionBlack>
-                        <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Profile" startIcon={<PersonIcon />} />
+                        <ControlledAccordionBlack onClick={(title)=>{setRoute(routes.PROFILE);setSelected(title)}} selected={selected} title="Profile" startIcon={<PersonIcon />} />
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Settings" startIcon={<SettingsIcon />}>
                             <MenuList color="textPrimary">
                                 <MenuItem className={classes.menuItem} button={true} >

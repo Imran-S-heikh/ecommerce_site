@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener } from '@material-ui/core'
+import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener, Container } from '@material-ui/core'
 import Color from '../molecules/Color.mole';
 import AddIcon from '@material-ui/icons/Add';
 import { useState } from 'react';
@@ -13,14 +13,14 @@ const createStyles = makeStyles(theme => ({
     root: {
         margin: 'auto',
         marginBottom: theme.spacing(4),
-        width: '80%',
-        [theme.breakpoints.down('sm')]: {
-            width: "100vw"
-        }
+        // width: '80%',
+        // [theme.breakpoints.down('sm')]: {
+        //     width: "100vw"
+        // }
     },
     paper: {
         padding: theme.spacing(3),
-        width: '100%'
+        // width: '100%'
     },
     center: {
         position: 'absolute',
@@ -29,15 +29,21 @@ const createStyles = makeStyles(theme => ({
         transform: 'translate(-50%,-50%)'
     },
     image: {
-        width: 200
+        // width: 200
     },
     labelFix: {
         marginTop: 3
     },
     imageContainer: {
-        width: 400,
-        [theme.breakpoints.down('sm')]: {
-            width: 350
+        maxWidth: 400,
+        // [theme.breakpoints.down('sm')]: {
+        //     maxWidth: 500
+        // },
+        [theme.breakpoints.down(450)]: {
+            maxWidth: 380
+        },
+        [theme.breakpoints.down(350)]: {
+            maxWidth: 280
         }
     }
 }));
@@ -132,19 +138,19 @@ export default function MakeProduct(props) {
     const [productImage, setProductImage] = useState(props.productImage || []);
     const [colorPopoverOpen, setColorPopover] = useState(false);
     const [newColor, setNewColor] = useState({ label: null, value: null });
-    const [name,setName] = useState(props.name);
-    const [title,setTitle] = useState(props.title);
-    const [price,setPrice] = useState(props.price);
-    const [currentPrice,setCurrentPrice] = useState(props.currentPrice);
-    const [basePrice,setBasePrice] = useState(props.basePrice);
-    const [quantity,setQuantity] = useState(props.quantiry);
-    const [brand,setBrand] = useState(props.brand);
-    const [catagory,setCatagory] = useState(props.catagory);
-    const [varient,setVarient] = useState(props.varient);
-    const [varientCode,setVarientCode] = useState(props.varientCode);
-    const [productCode,setProductCode] = useState(props.productCode);
-    const [productType,setProductType] = useState(props.productType);
-    const [selectedSize,setSelectedSize] = useState(props.selectedSize || []);
+    const [name, setName] = useState(props.name);
+    const [title, setTitle] = useState(props.title);
+    const [price, setPrice] = useState(props.price);
+    const [currentPrice, setCurrentPrice] = useState(props.currentPrice);
+    const [basePrice, setBasePrice] = useState(props.basePrice);
+    const [quantity, setQuantity] = useState(props.quantiry);
+    const [brand, setBrand] = useState(props.brand);
+    const [catagory, setCatagory] = useState(props.catagory);
+    const [varient, setVarient] = useState(props.varient);
+    const [varientCode, setVarientCode] = useState(props.varientCode);
+    const [productCode, setProductCode] = useState(props.productCode);
+    const [productType, setProductType] = useState(props.productType);
+    const [selectedSize, setSelectedSize] = useState(props.selectedSize || []);
     // const [name,setName] = useState(props.name);
 
     useEffect(() => {
@@ -155,15 +161,15 @@ export default function MakeProduct(props) {
         setProductImage([...productImage, { src: url }])
     }
 
-    const handleCreate = ()=>{
-        const product = {colors,selectedSize,name,price,currentPrice,basePrice,brand,catagory,quantity,title,varient,varientCode,productType,productCode}
+    const handleCreate = () => {
+        const product = { colors, selectedSize, name, price, currentPrice, basePrice, brand, catagory, quantity, title, varient, varientCode, productType, productCode }
         props.getProduct(product);
     }
 
     return (
-        <div className={classes.root}>
+        <Container maxWidth="md" className={classes.root}>
             <Box mt={2}>
-                <Typography gutterBottom={3} align="center" component="h2" variant="h4">Create Product</Typography>
+                <Typography gutterBottom={3} align="center" component="h2" variant="h4">{props.title}</Typography>
             </Box>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
@@ -173,7 +179,7 @@ export default function MakeProduct(props) {
                                 <Paper>
                                     <Box justifyContent="center" alignItems="center" height={470} display="flex" m="auto">
                                         <Box>
-                                            <ImageIcon style={{fontSize: 150}} />
+                                            <ImageIcon style={{ fontSize: 150 }} />
                                             <Typography>
                                                 Upload Product Image
                                             </Typography>
@@ -189,7 +195,7 @@ export default function MakeProduct(props) {
                             />
                         }
                     </Box>
-                    <Box mt={3} mx="auto" className={classes.imageContainer}>
+                    <Box mt={3}>
                         <Paper>
 
                             <Box p={3}>
@@ -215,34 +221,34 @@ export default function MakeProduct(props) {
                         </Paper>
                     </Box>
                 </Grid>
-                <Grid style={{margin: 'auto'}} item xs={10} sm={6}>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <TextField value={name} onChange={(e)=>setName(e.currentTarget.value)} label="Product Name" fullWidth />
+                                <TextField value={name} onChange={(e) => setName(e.currentTarget.value)} label="Product Name" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField value={title} onChange={(e)=>setTitle(e.currentTarget.value)}  label="Title" fullWidth />
+                                <TextField value={title} onChange={(e) => setTitle(e.currentTarget.value)} label="Title" fullWidth />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setPrice(e.currentTarget.value)} value={price} type="number" label="Price" fullWidth />
+                                <TextField onChange={(e) => setPrice(e.currentTarget.value)} value={price} type="number" label="Price" fullWidth />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setQuantity(e.currentTarget.value)} value={quantity} type="number" label="Quantiry" fullWidth />
+                                <TextField onChange={(e) => setQuantity(e.currentTarget.value)} value={quantity} type="number" label="Quantiry" fullWidth />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setCurrentPrice(e.currentTarget.value)} value={currentPrice} type="number" label="Current Price" fullWidth />
+                                <TextField onChange={(e) => setCurrentPrice(e.currentTarget.value)} value={currentPrice} type="number" label="Current Price" fullWidth />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setBasePrice(e.currentTarget.value)} value={basePrice} type="number" label="Base Price" fullWidth />
+                                <TextField onChange={(e) => setBasePrice(e.currentTarget.value)} value={basePrice} type="number" label="Base Price" fullWidth />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setBrand(e.currentTarget.value)} 
+                                <TextField onChange={(e) => setBrand(e.currentTarget.value)}
                                     value={brand}
                                     select fullWidth
                                     SelectProps={{ native: true }}
                                     label="Brand"
-                                    onChange={e=>setBrand(e.currentTarget.value)}
+                                    onChange={e => setBrand(e.currentTarget.value)}
                                 >
                                     {brands.map(brand =>
                                         <option key={brand.value} value={brand.value}>{brand.label}</option>
@@ -250,15 +256,15 @@ export default function MakeProduct(props) {
                                 </TextField>
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setProductCode(e.currentTarget.value)} value={productCode} label="Product Code" fullWidth />
+                                <TextField onChange={(e) => setProductCode(e.currentTarget.value)} value={productCode} label="Product Code" fullWidth />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setCatagory(e.currentTarget.value)} value={catagory}
+                                <TextField onChange={(e) => setCatagory(e.currentTarget.value)} value={catagory}
                                     value={catagory}
                                     select fullWidth
                                     SelectProps={{ native: true }}
                                     label="Catagory"
-                                    onChange={e=>setCatagory(e.currentTarget.value)}
+                                    onChange={e => setCatagory(e.currentTarget.value)}
 
                                 >
                                     {catagories.map(catagory =>
@@ -267,12 +273,12 @@ export default function MakeProduct(props) {
                                 </TextField>
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField onChange={(e)=>setProductType(e.currentTarget.value)} 
+                                <TextField onChange={(e) => setProductType(e.currentTarget.value)}
                                     value={productType}
                                     select fullWidth
                                     SelectProps={{ native: true }}
                                     label="Product Type"
-                                    onChange={e=>setProductType(e.currentTarget.value)}
+                                    onChange={e => setProductType(e.currentTarget.value)}
 
                                 >
                                     {types.map(type =>
@@ -290,14 +296,14 @@ export default function MakeProduct(props) {
                                             label="Varient"
                                             labelPlacement="start"
                                             style={{ justifyContent: 'space-between', marginLeft: 1 }}
-                                            onClick={()=>setVarient(!Boolean(varient))}
+                                            onClick={() => setVarient(!Boolean(varient))}
 
                                         />
                                     </FormGroup>
                                 </Box>
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField value={varientCode} onChange={e=>setVarientCode(e.currentTarget.value)} label="Varient Code" fullWidth />
+                                <TextField value={varientCode} onChange={e => setVarientCode(e.currentTarget.value)} label="Varient Code" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -309,7 +315,7 @@ export default function MakeProduct(props) {
                                                 <FormControlLabel
                                                     key={size}
                                                     classes={{ label: classes.labelFix }}
-                                                    onClick={()=>setSelectedSize([...selectedSize,size])}
+                                                    onClick={() => setSelectedSize([...selectedSize, size])}
                                                     control={
                                                         <Checkbox checked={selectedSize.includes(size)} color="primary" />
                                                     }
@@ -348,7 +354,7 @@ export default function MakeProduct(props) {
                         </Grid>
 
                         <Box mt={3}>
-                            <Button onClick={handleCreate} color="primary" fullWidth variant="contained">Create Product</Button>
+                                                <Button onClick={handleCreate} color="primary" fullWidth variant="contained">{props.buttonTitle}</Button>
                         </Box>
                     </Paper>
                 </Grid>
@@ -383,6 +389,6 @@ export default function MakeProduct(props) {
                 </Hide>
             </Grid>
 
-        </div>
+        </Container>
     )
 }

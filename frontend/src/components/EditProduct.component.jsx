@@ -11,7 +11,7 @@ export default function EditProduct() {
     }
     return (
         <>
-            <MakeProduct {...product} productImage={[{src: product.image}]} getProduct={handleUpdate}/>
+            <MakeProduct {...product} title="Update Product" buttonTitle="Update Product" productImage={[{src: product.image}]} getProduct={handleUpdate}/>
         </>
     )
 }

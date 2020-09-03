@@ -1,8 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import { Container, Grid, Typography, makeStyles } from '@material-ui/core'
-import LazySkeleton from './LazySkeleton.component';
-import Skeleton from '@material-ui/lab/Skeleton';
-import LazyLoad from 'react-lazyload';
+import GridLayout from './GridLayout.component';
 
 const createStyles = makeStyles(theme => ({
     header: {
@@ -13,7 +11,6 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-const GridLayout = lazy(() => import('./GridLayout.component'));
 
 export default function Showcase({ items, component, title, subTitle, breakPoints, spacing = 2, fallback }) {
 
@@ -32,11 +29,7 @@ export default function Showcase({ items, component, title, subTitle, breakPoint
                     </Typography>
                 </div>
             }
-            <Suspense fallback={fallback || <div>Loading...</div>}>
-                <LazyLoad offset={300} placeholder={fallback || <div>Loading...</div>}>
-                    <GridLayout items={items} component={component} breakPoints={breakPoints} spacing={spacing} />
-                </LazyLoad>
-            </Suspense>
+            <GridLayout items={items} component={component} breakPoints={breakPoints} spacing={spacing} />
         </Container>
     )
 }

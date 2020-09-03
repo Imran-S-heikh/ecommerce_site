@@ -5,7 +5,7 @@ import { createUser } from '../request/user.requset';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { Redirect } from 'react-router-dom';
-import { catchAsync } from '../utils';
+import { catchAsync, checkStatus } from '../utils';
 import { loaderState, alertSnackbarState } from '../recoil/atoms';
 
 const createStyles = makeStyles(theme => ({
@@ -39,10 +39,12 @@ export default function Signup() {
         const name = `${firstName} ${lastName}`
         const newUser = { name, email, password, confirmPassword }
         const response = await createUser(newUser);
-        if (response.data.status === 'success') {
-            setLoader(false)
+        setLoader(false)
+        if (checkStatus(response)) {
             setUser(response.data.user)
             setAlertSnackbar({open: true,message: 'User Created Successfully',severity: 'success'})
+        }else{
+            setAlertSnackbar({open: true,message: response.data.message,severity: 'error',time: 6000})
         }
 
     })

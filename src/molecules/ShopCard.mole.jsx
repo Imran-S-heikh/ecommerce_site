@@ -133,7 +133,7 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                 </IconButton>
             </CardActions>
             <CardActionArea onClick={()=>history.push('/single')}>
-                <CardMedia component="img" classes={{ media: classes.cardMedia }} image={image} />
+                <CardMedia component="img" classes={{ media: classes.cardMedia }} image={image.card[0]} />
             </CardActionArea>
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>
@@ -147,9 +147,11 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                     ${price}
                 </Typography>
                 <Box >
-                    <VarientColor image={image} />
-                    <VarientColor image={image} />
-                    <VarientColor image={image} />
+                    {
+                        image.small.map(img=>
+                            <VarientColor image={img} />
+                        )
+                    }
                 </Box>
                 <Box display={{ xs: 'none', md: 'block' }} className={classes.cartButton}>
                     <Button onClick={addCartItem} style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>

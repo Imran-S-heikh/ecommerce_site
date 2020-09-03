@@ -6,7 +6,7 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewComfyIcon from '@material-ui/icons/ViewComfy';
 import { useRef } from 'react';
 import { useState } from 'react';
-import { assets } from '../utils';
+import { assets, checkStatus } from '../utils';
 import Showcase from './Showcase.component';
 import ShopCard from '../molecules/ShopCard.mole';
 import SortIcon from '@material-ui/icons/Sort';
@@ -14,6 +14,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { sideDrawerState } from '../recoil/atoms';
 import LazySkeleton from './LazySkeleton.component';
 import { useEffect } from 'react';
+import { getProducts } from '../request/product.request';
 
 
 const xxx = [
@@ -69,7 +70,18 @@ export default function ShopContent() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [breakPoints,setBreakPoints] = useState(max);
     const setSideBarOpen = useSetRecoilState(sideDrawerState)
-    const [showcaseItems,setShowcaseItems] = useState(xxx);
+    const [shopItems,setShopItems] = useState([]);
+
+    useEffect(()=>{
+        const fetchProducts = async ()=>{
+            const response = await getProducts();
+            if(checkStatus(response)){
+                setShopItems(response.data.products)
+                console.log(response)
+            }
+        }
+        fetchProducts()
+    },[]);
 
     return (
         <div>
@@ -110,17 +122,17 @@ export default function ShopContent() {
                 </Box>
             </Box>
             <Box my={4}>
-                {showcaseItems ? 
+                {shopItems.length !== 0? 
                     <Showcase 
                     component={
                         <ShopCard width="100%"/>
                     }
-                    items={showcaseItems}
+                    items={shopItems}
                     title={null}
                     breakPoints={breakPoints}
 
                 />:
-                <LazySkeleton breakPoints={breakPoints} items={8} width="100%" height={400} />
+                <LazySkeleton breakPoints={breakPoints} items={8} width="100%" height={380} />
                 }
             </Box>
             <Popover anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>

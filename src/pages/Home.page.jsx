@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Box, Container, Grid, Typography, Button } from '@material-ui/core';
 import Header from '../components/Header.component';
 import Carousel from '../components/Carousel.component';
@@ -12,10 +12,12 @@ import LinkGallaryItem from '../molecules/LinkGallaryItem.mole';
 import BigButton from '../molecules/BigButton.mole';
 import BlogCard from '../molecules/BlogCard.mole';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { assets, catchAsync } from '../utils';
+import { assets, catchAsync, checkStatus } from '../utils';
 import Footer from '../components/Footer.component';
 import LazySkeleton from '../components/LazySkeleton.component';
 import { getAllUser } from '../request/user.requset';
+import { useEffect } from 'react';
+import { getProducts } from '../request/product.request';
 
 
 
@@ -25,58 +27,21 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-const showcaseItems = [
-    {
-        "rating": "4.6",
-        "name": "Premier Cropped Skinny Jean", "brand": "GAP", "price": "$380.00",
-        "image": assets.product[0]
-    },
-    {
-        "rating": "4.571428571428571",
-        "name": "East Hampton Fleece Hoodie", "brand": "GAP", "price": "$440.00",
-        "image": assets.product[1]
-    },
-    {
-        "rating": "5.0",
-        "name": "Relaxed-Fit Cotton Shirt", "brand": "GUESS", "price": "$480.00",
-        "image": assets.product[2]
-    },
-    {
-        "rating": "0.0", "name": "Tailored Fit Mesh-Panel Polo",
-        "brand": "ZARA", "price": "$400.00",
-        "image": assets.product[3]
-    },
-    {
-        "rating": "0.0",
-        "name": "Slim Fit Cotton Oxford Shirt", "brand": "LEVI'S",
-        "price": "$500.00",
-        "image": assets.product[4]
-    },
-    {
-        "rating": "0.0",
-        "name": "Faxon Canvas Low-Top Sneaker", "brand": "ZARA", "price": "$460.00",
-        "image": assets.product[5]
-    },
-    {
-        "rating": "5.0",
-        "name": "Viscose-Cashmere Scarf", "brand": "LACOSTE", "price": "$440.00",
-        "image": assets.product[6]
-    },
-    {
-        "rating": "5.0", "name": "Plaid Cotton Oxford Shirt", "brand": "LEVI'S",
-        "price": "$20.00",
-        "image": assets.product[7]
-    }
-]
+
 
 function Home() {
 
     const classes = createStyles();
+    const [products,setProducts] = useState([]);
 
-    const handleClick = catchAsync(async()=>{
-        const users = await getAllUser();
-        console.log(users)
-    });
+    useEffect(()=>{
+        (async()=>{
+            const response = await getProducts();
+            if(checkStatus(response)){
+                setProducts(response.data.products)
+            }
+        })()
+    },[]);
 
     return (
         <div>
@@ -90,7 +55,7 @@ function Home() {
                 <Showcase
                     title="Best Products"
                     subTitle="Top Products OF This Week"
-                    items={showcaseItems}
+                    items={products}
                     component={<ShopCard />}
                 />
             </div>
@@ -119,7 +84,7 @@ function Home() {
                 <Showcase
                     title="TRENDING"
                     subTitle="Top Wishes Of This Week"
-                    items={showcaseItems}
+                    items={products}
                     component={<ShopCard />}
                     fallback={<LazySkeleton width="100%" height={400} breakPoints={{ xs: 12, md: 4,lg:3 }} items={8}/>}
 

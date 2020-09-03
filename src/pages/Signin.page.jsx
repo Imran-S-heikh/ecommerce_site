@@ -4,7 +4,7 @@ import { useHistory, Redirect } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { useState } from 'react';
-import { catchAsync } from '../utils';
+import { catchAsync, checkStatus } from '../utils';
 import { userLogin } from '../request/user.requset';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useEffect } from 'react';
@@ -29,11 +29,12 @@ export default function Signin() {
     const handleLogin = catchAsync(async () => {
         setLoader(true);
         const response = await userLogin({ email, password })
-
-        if (response.data.status === 'success') {
+        setLoader(false)
+        if (checkStatus(response)) {
             setUser(response.data.user);
-            setLoader(false)
             setAlertSnackbar({ open: true, message: 'Logged In Successfully', time: 4000, severity: 'success' })
+        }else{
+            setAlertSnackbar({ open: true, message: response.data.message, time: 4000, severity: 'error' })
         }
     });
 

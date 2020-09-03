@@ -1,16 +1,19 @@
 import React from 'react'
 import { Container, Paper, Typography, Button, Grid, Box, TextField, makeStyles, Link } from '@material-ui/core'
 import { useHistory, Redirect } from 'react-router-dom'
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { useState } from 'react';
 import { catchAsync } from '../utils';
 import { userLogin } from '../request/user.requset';
+import { alertSnackbarState, loaderState } from '../recoil/atoms';
 
 export default function Signin() {
 
     const history = useHistory();
     const [user,setUser] = useRecoilState(userState);
+    const setAlertSnackbar = useSetRecoilState(alertSnackbarState);
+    const setLoader = useSetRecoilState(loaderState);
     const [email,setEmail] = useState('imran@gmail.com');
     const [password,setPassword] = useState('12345678');
 
@@ -20,10 +23,13 @@ export default function Signin() {
    
 
     const handleLogin = catchAsync(async()=>{
+        setLoader(true);
         const response = await userLogin({email,password})
 
         if(response.data.status === 'success'){
             setUser(response.data.user);
+            setLoader(false)
+            setAlertSnackbar({open: true,message: 'Logged In Successfully',time: 4000,severity: 'success'})
         }
     });
 

@@ -1,27 +1,45 @@
 import React from 'react'
 import PreviewCartItem from './PreviewCartItem.mole'
 import { Divider, Box, Typography, Button } from '@material-ui/core'
+import { useRecoilState } from 'recoil'
+import { userCartState } from '../recoil/user/user.atoms'
+import Hide from './Hide.mole'
+import { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
 export default function CartPreview() {
+
+    const [cartItems, setCartItems] = useRecoilState(userCartState)
+    const history = useHistory();
+
     return (
-        <div>
-            <div className="list">
-                <PreviewCartItem />
-                <PreviewCartItem />
-            </div>
-            <Divider />
-            <Box display="flex" justifyContent="space-between" p={2}>
-                <Typography style={{ fontWeight: 'bold' }}>
-                    Total Price:
+        <Box>
+            <Hide hide={cartItems.length === 0} fallback={
+                <Box width={200} p={3}>
+                    <Typography color="textSecondary">
+                        No Items To Show
+                    </Typography>
+                </Box>
+            }>
+                <Box maxHeight={300} overflow="hidden scroll">
+                    {cartItems.map((item, i) =>
+                        <PreviewCartItem key={i} item={item} />
+                    )}
+                </Box>
+                <Divider />
+                <Box display="flex" justifyContent="space-between" p={2}>
+                    <Typography style={{ fontWeight: 'bold' }}>
+                        Total Price:
                 </Typography>
-                <Typography style={{ fontWeight: 'bold' }}>
-                    $680
+                    <Typography style={{ fontWeight: 'bold' }}>
+                        $680
                 </Typography>
-            </Box>
-            <Box width="80%" margin="auto">
-                <Button style={{ padding: '10px 0'}} color='primary' variant="contained" fullWidth>Proceed To Checkout</Button>
-            </Box>
-            <Button color='primary' fullWidth>View Cart</Button>
-        </div>
+                </Box>
+                <Box width="80%" margin="auto">
+                    <Button style={{ padding: '10px 0' }} color='primary' variant="contained" fullWidth>Proceed To Checkout</Button>
+                </Box>
+                <Button onClick={()=>history.push('/cart')} color='primary' fullWidth>View Cart</Button>
+            </Hide>
+        </Box>
     )
 }

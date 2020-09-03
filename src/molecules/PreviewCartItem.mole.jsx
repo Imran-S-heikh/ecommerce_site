@@ -18,24 +18,24 @@ const createStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PreviewCartItem() {
+export default function PreviewCartItem({ item }) {
 
     const classes = createStyles();
 
     return (
         <ListItem ContainerComponent="div">
             <ListItemAvatar>
-                <img style={{width: 80}} src={shoe} alt="shoe"/>
+                <img style={{ width: 80 }} src={item.image} alt="shoe" />
             </ListItemAvatar>
-            <ListItemText style={{ width: 'max-content',padding: '0 30px' }}>
+            <ListItemText style={{ width: 'max-content', padding: '0 30px' }}>
                 <Typography>
-                    Back Gown Issd
+                    {item.name}
                 </Typography>
                 <Typography className={classes.color}>
                     Green
                 </Typography>
                 <Typography className={classes.priceContainer}>
-                    1 x <span className={classes.price}>$680</span>
+                    1 x <span className={classes.price}>{item.price}</span>
                 </Typography>
             </ListItemText>
             <ListItemSecondaryAction>

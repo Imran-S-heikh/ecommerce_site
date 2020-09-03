@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, AppBar, Typography, Button, makeStyles, Box, Input } from '@material-ui/core'
+import { Container, AppBar, Typography, Button, makeStyles, Box, Input, InputBase } from '@material-ui/core'
 import SocialIcons from './SocialIcons.mole';
 
 import ControlledAccordion from './ControlledAccordion.mole';
@@ -18,7 +18,7 @@ const createStyles = makeStyles(theme => ({
 
     },
     inputContainer: {
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.background.default,
         display: 'flex',
         borderRadius: 4,
         [theme.breakpoints.down('sm')]: {
@@ -60,7 +60,7 @@ const createStyles = makeStyles(theme => ({
 const SubscribeInput = ({ root, input, btn }) => {
     return (
         <div className={root}>
-            <Input className={input} placeholder="Subscribe with email" />
+            <InputBase className={input} placeholder="Subscribe with email" />
             <Button className={btn}>Join Us</Button>
         </div>
     )
@@ -74,7 +74,7 @@ export default function Subscribe() {
     return (
         <React.Fragment>
             <Box display={{ xs: 'none', md: 'block' }}>
-                <AppBar position="sticky" component="div">
+                <AppBar style={{zIndex: 8}} position="sticky" component="div">
                     <Container maxWidth="lg">
                         <div className={classes.root}>
                             <Typography>

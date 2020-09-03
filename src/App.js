@@ -20,6 +20,7 @@ import HideComponentOnRoute from './molecules/HideComponentOnRoute.mole';
 import { catchAsync } from './utils';
 import {checkUser} from './request/user.requset';
 import { userState } from './recoil/user/user.atoms';
+import Defaults from './components/Defaults.component';
 
 
 
@@ -55,6 +56,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Defaults/>
         <HideComponentOnRoute route="/dashboard" >
           <Header />
         </HideComponentOnRoute>

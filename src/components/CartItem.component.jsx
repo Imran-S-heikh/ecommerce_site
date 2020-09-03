@@ -1,8 +1,9 @@
 import React from 'react'
-import { Container, Box, IconButton, Typography, ButtonGroup, Button, Divider } from '@material-ui/core'
+import { Container, Box, IconButton, Typography, ButtonGroup, Button, Divider, Avatar } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
+
 
 export default function CartItem({ image, price, name, }) {
     return (
@@ -10,9 +11,9 @@ export default function CartItem({ image, price, name, }) {
             <Box py={2}>
                 <Box display="flex" alignItems="center">
                     <Box>
-                        <img style={{width: '100%'}} src={image} alt="cartimage" />
+                        <Avatar style={{width: 100,height: 125}} variant="square" src={image} alt="cart image" />
                     </Box>
-                    <Box flexDirection={{xs: 'column',md: 'row'}} mx={2} flexGrow={1} display="flex" justifyContent="space-between" alignItems={{xs: 'left',md: 'center'}}>
+                    <Box flexDirection={{ xs: 'column', md: 'row' }} mx={2} flexGrow={1} display="flex" justifyContent="space-between" alignItems={{ xs: 'left', md: 'center' }}>
                         <Typography gutterBottom component="div">
                             <Typography gutterBottom>{name}</Typography>
                             <Typography color="textSecondary">Color Black</Typography>
@@ -31,7 +32,7 @@ export default function CartItem({ image, price, name, }) {
                                 </Button>
                             </ButtonGroup>
                         </Box>
-                        <Typography align="right" gutterBottom variant="h6">$678</Typography>
+                        <Typography align="right" gutterBottom variant="h6">{price}</Typography>
                     </Box>
                     <Box>
                         <Box mt={-1}>

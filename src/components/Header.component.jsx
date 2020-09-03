@@ -16,8 +16,10 @@ import CartPreview from '../molecules/CartPreview.mole';
 import EnhancedEncryptionIcon from '@material-ui/icons/EnhancedEncryption';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Link, useHistory } from 'react-router-dom';
-import { userState } from '../recoil/user/user.atoms';
+import { userState, userCartState } from '../recoil/user/user.atoms';
 import Hide from '../molecules/Hide.mole';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useRecoilValue } from 'recoil';
 
 
 const createStyle = makeStyles(theme => ({
@@ -82,9 +84,15 @@ export default function Header() {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+    const cartItems = useRecoilValue(userCartState);
 
 
     const history = useHistory();
+
+    const handleLogOut = () => {
+        setUser(null);
+        document.cookie = 'jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
 
 
     return (
@@ -97,7 +105,9 @@ export default function Header() {
                         </IconButton>
                     </Box>
                     <Toolbar classes={{ regular: classes.regular }}>
-                        <img className={classes.logo} src={logo} alt="logo" />
+                        <Link to="/home">
+                            <img className={classes.logo} src={logo} alt="logo" />
+                        </Link>
                     </Toolbar>
                     <Box display={{ xs: 'none', md: 'flex' }}>
                         <NavMenu />
@@ -114,7 +124,7 @@ export default function Header() {
                             <ClickAwayListener onClickAway={() => setCartOpen(false)}>
                                 <Tooltip title="Cart" arrow>
                                     <IconButton onClick={() => setCartOpen(!cartOpen)} className={classes.button}>
-                                        <Badge badgeContent={4} color="primary">
+                                        <Badge badgeContent={cartItems.length} color="primary">
                                             <ShoppingBasketIcon className={classes.icon} />
                                         </Badge>
                                     </IconButton>
@@ -127,7 +137,7 @@ export default function Header() {
                         <Box display={{ xs: 'block', md: 'none' }}>
                             <Tooltip title="Cart" arrow>
                                 <IconButton onClick={() => setCartDrawerOpen(!cartOpen)} className={classes.button}>
-                                    <Badge badgeContent={4} color="primary">
+                                    <Badge badgeContent={cartItems.length} color="primary">
                                         <ShoppingBasketIcon className={classes.icon} />
                                     </Badge>
                                 </IconButton>
@@ -154,6 +164,7 @@ export default function Header() {
                                         </ListItemText>
                                         </MenuItem>
                                     </Hide>
+
                                     <Hide hide={user}>
                                         <MenuItem onClick={() => history.push('/signup')}>
                                             <ListItemIcon classes={{ root: classes.listIcon }}>
@@ -180,6 +191,16 @@ export default function Header() {
                                             Wish List
                                         </ListItemText>
                                     </MenuItem>
+                                    <Hide hide={!user}>
+                                        <MenuItem onClick={handleLogOut}>
+                                            <ListItemIcon classes={{ root: classes.listIcon }}>
+                                                <ExitToAppIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Log Out
+                                        </ListItemText>
+                                        </MenuItem>
+                                    </Hide>
                                 </MenuList>
                             </MenuContainer>
                         </Box>

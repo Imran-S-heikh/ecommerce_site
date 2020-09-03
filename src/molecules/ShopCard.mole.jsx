@@ -7,6 +7,8 @@ import Rating from '@material-ui/lab/Rating';
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 import VarientColor from './VarientColor.mole';
 import { useHistory } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { userCartState } from '../recoil/user/user.atoms';
 
 
 
@@ -108,7 +110,13 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
 
     const classes = createClasses()
     const history = useHistory();
+    const setCardItems = useSetRecoilState(userCartState);
 
+    const addCartItem = ()=>{
+        const item = {name,image,rating,price,brand}
+        setCardItems(prev=>[...prev,item]);
+    }
+ 
 
     return (
         <Card className={classes.container} style={{ width: width }}>
@@ -143,10 +151,10 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                     <VarientColor image={image} />
                 </Box>
                 <Box display={{ xs: 'none', md: 'block' }} className={classes.cartButton}>
-                    <Button style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
+                    <Button onClick={addCartItem} style={{ position: 'absolute', width: 'max-content', transform: 'translate(-50%,0)' }} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
                 </Box>
                 <Box display={{ xs: 'block', md: 'none' }} style={{ margin: '15px 0' }}>
-                    <Button startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
+                    <Button onClick={addCartItem} startIcon={<ShoppingBasketOutlinedIcon />} variant="contained" color="primary">Add To Cart</Button>
                     <Box>
                         <IconButton>
                             <VisibilityIcon />

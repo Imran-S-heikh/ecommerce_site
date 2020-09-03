@@ -69,13 +69,7 @@ export default function ShopContent() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [breakPoints,setBreakPoints] = useState(max);
     const setSideBarOpen = useSetRecoilState(sideDrawerState)
-    const [showcaseItems,setShowcaseItems] = useState(null);
-
-    useEffect(()=>{
-        setTimeout(()=>{
-            setShowcaseItems(xxx)
-        },3000)
-    },[])
+    const [showcaseItems,setShowcaseItems] = useState(xxx);
 
     return (
         <div>

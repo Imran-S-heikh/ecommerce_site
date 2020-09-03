@@ -358,7 +358,7 @@ export default function MakeProduct(props) {
                         </Box>
                     </Paper>
                 </Grid>
-                <Hide open={colorPopoverOpen}>
+                <Hide hide={!colorPopoverOpen}>
                     <Box className={classes.center}>
                         <ClickAwayListener onClickAway={() => setColorPopover(false)}>
                             <Paper style={{ padding: 20 }}>

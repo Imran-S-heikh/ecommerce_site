@@ -6,6 +6,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { Redirect } from 'react-router-dom';
 import { catchAsync } from '../utils';
+import { loaderState, alertSnackbarState } from '../recoil/atoms';
 
 const createStyles = makeStyles(theme => ({
     fieldContainer: {
@@ -24,16 +25,21 @@ export default function Signup() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [user, setUser] = useRecoilState(userState);
+    const setLoader = useSetRecoilState(loaderState);
+    const setAlertSnackbar = useSetRecoilState(alertSnackbarState);
 
     if (user) return <Redirect to="/home" />
 
 
     const handleCreate = catchAsync(async () => {
+        setLoader(true)
         const name = `${firstName} ${lastName}`
         const newUser = { name, email, password, confirmPassword }
         const response = await createUser(newUser);
         if (response.data.status === 'success') {
+            setLoader(false)
             setUser(response.data.user)
+            setAlertSnackbar({open: true,message: 'User Created Successfully',severity: 'success'})
         }
 
     })

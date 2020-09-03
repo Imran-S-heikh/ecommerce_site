@@ -28,7 +28,10 @@ export default function Signup() {
     const setLoader = useSetRecoilState(loaderState);
     const setAlertSnackbar = useSetRecoilState(alertSnackbarState);
 
-    if (user) return <Redirect to="/home" />
+    if (user) {
+        setAlertSnackbar({ open: true, message: 'You are Already Have An Account', severity: 'info' })
+        return <Redirect to="/home" />
+    }
 
 
     const handleCreate = catchAsync(async () => {

@@ -5,7 +5,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 
 
-export default function CartItem({ image, price, name, }) {
+export default function CartItem({ wishCart,image, price, name,handler }) {
     return (
         <>
             <Box py={2}>
@@ -39,6 +39,7 @@ export default function CartItem({ image, price, name, }) {
                             <IconButton>
                                 <DeleteIcon />
                             </IconButton>
+                            {wishCart && <Button onClick={()=>handler({name,image,price})} variant="contained" color="primary">Add TO CArt</Button>}
                         </Box>
                     </Box>
                 </Box>

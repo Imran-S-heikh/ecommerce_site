@@ -151,18 +151,15 @@ export default function MakeProduct(props) {
     const [productCode, setProductCode] = useState(props.productCode);
     const [productType, setProductType] = useState(props.productType);
     const [selectedSize, setSelectedSize] = useState(props.selectedSize || []);
+    const [imageCropSize,setImageCropSize] = useState([]);
     // const [name,setName] = useState(props.name);
-
-    useEffect(() => {
-        console.log(productImage)
-    }, [productImage])
 
     const handleFile = (file, url) => {
         setProductImage([...productImage, { src: url }])
     }
 
     const handleCreate = () => {
-        const product = { colors, selectedSize, name, price, currentPrice, basePrice, brand, catagory, quantity, title, varient, varientCode, productType, productCode }
+        const product = { image: productImage.map(obj=>obj.src),colors, selectedSize, name, price, currentPrice, basePrice, brand, catagory, quantity, title, varient, varientCode, productType, productCode }
         props.getProduct(product);
     }
 
@@ -205,6 +202,7 @@ export default function MakeProduct(props) {
                                         <FormGroup row>
                                             {cropSizes.map(size => (
                                                 <FormControlLabel
+                                                    onClick={()=>imageCropSize([...imageCropSize,size])}
                                                     key={size.label}
                                                     classes={{ label: classes.labelFix }}
                                                     control={
@@ -354,7 +352,7 @@ export default function MakeProduct(props) {
                         </Grid>
 
                         <Box mt={3}>
-                                                <Button onClick={handleCreate} color="primary" fullWidth variant="contained">{props.buttonTitle}</Button>
+                            <Button onClick={handleCreate} color="primary" fullWidth variant="contained">{props.buttonTitle}</Button>
                         </Box>
                     </Paper>
                 </Grid>

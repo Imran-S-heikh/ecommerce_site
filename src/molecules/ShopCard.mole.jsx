@@ -8,7 +8,7 @@ import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutline
 import VarientColor from './VarientColor.mole';
 import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { userCartState } from '../recoil/user/user.atoms';
+import { userCartState, userWishListState } from '../recoil/user/user.atoms';
 
 
 
@@ -111,6 +111,7 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
     const classes = createClasses()
     const history = useHistory();
     const setCardItems = useSetRecoilState(userCartState);
+    const setWishList = useSetRecoilState(userWishListState);
 
     const addCartItem = ()=>{
         const item = {name,image,rating,price,brand}
@@ -124,7 +125,7 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                 <IconButton>
                     <VisibilityIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={()=>setWishList(prev=>[...prev,{name,image,rating,price,brand}])}>
                     <FavoriteIcon />
                 </IconButton>
                 <IconButton>
@@ -160,7 +161,7 @@ export default function ShopCard({ width = 280, image, brand,name,rating,price }
                             <VisibilityIcon />
                         </IconButton>
                         <IconButton>
-                            <FavoriteIcon />
+                            <FavoriteIcon onClick={()=>setWishList(prev=>[...prev,{name,image,rating,price,brand}])}/>
                         </IconButton>
                         <IconButton>
                             <CompareArrowsIcon />

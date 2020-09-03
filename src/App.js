@@ -21,6 +21,7 @@ import { catchAsync } from './utils';
 import {checkUser} from './request/user.requset';
 import { userState } from './recoil/user/user.atoms';
 import Defaults from './components/Defaults.component';
+import WishList from './pages/WishList.page';
 
 
 
@@ -78,6 +79,9 @@ function App() {
           </Route>
           <Route path="/blog" exact>
             <Blog />
+          </Route>
+          <Route path="/wishlist" exact>
+            <WishList />
           </Route>
           <Route path="/blogsingle" exact>
             <SingleBlog />

@@ -183,7 +183,7 @@ export default function Header() {
                                             View Cart
                                         </ListItemText>
                                     </MenuItem>
-                                    <MenuItem onClick={() => history.push('/signin')}>
+                                    <MenuItem onClick={() => history.push('/wishList')}>
                                         <ListItemIcon classes={{ root: classes.listIcon }}>
                                             <FavoriteBorderIcon />
                                         </ListItemIcon>

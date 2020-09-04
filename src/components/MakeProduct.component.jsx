@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener, Container } from '@material-ui/core'
+import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener, Container, TextareaAutosize, Chip, Dialog } from '@material-ui/core'
 import Color from '../molecules/Color.mole';
 import AddIcon from '@material-ui/icons/Add';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import ImageIcon from '@material-ui/icons/Image';
 import { useSetRecoilState } from 'recoil';
 import { alertSnackbarState } from '../recoil/atoms';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const createStyles = makeStyles(theme => ({
     root: {
@@ -23,12 +24,6 @@ const createStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(3),
         // width: '100%'
-    },
-    center: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%,-50%)'
     },
     image: {
         // width: 200
@@ -118,7 +113,7 @@ const cropSizes = [
         label: 'Tiny'
     }
 ]
-const initialColors = [
+const initialColor = [
     {
         value: 'red',
         label: 'Red'
@@ -137,7 +132,7 @@ export default function MakeProduct(props) {
 
     const setAlert = useSetRecoilState(alertSnackbarState);
     const classes = createStyles();
-    const [colors, setColors] = useState([]);
+    const [color, setColor] = useState(props.color || []);
     const [productImage, setProductImage] = useState(props.productImage || []);
     const [colorPopoverOpen, setColorPopover] = useState(false);
     const [newColor, setNewColor] = useState({ label: null, value: null });
@@ -146,39 +141,55 @@ export default function MakeProduct(props) {
     const [price, setPrice] = useState(props.price);
     const [currentPrice, setCurrentPrice] = useState(props.currentPrice);
     const [basePrice, setBasePrice] = useState(props.basePrice);
-    const [quantity, setQuantity] = useState(props.quantiry);
+    const [quantity, setQuantity] = useState(props.quantity);
     const [brand, setBrand] = useState(props.brand);
     const [catagory, setCatagory] = useState(props.catagory);
-    const [varient, setVarient] = useState(props.varient);
-    const [varientCode, setVarientCode] = useState(props.varientCode);
+    const [variant, setVariant] = useState(props.variant);
+    const [variantCode, setVariantCode] = useState(props.variantCode);
     const [productCode, setProductCode] = useState(props.productCode);
     const [productType, setProductType] = useState(props.productType);
-    const [selectedSize, setSelectedSize] = useState(props.selectedSize || []);
+    const [size, setSize] = useState(props.size || []);
     const [imageCropSize, setImageCropSize] = useState([]);
-    // const [name,setName] = useState(props.name);
+    const [description, setDescription] = useState(props.description);
+    const [tags, setTags] = useState(props.tags || []);
+    const [newTag,setNewTag] = useState(null);
+    const [tagPopoverOpen,setTagPopover] = useState(false);
 
     const submitRef = useRef();
+
+    useEffect(() => {
+        console.log(color)
+    }, [color])
 
     const handleFile = (file, url) => {
         setProductImage([...productImage, { src: url }])
     }
 
-    const validate = (product,callback)=>{
+    const validate = (product, callback) => {
         console.log(product.image)
-        if(product.image.length === 0){
-            setAlert({open: true,message: 'Please Give A Product Image',severity: 'warning'})
+        if (product.image.length === 0) {
+            setAlert({ open: true, message: 'Please Give A Product Image', severity: 'warning' })
             return;
         }
         callback();
     }
 
+    const handleCheckBox = (event,item)=>{
+        console.log(event.currentTarget.checked)
+        if(event.currentTarget.checked){
+            setSize([...size,item])
+        }else{
+            setSize(size.filter(e=> e !== item))
+        }
+    }
+
     const handleCreate = (event) => {
         event.preventDefault()
-        const product = { image: productImage.map(obj => obj.src), colors, selectedSize, name, price, currentPrice, basePrice, brand, catagory, quantity, title, varient, varientCode, productType, productCode }
-        validate(product,()=>{
+        const product = { description, image: productImage.map(obj => obj.src),tags, color, size, name, price, currentPrice, basePrice, brand, catagory, quantity, title, variant, variantCode, productType, productCode }
+        validate(product, () => {
             props.getProduct(product);
         })
-        
+
     }
 
     return (
@@ -186,72 +197,75 @@ export default function MakeProduct(props) {
             <Box mt={2}>
                 <Typography gutterBottom={3} align="center" component="h2" variant="h4">{props.title}</Typography>
             </Box>
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                    <Box mx="auto" className={classes.imageContainer}>
-                        {productImage.length === 0 ?
-                            <Box height={470}>
-                                <Paper>
-                                    <Box justifyContent="center" alignItems="center" height={470} display="flex" m="auto">
-                                        <Box>
-                                            <ImageIcon style={{ fontSize: 150 }} />
-                                            <Typography>
-                                                Upload Product Image
+            <form ref={submitRef} onSubmit={handleCreate}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <TextField value={description} onChange={(e) => setDescription(e.currentTarget.value)} required fullWidth multiline label="Product Details" />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Box mx="auto" className={classes.imageContainer}>
+                            {productImage.length === 0 ?
+                                <Box height={470}>
+                                    <Paper>
+                                        <Box justifyContent="center" alignItems="center" height={470} display="flex" m="auto">
+                                            <Box>
+                                                <ImageIcon style={{ fontSize: 150 }} />
+                                                <Typography>
+                                                    Upload Product Image
                                             </Typography>
+                                            </Box>
                                         </Box>
-                                    </Box>
-                                </Paper>
-                            </Box> :
-                            <Carousel
-                                component={
-                                    <img width="100%" />
-                                }
-                                data={productImage}
-                            />
-                        }
-                    </Box>
-                    <Box mt={3}>
-                        <Paper>
+                                    </Paper>
+                                </Box> :
+                                <Carousel
+                                    component={
+                                        <img width="100%" />
+                                    }
+                                    data={productImage}
+                                />
+                            }
+                        </Box>
+                        <Box mt={3}>
+                            <Paper>
 
-                            <Box p={3}>
-                                <Box mb={2}>
-                                    <FormControl>
-                                        <FormLabel>Select Crop Sizes</FormLabel>
-                                        <FormGroup row>
-                                            {cropSizes.map(size => (
-                                                <FormControlLabel
-                                                    onClick={() => imageCropSize([...imageCropSize, size])}
-                                                    key={size.label}
-                                                    classes={{ label: classes.labelFix }}
-                                                    control={
-                                                        <Checkbox color="primary" />
-                                                    }
-                                                    label={size.label}
-                                                />
-                                            ))}
-                                        </FormGroup>
-                                    </FormControl>
+                                <Box p={3}>
+                                    <Box mb={2}>
+                                        <FormControl>
+                                            <FormLabel>Select Crop Sizes</FormLabel>
+                                            <FormGroup row>
+                                                {cropSizes.map(size => (
+                                                    <FormControlLabel
+                                                        onClick={() => imageCropSize([...imageCropSize, size])}
+                                                        key={size.label}
+                                                        classes={{ label: classes.labelFix }}
+                                                        control={
+                                                            <Checkbox color="primary" />
+                                                        }
+                                                        label={size.label}
+                                                    />
+                                                ))}
+                                            </FormGroup>
+                                        </FormControl>
+                                    </Box>
+                                    <ImageUpload fullWidth onUpload={handleFile} />
                                 </Box>
-                                <ImageUpload fullWidth onUpload={handleFile} />
-                            </Box>
-                        </Paper>
-                    </Box>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <Paper className={classes.paper}>
-                        <form ref={submitRef} onSubmit={handleCreate}>
+                            </Paper>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Paper className={classes.paper}>
                             <Grid container spacing={1}>
                                 <Grid item xs={12}>
-                                    <TextField required error={!Boolean(name)} value={name} onChange={(e) => setName(e.currentTarget.value)} label="Product Name" fullWidth />
+                                    <TextField required value={name} onChange={(e) => setName(e.currentTarget.value)} label="Product Name" fullWidth />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField required error={!Boolean(title)} value={title} onChange={(e) => setTitle(e.currentTarget.value)} label="Title" fullWidth />
+                                    <TextField required value={title} onChange={(e) => setTitle(e.currentTarget.value)} label="Title" fullWidth />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField required error={!Boolean(Number(price))} onChange={(e) => setPrice(e.currentTarget.value)} value={price} type="number" label="Price" fullWidth />
+                                    <TextField required onChange={(e) => setPrice(e.currentTarget.value)} value={price} type="number" label="Price" fullWidth />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField required error={!Boolean(Number(quantity))} onChange={(e) => setQuantity(e.currentTarget.value)} value={quantity} type="number" label="Quantiry" fullWidth />
+                                    <TextField required onChange={(e) => setQuantity(e.currentTarget.value)} value={quantity} type="number" label="Quantiry" fullWidth />
                                 </Grid>
                                 <Grid item xs={6}>
                                     <TextField onChange={(e) => setCurrentPrice(e.currentTarget.value)} value={currentPrice} type="number" label="Current Price" fullWidth />
@@ -273,7 +287,7 @@ export default function MakeProduct(props) {
                                     </TextField>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField required error={!Boolean(productCode)} onChange={(e) => setProductCode(e.currentTarget.value)} value={productCode} label="Product Code" fullWidth />
+                                    <TextField required onChange={(e) => setProductCode(e.currentTarget.value)} value={productCode} label="Product Code" fullWidth />
                                 </Grid>
                                 <Grid item xs={6}>
                                     <TextField onChange={(e) => setCatagory(e.currentTarget.value)} value={catagory}
@@ -308,19 +322,19 @@ export default function MakeProduct(props) {
                                         <FormGroup>
                                             <FormControlLabel
                                                 control={
-                                                    <Switch checked={Boolean(varient)} color="primary" />
+                                                    <Switch checked={Boolean(variant)} color="primary" />
                                                 }
-                                                label="Varient"
+                                                label="variant"
                                                 labelPlacement="start"
                                                 style={{ justifyContent: 'space-between', marginLeft: 1 }}
-                                                onClick={() => setVarient(!Boolean(varient))}
+                                                onClick={() => setVariant(!Boolean(variant))}
 
                                             />
                                         </FormGroup>
                                     </Box>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField value={varientCode} onChange={e => setVarientCode(e.currentTarget.value)} label="Varient Code" fullWidth />
+                                    <TextField value={variantCode} onChange={e => setVariantCode(e.currentTarget.value)} label="variant Code" fullWidth />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Divider />
@@ -328,15 +342,14 @@ export default function MakeProduct(props) {
                                         <FormControl>
                                             <FormLabel>Select Sizes</FormLabel>
                                             <FormGroup row>
-                                                {sizes.map(size => (
+                                                {sizes.map(item => (
                                                     <FormControlLabel
-                                                        key={size}
+                                                        key={item}
                                                         classes={{ label: classes.labelFix }}
-                                                        onClick={() => setSelectedSize([...selectedSize, size])}
                                                         control={
-                                                            <Checkbox checked={selectedSize.includes(size)} color="primary" />
+                                                            <Checkbox onChange={(e)=>handleCheckBox(e,item)} onU checked={size.includes(item)} color="primary" />
                                                         }
-                                                        label={size}
+                                                        label={item}
                                                     />
                                                 ))}
                                             </FormGroup>
@@ -347,14 +360,14 @@ export default function MakeProduct(props) {
                                     <Divider />
                                     <Box mt={1}>
                                         <FormControl>
-                                            <FormLabel>Select Colors</FormLabel>
+                                            <FormLabel>Add Colors</FormLabel>
                                             <FormGroup row>
-                                                {colors.map(color => (
+                                                {color.map(item => (
                                                     <FormControlLabel
-                                                        key={color.value}
+                                                        key={item.value}
                                                         control={
                                                             <Box mt={1} ml={1}>
-                                                                <Color label={color.label} color={color.value} />
+                                                                <Color label={item.label} color={item.value} />
                                                             </Box>
                                                         }
                                                     />
@@ -368,15 +381,35 @@ export default function MakeProduct(props) {
                                         </FormControl>
                                     </Box>
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <Divider />
+                                    <Box mt={1}>
+                                        <FormControl>
+                                            <FormLabel>Add Some Tags</FormLabel>
+                                            <FormGroup row>
+                                                {tags.map(tag => (
+                                                    <Box mt={2} mr={1}>
+                                                        <Chip onDelete={() => setTags(tags.filter(item=>item !== tag))} label={tag} variant="outlined" />
+                                                    </Box>
+                                                ))}
+                                                <Box mt={1} style={{ marginLeft: -10 }}>
+                                                    <IconButton onClick={()=>setTagPopover(true)}>
+                                                        <AddIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </FormGroup>
+                                        </FormControl>
+                                    </Box>
+                                </Grid>
                             </Grid>
                             <Box mt={3}>
-                                <Button onClick={()=>submitRef.current.requestSubmit()} color="primary" fullWidth variant="contained">{props.buttonTitle}</Button>
+                                <Button onClick={() => submitRef.current.requestSubmit()} color="primary" fullWidth variant="contained">{props.buttonTitle}</Button>
                             </Box>
-                        </form>
-                    </Paper>
-                </Grid>
-                <Hide hide={!colorPopoverOpen}>
-                    <Box className={classes.center}>
+                        </Paper>
+
+                    </Grid>
+
+                    <Dialog open={colorPopoverOpen}>
                         <ClickAwayListener onClickAway={() => setColorPopover(false)}>
                             <Paper style={{ padding: 20 }}>
                                 <Typography gutterBottom variant="h6">
@@ -391,7 +424,7 @@ export default function MakeProduct(props) {
                                     <Button onClick={() => {
                                         setColorPopover(false);
                                         if (newColor.label && newColor.value) {
-                                            setColors([...colors, newColor])
+                                            setColor([...color, newColor])
                                         }
                                     }}
                                         color="primary"
@@ -402,10 +435,34 @@ export default function MakeProduct(props) {
                                 </Box>
                             </Paper>
                         </ClickAwayListener>
-                    </Box>
-                </Hide>
-            </Grid>
-
+                    </Dialog>
+                    <Dialog open={tagPopoverOpen}>
+                        <ClickAwayListener onClickAway={() => setTagPopover(false)}>
+                            <Paper style={{ padding: 20 }}>
+                                <Typography gutterBottom variant="h6">
+                                    Give a Proper Tag
+                                </Typography>
+                                <Box>
+                                    <TextField label="Tag" onChange={e => setNewTag(e.currentTarget.value)} />
+                                </Box>
+                                <Box mt={2}>
+                                    <Button onClick={() => {
+                                        setTagPopover(false);
+                                        if (newTag) {
+                                            setTags([...tags, newTag])
+                                        }
+                                    }}
+                                        color="primary"
+                                        fullWidth variant="contained"
+                                    >
+                                        Submit
+                                    </Button>
+                                </Box>
+                            </Paper>
+                        </ClickAwayListener>
+                    </Dialog>
+                </Grid>
+            </form>
         </Container>
     )
 }

@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, Container, TableBody, Avatar, Button } from '@material-ui/core'
-import { assets, routes } from '../utils'
+import { assets, routes, checkStatus } from '../utils'
 import Rating from '@material-ui/lab/Rating'
 import EditIcon from '@material-ui/icons/Edit';
 import { useRecoilState } from 'recoil';
 import { updateProductState, dashboardRouteState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { getProducts } from '../request/product.request';
 
 
 const showcaseItems = [
@@ -128,9 +130,19 @@ export default function ViewProducts() {
 
     const setProduct = useSetRecoilState(updateProductState);
     const setRoute   = useSetRecoilState(dashboardRouteState);
+    const [products,setProducts] = useState([]);
+
+    useEffect(()=>{
+        (async ()=>{
+            const response = await getProducts('?page=1&limit=15');
+            if(checkStatus(response)){
+                setProducts(response.data.products)
+            }
+        })()
+    },[])
 
     const handleEdit = (product)=>{
-        setProduct(product);
+        setProduct({...product,productImage: product.image.original.map(i=>({src:i}))});
         setRoute(routes.EDIT_PRODUCT);
     }
 
@@ -154,11 +166,11 @@ export default function ViewProducts() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {showcaseItems.map((item,i)=>(
-                                    <TableRow key={i}>
+                                {products.map((item)=>(
+                                    <TableRow key={item.key}>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>
-                                            <Avatar variant="square" src={item.image} />
+                                            <Avatar variant="square" src={item.image.small[0]} />
                                         </TableCell>
                                         <TableCell>{item.price}</TableCell>
                                         <TableCell>

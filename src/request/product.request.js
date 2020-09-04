@@ -1,4 +1,4 @@
-import { catchAsync } from "../utils";
+import { catchAsync, extractFilter } from "../utils";
 import request from "./request";
 
 export const createProduct = catchAsync(async (newProduct)=>{
@@ -6,7 +6,12 @@ export const createProduct = catchAsync(async (newProduct)=>{
     return response;
 });
 
-export const getProducts = catchAsync(async ()=>{
-    const response = await request({},'/products','GET')
+export const getProducts = catchAsync(async (query='')=>{
+    const response = await request({},`/Products${query}`,'GET')
+    return response;
+});
+
+export const updateProduct = catchAsync(async (updatedProduct,id)=>{
+    const response = await request(updatedProduct,`/Products/${id}`,'PATCH')
     return response;
 });

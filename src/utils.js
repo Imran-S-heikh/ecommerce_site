@@ -64,12 +64,12 @@ export const assets = {
 
 export const EventEmmiter = {
     events: {},
-    dispatch: function (event,data) {
-        if(!this.events[event]) return;
-        this.events[event].forEach(callback=>callback(data))
+    dispatch: function (event, data) {
+        if (!this.events[event]) return;
+        this.events[event].forEach(callback => callback(data))
     },
-    subscribe: function (event,callback) {
-        if(!this.events[event]) this.events[event] = [];
+    subscribe: function (event, callback) {
+        if (!this.events[event]) this.events[event] = [];
         this.events[event].push(callback);
     }
 }
@@ -79,17 +79,52 @@ export const routes = {
     DASHBOARD: 'DASHBOARD',
     CREATE_PRODUCT: 'CREATE_PRODUCT',
     VIEW_PRODUCTS: 'VIEW_PRODUCTS',
-    EDIT_PRODUCT:'EDIT_PRODUCT',
-    PROFILE:'PROFILE'
+    EDIT_PRODUCT: 'EDIT_PRODUCT',
+    PROFILE: 'PROFILE'
 }
 
 
-export const catchAsync = (fn,errBackup)=>{
-    return (...params)=>{
-        return fn(...params).then((res)=>res).catch(err=>{})
+export const catchAsync = (fn, errBackup) => {
+    return (...params) => {
+        return fn(...params).then((res) => res).catch(err => {console.log(err) })
     }
 }
 
-export const checkStatus = (res)=>{
+export const checkStatus = (res) => {
+    if (!res) return false;
     return res.data.status === 'success'
 }
+
+export const extractFilter = (primaryObject, substractObject) => {
+    const obj1 = { ...primaryObject }
+    const obj2 = {...substractObject}
+
+    Object.keys(obj1).map(key => {
+        if (obj1[key] === obj2[key]) {
+            delete obj1[key]
+        }
+    });
+
+    return obj1
+}
+
+// class Filter {
+//     constructor(primaryObject, secondaryObject) {
+//         this.primaryObject = primaryObject,
+//             this.secondaryObject = secondaryObject
+//     }
+//     substract() {
+//         const obj1 = { ...this.primaryObject }
+//         const obj2 = { ...this.secondaryObject }
+
+//         Object.keys(obj1).map(key => {
+//             if (obj1[key] === obj2[key]) {
+//                 delete obj1[key]
+//             }
+//         });
+
+//         this.primaryObject = obj1
+
+//         return this
+//     }
+// }

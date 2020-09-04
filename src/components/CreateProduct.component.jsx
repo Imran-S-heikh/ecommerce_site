@@ -15,10 +15,11 @@ export default function CreateProduct() {
         setLoader(true);
         const response = await createProduct(product);
         setLoader(false)
+        console.log(response)
         if(response.data.status === 'success'){
             setAlert({open: true,message: 'Product Created Successfully',severity: 'success'})
         }else{
-            setAlert({open: true,message: 'Failed To Create Product',severity: 'error'})
+            setAlert({open: true,message: response.data.message,severity: 'error'})
         }
         
     });

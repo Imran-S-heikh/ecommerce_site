@@ -22,6 +22,7 @@ import {checkUser} from './request/user.requset';
 import { userState } from './recoil/user/user.atoms';
 import Defaults from './components/Defaults.component';
 import WishList from './pages/WishList.page';
+import PasswordReset from './pages/PasswordReset.page';
 
 
 
@@ -62,11 +63,17 @@ function App() {
           <Header />
         </HideComponentOnRoute>
         <Switch>
+          {/* <Route path="/">
+            <Signin />
+          </Route> */}
           <Route path="/dashboard">
             <Dashboard />
           </Route>
           <Route path="/signup">
             <Signup />
+          </Route>
+          <Route path="/resetPassword/:token">
+            <PasswordReset />
           </Route>
           <Route path="/signin">
             <Signin />

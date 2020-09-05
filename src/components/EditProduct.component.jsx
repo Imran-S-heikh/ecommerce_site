@@ -19,13 +19,14 @@ export default function EditProduct() {
         setLoader(false)
         if(checkStatus(response)){
             setAlert({open: true,message: 'Product Updated Successfully',severity: 'success'})
+            console.log(response.data);
         }else{
             setAlert({open: true,message: 'Failed To Update The Product',severity: 'error'})
         }
     })
     return (
         <>
-            <MakeProduct {...product} title="Update Product" buttonTitle="Update Product"  getProduct={handleUpdate}/>
+            <MakeProduct {...product} pageTitle="Update Product" buttonTitle="Update Product"  getProduct={handleUpdate}/>
         </>
     )
 }

@@ -21,3 +21,15 @@ export const checkUser = catchAsync(async () => {
     const response = await request({}, '/users');
     return response;
 })
+
+export const forgetPassword = catchAsync(async (data) => {
+    console.log(data)
+    const response = await request(data, '/users/forgetPassword');
+    return response;
+})
+
+export const resetPassword = catchAsync(async (data,token) => {
+    console.log(data)
+    const response = await request(data, `/users/resetPassword/${token}`,'PATCH');
+    return response;
+})

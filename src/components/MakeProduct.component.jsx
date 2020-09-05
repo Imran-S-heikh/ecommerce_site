@@ -98,7 +98,7 @@ const types = [
     }
 ];
 
-const sizes = ['XS', 'X', 'M', 'L', 'XL'];
+const sizes = ['XS', 'M', 'L', 'XL'];
 const cropSizes = [
     {
         value: [200, 500],
@@ -195,7 +195,7 @@ export default function MakeProduct(props) {
     return (
         <Container maxWidth="md" className={classes.root}>
             <Box mt={2}>
-                <Typography gutterBottom={3} align="center" component="h2" variant="h4">{props.title}</Typography>
+                <Typography gutterBottom={3} align="center" component="h2" variant="h4">{props.pageTitle}</Typography>
             </Box>
             <form ref={submitRef} onSubmit={handleCreate}>
                 <Grid container spacing={3}>

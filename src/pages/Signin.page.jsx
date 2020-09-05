@@ -9,6 +9,7 @@ import { userLogin, forgetPassword } from '../request/user.requset';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import MailIcon from '@material-ui/icons/Mail';
 
 export default function Signin() {
 
@@ -20,6 +21,7 @@ export default function Signin() {
     const [password, setPassword] = useState('12345678');
     const [emailPopup, setEmailPopup] = useState(false);
     const [resetEmail, setResetEmail] = useState(null);
+    const [messagePopup,setMessagePopup] = useState(false);
     const formRef = useRef();
 
 
@@ -45,11 +47,12 @@ export default function Signin() {
 
     const forgetRequest = catchAsync(async() => {
         setAlertSnackbar({open: true,message: 'Please wait for the response',severity: 'warning'})
+        setMessagePopup(true)
         const response = await forgetPassword({email: resetEmail});
         if(checkStatus(response)){
-            console.log(response.data)
-            setAlertSnackbar({open: true,message: response.data.message,severity: 'success'})
+            setAlertSnackbar({open: true,message: response.data.message,severity: 'success',time: 12000})
         }else{
+            setMessagePopup(false);
             setAlertSnackbar({open: true,message: response.data.message,severity: 'error'})
         }
     })
@@ -121,6 +124,17 @@ export default function Signin() {
                         <Box mt={2}>
                             <Button fullWidth variant="contained" color="primary" onClick={() => formRef.current.requestSubmit()}>Submit</Button>
                         </Box>
+                    </Box>
+                </ClickAwayListener>
+            </Dialog>
+            <Dialog open={messagePopup}>
+                <ClickAwayListener onClickAway={() => history.push('/')}>
+                    <Box m={3}>
+                        <Box textAlign="center">
+                            <MailIcon style={{fontSize: 100}} />
+                        </Box>
+                        <Typography >A Mail will be sent to your account very soon.</Typography>
+                        <Typography color="textSecondary">Please Do not forget to check the spam folder.</Typography>
                     </Box>
                 </ClickAwayListener>
             </Dialog>

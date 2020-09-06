@@ -1,10 +1,12 @@
 import React from 'react'
-import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typography, ClickAwayListener, Box, List, ListItem, ListItemAvatar, ListItemText, Avatar, MenuItem, MenuList } from '@material-ui/core'
+import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typography, ClickAwayListener, Box, List, ListItem, ListItemAvatar, ListItemText, Avatar, MenuItem, MenuList, CircularProgress } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { searchOpenState } from '../recoil/atoms';
+import Hide from './Hide.mole';
+import { useEffect } from 'react';
 
 const createStyles = makeStyles(theme => ({
     search: {
@@ -26,7 +28,7 @@ const createStyles = makeStyles(theme => ({
     icon: { fontSize: 30 }
 }))
 
-export default function Search({listItem,handleSearchKey,searchTitle,items=[]}) {
+export default function Search({ listItem, handleSearchKey, searchTitle, items = [], loading }) {
 
     const classes = createStyles()
     const [searchKey, setSearchKey] = useState('');
@@ -47,19 +49,25 @@ export default function Search({listItem,handleSearchKey,searchTitle,items=[]}) 
                         </div>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
-                                <IconButton>
-                                    <SearchIcon className={classes.icon} />
-                                </IconButton>
+                                <Hide hide={loading} fallback={
+                                    <CircularProgress />
+                                }>
+                                    <IconButton>
+                                        <SearchIcon className={classes.icon} />
+                                    </IconButton>
+                                </Hide>
                             </div>
-                            <InputBase onChange={e => {setSearchKey(e.target.value);handleSearchKey(e)}} value={searchKey} placeholder={searchTitle} classes={{ root: classes.input }} fullWidth />
+                            <InputBase onChange={e => { setSearchKey(e.target.value); handleSearchKey(e) }} value={searchKey} placeholder={searchTitle} classes={{ root: classes.input }} fullWidth />
                         </div>
                         <Divider style={{ marginTop: 10 }} />
                         <Box maxHeight={200} overflow="auto">
-                            <MenuList>
-                               {items.map(item=>
-                                    React.cloneElement(listItem,{...item})
-                                )}
-                            </MenuList>
+                            <Hide hide={items?.length === 0}>
+                                <MenuList>
+                                    {items?.map(item =>
+                                        React.cloneElement(listItem, { ...item })
+                                    )}
+                                </MenuList>
+                            </Hide>
                         </Box>
                     </div>
                 </Container>

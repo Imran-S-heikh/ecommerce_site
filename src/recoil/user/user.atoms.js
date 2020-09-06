@@ -18,9 +18,5 @@ export const userWishListState = atom({
 
 export const editUserState = atom({
     key: EDIT_USER,
-    default: {
-        name: '',
-        role: '',
-        avatar: ''
-    }
+    default: null
 });

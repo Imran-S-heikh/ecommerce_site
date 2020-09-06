@@ -70,7 +70,7 @@ export default function UserView({ uploadHandler }) {
     const handleSave = () => {
         // setAlert({ open: true, message: 'Changes Saved Successfully', severity: 'success' });
         setEditMode(false)
-        if(user._id){
+        if(user){
             uploadHandler(user);
         }
     }
@@ -82,7 +82,7 @@ export default function UserView({ uploadHandler }) {
     return (
         <div>
             <Container maxWidth="md">
-                <Box style={{ backgroundImage: `url${user.backgroundImage}` }} position="relative">
+                <Box position="relative">
                     <Box height={300}>
                         <Paper style={{ height: '100%' }}></Paper>
                     </Box>
@@ -92,7 +92,7 @@ export default function UserView({ uploadHandler }) {
                                 <Avatar
                                     classes={{ root: classes.avatar }}
                                     variant="square"
-                                    src={user.avatar}
+                                    src={user?.avatar}
                                 />
                                 <Hide hide={!editMode}>
                                     <Box position="absolute" top={0} right={0}>
@@ -111,14 +111,14 @@ export default function UserView({ uploadHandler }) {
                             <Box display="flex" justifyContent="end" mb={4} ml={2} mt={2} flexDirection="column">
                                 <Box display="flex">
                                     <Typography onClick={() => handleFieldClick('name')} variant="h4">
-                                        {user.name}
+                                        {user?.name}
                                     </Typography>
                                     <Typography onClick={() => handleFieldClick('role')} color="primary">
-                                        {user.role}
+                                        {user?.role}
                                     </Typography>
                                 </Box>
                                 <Typography color="textSecondary">
-                                    {user.email}
+                                    {user?.email}
                                 </Typography>
                             </Box>
                         </Box>
@@ -147,7 +147,7 @@ export default function UserView({ uploadHandler }) {
                     {
                         select.includes(focus) ?
                             <TextField
-                                value={user[focus]}
+                                value={user?.[focus]}
                                 onChange={handleChange}
                                 select
                                 onChange={handleChange}
@@ -158,7 +158,7 @@ export default function UserView({ uploadHandler }) {
                                     </MenuItem>
                                 )}
                             </TextField> :
-                            <TextField value={user[focus]} onChange={handleChange} />
+                            <TextField value={user?.[focus]} onChange={handleChange} />
                     }
                 </Box>
             </Dialog>

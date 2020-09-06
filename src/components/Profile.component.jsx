@@ -18,6 +18,8 @@ export default function Profile() {
     useEffect(()=>{
         if(user){
             setEditUser(user)
+        }else{
+            setEditUser(null)
         }
     });
     

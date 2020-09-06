@@ -109,7 +109,7 @@ export default function Dashboard() {
             <div className={classes.contentRoot}>
                 <DashboardRoutes />
             </div>
-            <Search/>
+            {/* <Search/> */}
         </div>
     )
 }

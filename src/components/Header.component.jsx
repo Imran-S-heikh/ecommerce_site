@@ -5,7 +5,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
-import Search from '../molecules/Search.mole';
+// import Search from '../molecules/Search.mole';
 import { useRecoilState } from 'recoil';
 import { searchOpenState, mainDrawerState, cartDrawerState, darkModeState } from '../recoil/atoms';
 import NavMenu from '../molecules/NavMenu.mole';
@@ -229,7 +229,7 @@ export default function Header() {
                     </div>
                 </Container>
             </AppBar>
-            <Search />
+            {/* <Search /> */}
             <MainDrawer open={drawerOpen} setOpen={setDrawerOpen}>
                 <NavMenu styleProp={{ flxd: 'column', py: 10, fz: 12 }} showIcon={true} />
             </MainDrawer>

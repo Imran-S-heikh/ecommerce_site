@@ -7,6 +7,7 @@ import Dashboard from './Dashboard.component';
 import ViewProducts from './ViewProducts.component';
 import EditProduct from './EditProduct.component';
 import Profile from './Profile.component';
+import MakeModarator from './MakeModarator.component';
 
 export default function DashboardRoutes() {
 
@@ -23,6 +24,9 @@ export default function DashboardRoutes() {
     }
     if(route === routes.EDIT_PRODUCT){
         return <EditProduct />
+    }
+    if(route === routes.MAKE_MODARATOR){
+        return <MakeModarator />
     }
     if(route === routes.PROFILE){
         return <Profile />

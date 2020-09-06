@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { USER, USER_CART, WISH_LIST } from "./user.keys";
+import { USER, USER_CART, WISH_LIST, EDIT_USER } from "./user.keys";
 
 export const userState = atom({
     key: USER,
@@ -11,7 +11,16 @@ export const userCartState= atom({
     default: []
 });
 
-export const userWishListState= atom({
+export const userWishListState = atom({
     key: WISH_LIST,
     default: []
+});
+
+export const editUserState = atom({
+    key: EDIT_USER,
+    default: {
+        name: '',
+        role: '',
+        avatar: ''
+    }
 });

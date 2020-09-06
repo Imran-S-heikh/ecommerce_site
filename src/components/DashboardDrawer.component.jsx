@@ -149,7 +149,7 @@ export default function DashboardDrawer() {
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Management" startIcon={<PeopleIcon />}>
                             <MenuList color="textPrimary">
-                                <MenuItem className={classes.menuItem} button={true} >
+                                <MenuItem onClick={()=>setRoute(routes.MAKE_MODARATOR)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <AddIcon />
                                     </ListItemIcon>
@@ -157,14 +157,14 @@ export default function DashboardDrawer() {
                                         Make Moderator
                                 </ListItemText>
                                 </MenuItem>
-                                <MenuItem className={classes.menuItem} button={true} >
+                                {/* <MenuItem className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <UpdateIcon />
                                     </ListItemIcon>
                                     <ListItemText className={classes.white}>
                                         Update User
                                     </ListItemText>
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <ViewListIcon />

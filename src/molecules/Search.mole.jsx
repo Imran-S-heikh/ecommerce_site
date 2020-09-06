@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typography, ClickAwayListener } from '@material-ui/core'
+import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typography, ClickAwayListener, Box, List, ListItem, ListItemAvatar, ListItemText, Avatar, MenuItem, MenuList } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ const createStyles = makeStyles(theme => ({
     icon: { fontSize: 30 }
 }))
 
-export default function Search() {
+export default function Search({listItem,handleSearchKey,searchTitle,items=[]}) {
 
     const classes = createStyles()
     const [searchKey, setSearchKey] = useState('');
@@ -51,9 +51,16 @@ export default function Search() {
                                     <SearchIcon className={classes.icon} />
                                 </IconButton>
                             </div>
-                            <InputBase onChange={e => setSearchKey(e.target.value)} value={searchKey} placeholder="Search Products..." classes={{ root: classes.input }} fullWidth />
+                            <InputBase onChange={e => {setSearchKey(e.target.value);handleSearchKey(e)}} value={searchKey} placeholder={searchTitle} classes={{ root: classes.input }} fullWidth />
                         </div>
                         <Divider style={{ marginTop: 10 }} />
+                        <Box maxHeight={200} overflow="auto">
+                            <MenuList>
+                               {items.map(item=>
+                                    React.cloneElement(listItem,{...item})
+                                )}
+                            </MenuList>
+                        </Box>
                     </div>
                 </Container>
             </ClickAwayListener>

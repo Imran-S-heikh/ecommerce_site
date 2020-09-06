@@ -39,7 +39,7 @@ export const darkModeState = atom({
 
 export const dashboardRouteState = atom({
     key: DASH_BOARD_ROUTES,
-    default: routes.CREATE_PRODUCT
+    default: routes.MAKE_MODARATOR
 });
 
 export const updateProductState = atom({

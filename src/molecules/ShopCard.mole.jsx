@@ -106,16 +106,15 @@ const createClasses = makeStyles(theme => ({
     }
 }))
 
-export default function ShopCard({ width = 280, image, brand,name,rating,price }) {
-
+export default function ShopCard({width = 280,item}) {
+    const { image, brand,name,rating,price } = item;
     const classes = createClasses()
     const history = useHistory();
     const setCardItems = useSetRecoilState(userCartState);
     const setWishList = useSetRecoilState(userWishListState);
 
     const addCartItem = ()=>{
-        const item = {name,image,rating,price,brand}
-        setCardItems(prev=>[...prev,item]);
+        setCardItems((pre)=>[...pre,item]);
     }
  
 

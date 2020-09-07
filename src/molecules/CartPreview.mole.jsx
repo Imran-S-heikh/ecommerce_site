@@ -1,16 +1,22 @@
 import React from 'react'
 import PreviewCartItem from './PreviewCartItem.mole'
 import { Divider, Box, Typography, Button } from '@material-ui/core'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { userCartState } from '../recoil/user/user.atoms'
+import { cartState } from '../recoil/user/user.selector'
 import Hide from './Hide.mole'
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 export default function CartPreview() {
 
-    const [cartItems, setCartItems] = useRecoilState(userCartState)
+    const [cartItems, setCartItems] = useRecoilState(userCartState);
+    const cart = useRecoilValue(cartState)
     const history = useHistory();
+
+    useEffect(()=>{
+        console.log(cart)
+    },[cart])
 
     return (
         <Box>
@@ -22,8 +28,8 @@ export default function CartPreview() {
                 </Box>
             }>
                 <Box maxHeight={300} overflow="hidden scroll">
-                    {cartItems.map((item, i) =>
-                        <PreviewCartItem key={i} item={item} />
+                    {cart.products.map((item, i) =>
+                        <PreviewCartItem key={item._id} item={item} />
                     )}
                 </Box>
                 <Divider />
@@ -32,7 +38,7 @@ export default function CartPreview() {
                         Total Price:
                 </Typography>
                     <Typography style={{ fontWeight: 'bold' }}>
-                        $680
+                        ${cart.totalPrice}
                 </Typography>
                 </Box>
                 <Box width="80%" margin="auto">

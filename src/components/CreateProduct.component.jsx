@@ -25,7 +25,7 @@ export default function CreateProduct() {
     });
     return (
         <>
-            <MakeProduct title="Create Product" buttonTitle="Create Product" getProduct={handleProduct} />
+            <MakeProduct pageTitle="Create Product" buttonTitle="Create Product" getProduct={handleProduct} />
         </>
     )
 }

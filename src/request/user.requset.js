@@ -55,3 +55,8 @@ export const updateUser = catchAsync(async (data,id) => {
     return response;
 })
 
+export const getAdmins = catchAsync(async () => {
+    const response = await request({}, `/users/admins`,'POST');
+    return response;
+})
+

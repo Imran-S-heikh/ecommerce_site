@@ -165,7 +165,7 @@ export default function DashboardDrawer() {
                                         Update User
                                     </ListItemText>
                                 </MenuItem> */}
-                                <MenuItem className={classes.menuItem} button={true} >
+                                <MenuItem onClick={()=>setRoute(routes.ADMIN_LIST)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <ViewListIcon />
                                     </ListItemIcon>
@@ -183,7 +183,7 @@ export default function DashboardDrawer() {
                                     </ListItemIcon>
                                     <ListItemText className={classes.white}>
                                         New Orders
-                                </ListItemText>
+                                    </ListItemText>
                                 </MenuItem>
                                 <MenuItem className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
@@ -202,7 +202,6 @@ export default function DashboardDrawer() {
                                 </ListItemText>
                                 </MenuItem>
                             </MenuList>
-                            SettingsApplicationsIcon
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title)=>{setRoute(routes.PROFILE);setSelected(title)}} selected={selected} title="Profile" startIcon={<PersonIcon />} />
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Settings" startIcon={<SettingsIcon />}>

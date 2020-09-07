@@ -8,6 +8,7 @@ import ViewProducts from './ViewProducts.component';
 import EditProduct from './EditProduct.component';
 import Profile from './Profile.component';
 import MakeModarator from './MakeModarator.component';
+import AdminList from './AdminList.component';
 
 export default function DashboardRoutes() {
 
@@ -30,6 +31,9 @@ export default function DashboardRoutes() {
     }
     if(route === routes.PROFILE){
         return <Profile />
+    }
+    if(route === routes.ADMIN_LIST){
+        return <AdminList />
     }
     return null;
 

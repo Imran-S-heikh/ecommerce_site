@@ -9,6 +9,10 @@ import VarientColor from './VarientColor.mole';
 import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { userCartState, userWishListState } from '../recoil/user/user.atoms';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { useState } from 'react';
+import Hide from './Hide.mole';
+
 
 
 
@@ -106,29 +110,30 @@ const createClasses = makeStyles(theme => ({
     }
 }))
 
-export default function ShopCard({width = 280,item}) {
-    const { image, brand,name,rating,price } = item;
+export default function ShopCard({ width = 280, item }) {
+    const { image, brand, name, rating, price } = item;
     const classes = createClasses()
     const history = useHistory();
     const setCardItems = useSetRecoilState(userCartState);
     const setWishList = useSetRecoilState(userWishListState);
+    const [loading, setLoading] = useState(true);
 
-    const addCartItem = ()=>{
-        setCardItems((pre)=>{
+    const addCartItem = () => {
+        setCardItems((pre) => {
             let newProduct = false
-            const ids = pre.map(item=>item._id);
-            const arr = [...pre].map(product=>{
-                if(item._id === product._id){
-                    return {...product,count: product.count + 1}
-                }else{
+            const ids = pre.map(item => item._id);
+            const arr = [...pre].map(product => {
+                if (item._id === product._id) {
+                    return { ...product, count: product.count + 1 }
+                } else {
                     return product;
                 }
             })
-            if(!ids.includes(item._id))return [...arr,{...item,count:1}]
+            if (!ids.includes(item._id)) return [...arr, { ...item, count: 1 }]
             return arr;
         });
     }
- 
+
 
     return (
         <Card className={classes.container} style={{ width: width }}>
@@ -136,15 +141,18 @@ export default function ShopCard({width = 280,item}) {
                 <IconButton>
                     <VisibilityIcon />
                 </IconButton>
-                <IconButton onClick={()=>setWishList(prev=>[...prev,{name,image,rating,price,brand}])}>
+                <IconButton onClick={() => setWishList(prev => [...prev, { name, image, rating, price, brand }])}>
                     <FavoriteIcon />
                 </IconButton>
                 <IconButton>
                     <CompareArrowsIcon />
                 </IconButton>
             </CardActions>
-            <CardActionArea onClick={()=>history.push('/single')}>
-                <CardMedia component="img" classes={{ media: classes.cardMedia }} image={image.card[0]} />
+            <CardActionArea onClick={() => history.push('/single')}>
+                <Hide hide={!loading}>
+                    <Skeleton width="100%" height={280} />
+                </Hide>
+                <CardMedia component="img" onLoad={(e) => setLoading(false)} classes={{ media: classes.cardMedia }} image={image.card[0]} />
             </CardActionArea>
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>
@@ -159,7 +167,7 @@ export default function ShopCard({width = 280,item}) {
                 </Typography>
                 <Box >
                     {
-                        image.small.map(img=>
+                        image.small.map(img =>
                             <VarientColor image={img} />
                         )
                     }
@@ -174,7 +182,7 @@ export default function ShopCard({width = 280,item}) {
                             <VisibilityIcon />
                         </IconButton>
                         <IconButton>
-                            <FavoriteIcon onClick={()=>setWishList(prev=>[...prev,{name,image,rating,price,brand}])}/>
+                            <FavoriteIcon onClick={() => setWishList(prev => [...prev, { name, image, rating, price, brand }])} />
                         </IconButton>
                         <IconButton>
                             <CompareArrowsIcon />

@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { SEARCH_OPEN, MAIN_DRAWER_OPEN, CART_DRAWER_OPEN, SIDE_DRAWER_OPEN, SLIDE_CHANGE, DASH_DRAWER_OPEN, DARK_MODE, DASH_BOARD_ROUTES, UPDATE_PRODUCT, ALERT_SNACKBAR, LOADER_OPEN } from "./keys";
+import { SEARCH_OPEN, MAIN_DRAWER_OPEN, CART_DRAWER_OPEN, SIDE_DRAWER_OPEN, SLIDE_CHANGE, DASH_DRAWER_OPEN, DARK_MODE, DASH_BOARD_ROUTES, UPDATE_PRODUCT, ALERT_SNACKBAR, LOADER_OPEN, SHOP_SEARCH } from "./keys";
 import { routes } from "../utils";
 
 export const searchOpenState = atom({
@@ -61,3 +61,13 @@ export const loaderState = atom({
     key: LOADER_OPEN,
     default: false
 });
+
+export const shopQueryState = atom({
+    key: SHOP_SEARCH,
+    default: {
+        page: 1,
+        limit: 8
+    }
+});
+
+

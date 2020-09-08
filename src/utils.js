@@ -110,6 +110,12 @@ export const extractFilter = (primaryObject, substractObject) => {
     return obj1
 }
 
+export const queryBuilder = (obj)=>{
+    if(Object.keys(obj).length === 0)return '';
+    const query = Object.keys(obj).map(key=> `${key}=${obj[key]}`).join('&')
+    return `?${query}`;
+}
+
 // class Filter {
 //     constructor(primaryObject, secondaryObject) {
 //         this.primaryObject = primaryObject,

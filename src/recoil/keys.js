@@ -7,6 +7,7 @@ export const DARK_MODE = 'DARK_MODE';
 export const DASH_BOARD_ROUTES = 'DASH_BOARD_ROUTES';
 export const ALERT_SNACKBAR = 'ALERT_SNACKBAR';
 export const LOADER_OPEN = 'LOADER_OPEN';
+export const SHOP_SEARCH = 'SHOP_SEARCH';
 
 
 

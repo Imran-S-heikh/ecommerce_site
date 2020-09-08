@@ -12,6 +12,7 @@ export default function CreateProduct() {
 
 
     const handleProduct = catchAsync(async(product)=>{
+        console.log(product)
         setLoader(true);
         const response = await createProduct(product);
         setLoader(false)

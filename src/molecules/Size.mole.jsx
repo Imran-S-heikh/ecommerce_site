@@ -18,12 +18,12 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Size({size}) {
+export default function Size({onClick,size}) {
 
     const classes = createStyles();
 
     return (
-        <ButtonBase className={classes.root}>
+        <ButtonBase onClick={onClick} className={classes.root}>
             {size}
         </ButtonBase>
     )

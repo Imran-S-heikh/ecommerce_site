@@ -32,21 +32,12 @@ export default function Cart() {
     }
 
     const handleAdd = (id)=>{
-        setUserCart(pre=>{
-            const product = pre.filter(item=>item._id === id)
-            return [...pre,product[0]]
-        })
+        setUserCart(pre=>pre.map(item=>id === item._id ? {...item,count: item.count + 1} : item))
+
     }
 
     const handleRemove = (id)=>{
-        let onlyOne = true;
-        setUserCart(pre=>pre.filter((item,i,arr)=> {
-            if(item._id === id && onlyOne){
-                onlyOne = false;
-                return false
-            }
-            return true
-        }))
+        setUserCart(pre=>pre.map(item=>id === item._id ? {...item,count: item.count - 1} : item).filter(item=> item.count !== 0))
     }
 
     return (

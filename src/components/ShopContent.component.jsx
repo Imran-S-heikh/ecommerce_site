@@ -73,14 +73,172 @@ export default function ShopContent() {
     const [shopItems,setShopItems] = useState([]);
 
     useEffect(()=>{
-        const fetchProducts = async ()=>{
-            const response = await getProducts();
-            if(checkStatus(response)){
-                setShopItems(response.data.products)
-                console.log(response)
-            }
-        }
-        fetchProducts()
+        // const fetchProducts = async ()=>{
+        //     const response = await getProducts();
+        //     if(checkStatus(response)){
+        //         setShopItems(response.data.products)
+        //         console.log(response)
+        //     }
+        // }
+        // fetchProducts()
+        setShopItems(
+            [
+                {
+                    "rating": "4.5",
+                    "name": "Premier Cropped Skinny Jean", "brand": "GAP", "price": "380.00",
+                    "image": {
+                        "small": [assets.product[0]],
+                        "card": [assets.product[0]],
+                        "original": [assets.product[0]]
+                    },
+                    _id: "8374832fd347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "3.5",
+                    "name": "East Hampton Fleece Hoodie", "brand": "GAP", "price": "440.00",
+                    "image": {
+                        "small": [assets.product[1]],
+                        "card": [assets.product[1]],
+                        "original": [assets.product[1]]
+                    },
+                    _id: "8374832sf9347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "5.0",
+                    "name": "Relaxed-Fit Cotton Shirt", "brand": "GUESS", "price": "480.00",
+                    "image": {
+                        "small": [assets.product[2]],
+                        "card": [assets.product[2]],
+                        "original": [assets.product[2]]
+                    },
+                    _id: "83748wer329347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "4.0", "name": "Tailored Fit Mesh-Panel Polo",
+                    "brand": "ZARA", "price": "400.00",
+                    "image": {
+                        "small": [assets.product[3]],
+                        "card": [assets.product[3]],
+                        "original": [assets.product[3]]
+                    },
+                    _id: "83748ase329347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "3.0",
+                    "name": "Slim Fit Cotton Oxford Shirt", "brand": "LEVI'S",
+                    "price": "500.00",
+                    "image": {
+                        "small": [assets.product[4]],
+                        "card": [assets.product[4]],
+                        "original": [assets.product[4]]
+                    },
+                    _id: "8374weryh8329347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "4.5",
+                    "name": "Faxon Canvas Low-Top Sneaker", "brand": "ZARA", "price": "460.00",
+                    "image": {
+                        "small": [assets.product[5]],
+                        "card": [assets.product[5]],
+                        "original": [assets.product[5]]
+                    },
+                    _id: "8374832ujyt9347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "4.5",
+                    "name": "Viscose-Cashmere Scarf", "brand": "LACOSTE", "price": "440.00",
+                    "image": {
+                        "small": [assets.product[6]],
+                        "card": [assets.product[6]],
+                        "original": [assets.product[6]]
+                    },
+                    _id: "83748jyth329347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                },
+                {
+                    "rating": "4.5", "name": "Plaid Cotton Oxford Shirt", "brand": "LEVI'S",
+                    "price": "20.00",
+                    "image": {
+                        "small": [assets.product[7]],
+                        "card": [assets.product[7]],
+                        "original": [assets.product[7]]
+                    },
+                    _id: "83748fhtr329347",
+                    "currentPrice": 445,
+                    "basePrice": 330,
+                    "productType": "jeans",
+                    "catagory": "Men",
+                    "productCode": "ML--oo",
+                    "title": "The best Product IN This current World",
+                    "selectedSize": ['X', 'M', 'L'],
+                    "varient": true,
+                    "varientCode": "ML"
+                }
+            ]
+            
+        )
     },[]);
 
     return (

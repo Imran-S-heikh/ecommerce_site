@@ -20,6 +20,7 @@ import { userState, userCartState } from '../recoil/user/user.atoms';
 import Hide from '../molecules/Hide.mole';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useRecoilValue } from 'recoil';
+import { cartState } from '../recoil/user/user.selector';
 
 
 const createStyle = makeStyles(theme => ({
@@ -84,7 +85,7 @@ export default function Header() {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
-    const cartItems = useRecoilValue(userCartState);
+    const cart = useRecoilValue(cartState);
 
 
     const history = useHistory();
@@ -124,7 +125,7 @@ export default function Header() {
                             <ClickAwayListener onClickAway={() => setCartOpen(false)}>
                                 <Tooltip title="Cart" arrow>
                                     <IconButton onClick={() => setCartOpen(!cartOpen)} className={classes.button}>
-                                        <Badge badgeContent={cartItems.length} color="primary">
+                                        <Badge badgeContent={cart.totalQuantity} color="primary">
                                             <ShoppingBasketIcon className={classes.icon} />
                                         </Badge>
                                     </IconButton>
@@ -137,7 +138,7 @@ export default function Header() {
                         <Box display={{ xs: 'block', md: 'none' }}>
                             <Tooltip title="Cart" arrow>
                                 <IconButton onClick={() => setCartDrawerOpen(!cartOpen)} className={classes.button}>
-                                    <Badge badgeContent={cartItems.length} color="primary">
+                                    <Badge badgeContent={cart.totalQuantity} color="primary">
                                         <ShoppingBasketIcon className={classes.icon} />
                                     </Badge>
                                 </IconButton>

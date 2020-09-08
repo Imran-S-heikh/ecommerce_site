@@ -18,7 +18,7 @@ const createStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PreviewCartItem({ item }) {
+export default function PreviewCartItem({ item,handleDelete }) {
 
     const classes = createStyles();
 
@@ -44,7 +44,7 @@ export default function PreviewCartItem({ item }) {
                 </Box>
             </ListItemText>
             <ListItemSecondaryAction>
-                <IconButton>
+                <IconButton onClick={()=>handleDelete(item._id)}>
                     <DeleteIcon />
                 </IconButton>
             </ListItemSecondaryAction>

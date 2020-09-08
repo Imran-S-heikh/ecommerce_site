@@ -16,7 +16,12 @@ const showcaseItems = [
     {
         "rating": "4.5",
         "name": "Premier Cropped Skinny Jean", "brand": "GAP", "price": "380.00",
-        "image": assets.product[0],
+        "image": {
+            "small": [assets.product[0]],
+            "card": [assets.product[0]],
+            "original": [assets.product[0]]
+        },
+        _id: "8374832fd347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -30,7 +35,12 @@ const showcaseItems = [
     {
         "rating": "3.5",
         "name": "East Hampton Fleece Hoodie", "brand": "GAP", "price": "440.00",
-        "image": assets.product[1],
+        "image": {
+            "small": [assets.product[1]],
+            "card": [assets.product[1]],
+            "original": [assets.product[1]]
+        },
+        _id: "8374832sf9347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -44,7 +54,12 @@ const showcaseItems = [
     {
         "rating": "5.0",
         "name": "Relaxed-Fit Cotton Shirt", "brand": "GUESS", "price": "480.00",
-        "image": assets.product[2],
+        "image": {
+            "small": [assets.product[2]],
+            "card": [assets.product[2]],
+            "original": [assets.product[2]]
+        },
+        _id: "83748wer329347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -58,7 +73,12 @@ const showcaseItems = [
     {
         "rating": "4.0", "name": "Tailored Fit Mesh-Panel Polo",
         "brand": "ZARA", "price": "400.00",
-        "image": assets.product[3],
+        "image": {
+            "small": [assets.product[3]],
+            "card": [assets.product[3]],
+            "original": [assets.product[3]]
+        },
+        _id: "83748ase329347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -73,7 +93,12 @@ const showcaseItems = [
         "rating": "3.0",
         "name": "Slim Fit Cotton Oxford Shirt", "brand": "LEVI'S",
         "price": "500.00",
-        "image": assets.product[4],
+        "image": {
+            "small": [assets.product[4]],
+            "card": [assets.product[4]],
+            "original": [assets.product[4]]
+        },
+        _id: "8374weryh8329347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -87,7 +112,12 @@ const showcaseItems = [
     {
         "rating": "4.5",
         "name": "Faxon Canvas Low-Top Sneaker", "brand": "ZARA", "price": "460.00",
-        "image": assets.product[5],
+        "image": {
+            "small": [assets.product[5]],
+            "card": [assets.product[5]],
+            "original": [assets.product[5]]
+        },
+        _id: "8374832ujyt9347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -101,7 +131,12 @@ const showcaseItems = [
     {
         "rating": "4.5",
         "name": "Viscose-Cashmere Scarf", "brand": "LACOSTE", "price": "440.00",
-        "image": assets.product[6],
+        "image": {
+            "small": [assets.product[6]],
+            "card": [assets.product[6]],
+            "original": [assets.product[6]]
+        },
+        _id: "83748jyth329347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -115,7 +150,12 @@ const showcaseItems = [
     {
         "rating": "4.5", "name": "Plaid Cotton Oxford Shirt", "brand": "LEVI'S",
         "price": "20.00",
-        "image": assets.product[7],
+        "image": {
+            "small": [assets.product[7]],
+            "card": [assets.product[7]],
+            "original": [assets.product[7]]
+        },
+        _id: "83748fhtr329347",
         "currentPrice": 445,
         "basePrice": 330,
         "productType": "jeans",
@@ -228,8 +268,8 @@ export default function ViewProducts() {
                                     <TablePagination
                                         rowsPerPageOptions={[5, 10, 15]}
                                         rowsPerPage={rowsPerPage}
-                                        page={page -1}
-                                        onChangePage={(_, nxt) => setPage(nxt)}
+                                        page={page - 1}
+                                        onChangePage={(_, nxt) => {console.log(nxt);setPage(nxt+1)}}
                                         onChangeRowsPerPage={handleRowsPerPAge}
                                         count={total}
                                     />

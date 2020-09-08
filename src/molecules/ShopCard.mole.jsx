@@ -114,7 +114,19 @@ export default function ShopCard({width = 280,item}) {
     const setWishList = useSetRecoilState(userWishListState);
 
     const addCartItem = ()=>{
-        setCardItems((pre)=>[...pre,item]);
+        setCardItems((pre)=>{
+            let newProduct = false
+            const ids = pre.map(item=>item._id);
+            const arr = [...pre].map(product=>{
+                if(item._id === product._id){
+                    return {...product,count: product.count + 1}
+                }else{
+                    return product;
+                }
+            })
+            if(!ids.includes(item._id))return [...arr,{...item,count:1}]
+            return arr;
+        });
     }
  
 

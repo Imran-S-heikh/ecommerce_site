@@ -15,3 +15,9 @@ export const updateProduct = catchAsync(async (updatedProduct,id)=>{
     const response = await request(updatedProduct,`/Products/${id}`,'PATCH')
     return response;
 });
+
+export const checkoutRequest = catchAsync(async (data)=>{
+    console.log(data)
+    const response = await request(data,`/products/checkout`,'POST')
+    return response;
+});

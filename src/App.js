@@ -23,6 +23,7 @@ import { userState } from './recoil/user/user.atoms';
 import Defaults from './components/Defaults.component';
 import WishList from './pages/WishList.page';
 import PasswordReset from './pages/PasswordReset.page';
+import Checkout from './pages/Checkout.page';
 
 
 
@@ -59,7 +60,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Defaults/>
-        <HideComponentOnRoute route="/dashboard" >
+        <HideComponentOnRoute route={['/dashboard','/checkout']} >
           <Header />
         </HideComponentOnRoute>
         <Switch>
@@ -74,6 +75,9 @@ function App() {
           </Route>
           <Route path="/resetPassword/:token">
             <PasswordReset />
+          </Route>
+          <Route path="/checkout">
+            <Checkout/>
           </Route>
           <Route path="/signin">
             <Signin />
@@ -100,7 +104,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
-        <HideComponentOnRoute route="/dashboard" >
+        <HideComponentOnRoute route={['/dashboard','/checkout']} >
           <Footer />
         </HideComponentOnRoute>
       </ThemeProvider>

@@ -9,6 +9,9 @@ import EditProduct from './EditProduct.component';
 import Profile from './Profile.component';
 import MakeModarator from './MakeModarator.component';
 import AdminList from './AdminList.component';
+import NewOrders from './ViewOrders.component';
+import CompletedOrders from './CompletedOrders.component';
+import ViewOrders from './ViewOrders.component';
 
 export default function DashboardRoutes() {
 
@@ -35,6 +38,15 @@ export default function DashboardRoutes() {
     if(route === routes.ADMIN_LIST){
         return <AdminList />
     }
+    if(route === routes.VIEW_ORDERS){
+        return <ViewOrders />
+    }
+    // if(route === routes.COMPLETED_ORDERS){
+    //     return <CompletedOrders />
+    // }
+    // if(route === routes.PENDING_ORDERS){
+    //     return <Pending />
+    // }
     return null;
 
 }

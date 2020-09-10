@@ -24,6 +24,7 @@ import Defaults from './components/Defaults.component';
 import WishList from './pages/WishList.page';
 import PasswordReset from './pages/PasswordReset.page';
 import Checkout from './pages/Checkout.page';
+import PaymentSuccess from './pages/PaymentSuccess.page';
 
 
 
@@ -100,9 +101,13 @@ function App() {
           <Route path="/cart" exact>
             <Cart />
           </Route>
+          <Route path="/paymentSuccess/:orderId">
+            <PaymentSuccess />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
+         
         </Switch>
         <HideComponentOnRoute route={['/dashboard','/checkout']} >
           <Footer />

@@ -19,6 +19,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import TimelapseIcon from '@material-ui/icons/Timelapse';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import WebIcon from '@material-ui/icons/Web';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import { routes } from '../utils';
@@ -177,15 +178,15 @@ export default function DashboardDrawer() {
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Orders" startIcon={<AddShoppingCartIcon />}>
                             <MenuList color="textPrimary">
-                                <MenuItem className={classes.menuItem} button={true} >
+                                <MenuItem onClick={()=>setRoute(routes.VIEW_ORDERS)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
-                                        <NewReleasesIcon />
+                                        <LocalShippingIcon />
                                     </ListItemIcon>
                                     <ListItemText className={classes.white}>
-                                        New Orders
+                                        View Orders
                                     </ListItemText>
                                 </MenuItem>
-                                <MenuItem className={classes.menuItem} button={true} >
+                                {/* <MenuItem className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <AssignmentTurnedInIcon />
                                     </ListItemIcon>
@@ -200,7 +201,7 @@ export default function DashboardDrawer() {
                                     <ListItemText className={classes.white}>
                                         Pending Orders
                                 </ListItemText>
-                                </MenuItem>
+                                </MenuItem> */}
                             </MenuList>
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title)=>{setRoute(routes.PROFILE);setSelected(title)}} selected={selected} title="Profile" startIcon={<PersonIcon />} />

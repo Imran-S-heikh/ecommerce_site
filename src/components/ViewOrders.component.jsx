@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, Container, TableBody, Avatar, Button, TableFooter, TablePagination, IconButton, Menu, MenuItem, makeStyles, Dialog, List, ListItem, ListItemAvatar, ListItemText, Divider } from '@material-ui/core'
+import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, Container, TableBody, Avatar, Button, TableFooter, TablePagination, IconButton, Menu, MenuItem, makeStyles, Dialog, List, ListItem, ListItemAvatar, ListItemText, Divider, Chip } from '@material-ui/core'
 import { assets, routes, checkStatus, catchAsync } from '../utils'
 import Rating from '@material-ui/lab/Rating'
 import EditIcon from '@material-ui/icons/Edit';
@@ -16,20 +16,30 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useRef } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useIsInit } from '../customHooks';
+import DoneIcon from '@material-ui/icons/Done';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+
 
 
 const createStyles = makeStyles(theme => ({
     pending: {
-        color: theme.palette.warning.main
+        color: theme.palette.warning.main,
+        textTransform: 'capitalize'
     },
     complete: {
-        color: theme.palette.success.main
+        color: theme.palette.success.main,
+        textTransform: 'capitalize'
+
     },
     paid: {
-        color: theme.palette.success.main
+        color: theme.palette.success.main,
+        textTransform: 'capitalize'
+
     },
     cancelled: {
-        color: theme.palette.error.main
+        color: theme.palette.error.main,
+        textTransform: 'capitalize'
+
     }
 }))
 
@@ -70,10 +80,6 @@ export default function ViewOrders() {
         setLoading(false)
     })
 
-    const handleEdit = (product) => {
-        setProduct({ ...product, productImage: product.image.original.map(i => ({ src: i })) });
-        setRoute(routes.EDIT_PRODUCT);
-    }
 
     const handleRowsPerPAge = event => {
         setRowsPerPage(event.target.value)
@@ -187,14 +193,33 @@ export default function ViewOrders() {
                                             <TableCell>{item.orderBy.name}</TableCell>
                                             <TableCell>{item.totalPrice}</TableCell>
                                             <TableCell>
-                                                <Typography className={classes[item.paymentStatus]}>
-                                                    {item.paymentStatus}
-                                                </Typography>
+                                                <Chip 
+                                                    onClick={()=>{}} 
+                                                    variant="outlined" 
+                                                    style={{textTransform: 'capitalize'}}
+                                                    label={item.paymentStatus}
+                                                    deleteIcon={
+                                                        item.paymentStatus === 'paid' ? <DoneIcon className={classes[item.paymentStatus]}  /> : 
+                                                        item.paymentStatus === 'pending' ? <HourglassEmptyIcon className={classes[item.paymentStatus]}  /> :
+                                                        <CloseIcon className={classes[item.paymentStatus]}  />
+                                                    }
+                                                    onDelete={()=>{}}
+                                                />
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes[item.deliveryStatus]}>
-                                                    {item.deliveryStatus}
-                                                </Typography>
+                                                <Chip 
+                                                    onClick={()=>{}} 
+                                                    variant="outlined" 
+                                                    color="default" 
+                                                    style={{textTransform: 'capitalize'}}
+                                                    label={item.deliveryStatus}
+                                                    deleteIcon={
+                                                        item.deliveryStatus === 'complete' ? <DoneIcon className={classes[item.deliveryStatus]}  /> : 
+                                                        item.deliveryStatus === 'pending' ? <HourglassEmptyIcon className={classes[item.deliveryStatus]}  /> :
+                                                        <CloseIcon className={classes[item.deliveryStatus]}  />
+                                                    }
+                                                    onDelete={()=>{}}
+                                                />
                                             </TableCell>
                                             <TableCell>
                                                 <Typography align="center" color="textSecondary">
@@ -317,7 +342,7 @@ export default function ViewOrders() {
                                 Delivery Status
                             </Typography>
                             <Typography className={classes[order?.deliveryStatus]}>
-                                {order?.deliveryStatus}
+                                {order?.deliveryStatus.toUpperCase()}
                             </Typography>
                         </Box>
                         <Box my={1} display="flex" justifyContent="space-between">
@@ -325,7 +350,7 @@ export default function ViewOrders() {
                                 Payment Status
                             </Typography>
                             <Typography className={classes[order?.paymentStatus]}>
-                                {order?.paymentStatus}
+                                {order?.paymentStatus.toUpperCase()}
                             </Typography>
                         </Box>
                         <Box my={1} display="flex" justifyContent="space-between">

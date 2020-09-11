@@ -21,13 +21,13 @@ export default function Signin() {
     const [password, setPassword] = useState('12345678');
     const [emailPopup, setEmailPopup] = useState(false);
     const [resetEmail, setResetEmail] = useState(null);
-    const [messagePopup,setMessagePopup] = useState(false);
+    const [messagePopup, setMessagePopup] = useState(false);
     const formRef = useRef();
 
 
     if (user) {
         setAlertSnackbar({ open: true, message: 'You are Already Logged In', severity: 'info' })
-        return <Redirect to="/home" />
+        history.push('/');
     }
 
 
@@ -39,27 +39,28 @@ export default function Signin() {
         if (checkStatus(response)) {
             setUser(response.data.user);
             setAlertSnackbar({ open: true, message: 'Logged In Successfully', time: 4000, severity: 'success' })
+
         } else {
             setAlertSnackbar({ open: true, message: response.data.message, time: 4000, severity: 'error' })
         }
     });
 
 
-    const forgetRequest = catchAsync(async() => {
-        setAlertSnackbar({open: true,message: 'Please wait for the response',severity: 'warning'})
+    const forgetRequest = catchAsync(async () => {
+        setAlertSnackbar({ open: true, message: 'Please wait for the response', severity: 'warning' })
         setMessagePopup(true)
-        const response = await forgetPassword({email: resetEmail});
-        if(checkStatus(response)){
-            setAlertSnackbar({open: true,message: response.data.message,severity: 'success',time: 12000})
-        }else{
+        const response = await forgetPassword({ email: resetEmail });
+        if (checkStatus(response)) {
+            setAlertSnackbar({ open: true, message: response.data.message, severity: 'success', time: 12000 })
+        } else {
             setMessagePopup(false);
-            setAlertSnackbar({open: true,message: response.data.message,severity: 'error'})
+            setAlertSnackbar({ open: true, message: response.data.message, severity: 'error' })
         }
     })
     const handleFromSubmit = (event) => {
         event.preventDefault();
         setEmailPopup(false);
-        forgetRequest() 
+        forgetRequest()
     }
 
 
@@ -119,7 +120,7 @@ export default function Signin() {
                             Please Provide Your Email Address
                         </Typography>
                         <form ref={formRef} onSubmit={handleFromSubmit}>
-                            <TextField value={resetEmail} onChange={(e)=>setResetEmail(e.currentTarget.value)} required label="Email Address" fullWidth type="email" />
+                            <TextField value={resetEmail} onChange={(e) => setResetEmail(e.currentTarget.value)} required label="Email Address" fullWidth type="email" />
                         </form>
                         <Box mt={2}>
                             <Button fullWidth variant="contained" color="primary" onClick={() => formRef.current.requestSubmit()}>Submit</Button>
@@ -131,7 +132,7 @@ export default function Signin() {
                 <ClickAwayListener onClickAway={() => history.push('/')}>
                     <Box m={3}>
                         <Box textAlign="center">
-                            <MailIcon style={{fontSize: 100}} />
+                            <MailIcon style={{ fontSize: 100 }} />
                         </Box>
                         <Typography >A Mail will be sent to your account very soon.</Typography>
                         <Typography color="textSecondary">Please Do not forget to check the spam folder.</Typography>

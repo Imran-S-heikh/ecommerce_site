@@ -57,6 +57,8 @@ export default function Magnifier({ image }) {
 
 
     const handleMouseMove = (e) => {
+        offset.current = {x: containerRef.current.getBoundingClientRect().x,y: containerRef.current.getBoundingClientRect().y}
+
         const x = e.clientX - offset.current.x;
         const y = e.clientY - offset.current.y;
 

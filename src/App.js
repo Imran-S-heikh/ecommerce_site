@@ -65,9 +65,6 @@ function App() {
           <Header />
         </HideComponentOnRoute>
         <Switch>
-          {/* <Route path="/">
-            <Signin />
-          </Route> */}
           <Route path="/dashboard">
             <Dashboard />
           </Route>

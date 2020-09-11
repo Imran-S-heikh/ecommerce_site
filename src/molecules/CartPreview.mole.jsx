@@ -42,7 +42,7 @@ export default function CartPreview() {
                 </Typography>
                 </Box>
                 <Box width="80%" margin="auto">
-                    <Button style={{ padding: '10px 0' }} color='primary' variant="contained" fullWidth>Proceed To Checkout</Button>
+                    <Button onClick={()=>history.push('/checkout')} style={{ padding: '10px 0' }} color='primary' variant="contained" fullWidth>Proceed To Checkout</Button>
                 </Box>
                 <Button onClick={()=>history.push('/cart')} color='primary' fullWidth>View Cart</Button>
             </Hide>

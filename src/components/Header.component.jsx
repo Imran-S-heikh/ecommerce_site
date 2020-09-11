@@ -144,12 +144,13 @@ export default function Header() {
                                 </IconButton>
                             </Tooltip>
                         </Box>
-
                         <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
                             <ClickAwayListener onClickAway={() => setPersonOpen(false)}>
                                 <Tooltip title="My Account" arrow>
                                     <IconButton className={classes.button} onClick={() => setPersonOpen(!personOpen)}>
-                                        <PersonIcon className={classes.icon} />
+                                        {user ? <Avatar style={{ width: 30, height: 30 }} src={user?.avatar} /> :
+                                            <PersonIcon className={classes.icon} />
+                                        }
                                     </IconButton>
                                 </Tooltip>
                             </ClickAwayListener>

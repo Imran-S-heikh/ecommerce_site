@@ -12,6 +12,7 @@ import { userCartState, userWishListState } from '../recoil/user/user.atoms';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useState } from 'react';
 import Hide from './Hide.mole';
+import { singleProductId } from '../recoil/product/product.aton';
 
 
 
@@ -116,6 +117,7 @@ export default function ShopCard({ width = 280, item }) {
     const history = useHistory();
     const setCardItems = useSetRecoilState(userCartState);
     const setWishList = useSetRecoilState(userWishListState);
+    const setproductID = useSetRecoilState(singleProductId);
     const [loading, setLoading] = useState(true);
 
     const addCartItem = () => {
@@ -134,6 +136,10 @@ export default function ShopCard({ width = 280, item }) {
         });
     }
 
+    const handleView = ()=>{
+        setproductID(item._id)
+        history.push('/single')
+    }
 
     return (
         <Card className={classes.container} style={{ width: width }}>
@@ -148,11 +154,11 @@ export default function ShopCard({ width = 280, item }) {
                     <CompareArrowsIcon />
                 </IconButton>
             </CardActions>
-            <CardActionArea onClick={() => history.push('/single')}>
+            <CardActionArea onClick={handleView}>
                 <Hide hide={!loading}>
-                    <Skeleton width="100%" height={280} />
+                    <Skeleton width="100%" variant="rect" height={280} />
                 </Hide>
-                <CardMedia component="img" onLoad={(e) => setLoading(false)} classes={{ media: classes.cardMedia }} image={image.card[0]} />
+                <CardMedia style={{display: loading ? 'none': 'block' }} component="img" onLoad={(e) => setLoading(false)} classes={{ media: classes.cardMedia }} image={image.card[0]} />
             </CardActionArea>
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>

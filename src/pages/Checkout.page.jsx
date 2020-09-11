@@ -219,7 +219,7 @@ export default function Checkout() {
                         <Box mt={2}>
                             <Paper>
                                 <List>
-                                    {cart.products.map(product =>
+                                    {cart.products.map((product,i) =>
                                         <React.Fragment key={product._id}>
                                             <ListItem>
                                                 <ListItemAvatar>
@@ -234,7 +234,7 @@ export default function Checkout() {
                                                     </Typography>
                                                 </ListItemText>
                                             </ListItem>
-                                            <Divider />
+                                            {i !== cart.products.length - 1 && <Divider /> }
                                         </React.Fragment>
                                     )}
                                 </List>

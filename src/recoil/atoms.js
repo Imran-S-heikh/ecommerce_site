@@ -34,7 +34,7 @@ export const dashDrawerState = atom({
 
 export const darkModeState = atom({
     key: DARK_MODE,
-    default: true
+    default: false
 });
 
 export const dashboardRouteState = atom({

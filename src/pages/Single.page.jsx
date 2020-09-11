@@ -2,8 +2,8 @@ import React, { useRef } from 'react'
 import Header from '../components/Header.component'
 import Footer from '../components/Footer.component'
 import Magnifier from '../molecules/Magnifier.mole'
-import { assets } from '../utils'
-import { Container, Breadcrumbs, Link, Grid, Box, Menu, MenuItem, MenuList, Typography, ButtonBase, Avatar, ButtonGroup, Button, IconButton, FormControlLabel, Checkbox, FormGroup } from '@material-ui/core'
+import { assets, catchAsync, checkStatus } from '../utils'
+import { Container, Breadcrumbs, Link, Grid, Box, Menu, MenuItem, MenuList, Typography, ButtonBase, Avatar, ButtonGroup, Button, IconButton, FormControlLabel, Checkbox, FormGroup, Backdrop, CircularProgress } from '@material-ui/core'
 import Carousel from '../components/Carousel.component'
 import Keyvalue from '../molecules/Keyvalue.mole'
 import Rating from '@material-ui/lab/Rating'
@@ -12,13 +12,99 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { useRecoilState } from 'recoil'
+import { singleProductId } from '../recoil/product/product.aton'
+import { useSetRecoilState } from 'recoil'
+import { loaderState, alertSnackbarState } from '../recoil/atoms'
+import { getProduct } from '../request/product.request'
+import { userCartState, userState } from '../recoil/user/user.atoms'
+import { Redirect, useHistory } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
-const img = 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg'; 
 
 export default function Single() {
 
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'));
+    const [product, setProduct] = useState(null)
+    const [productId, setProductId] = useRecoilState(singleProductId);
+    const setLoader = useSetRecoilState(loaderState);
+    const [userCart,setUserCart] = useRecoilState(userCartState);
+    const [cartQuantity,setCartQuantity] = useState(0);
+    const history = useHistory();
+    const user = useRecoilValue(userState);
+    const setAlert = useSetRecoilState(alertSnackbarState);
+
+
+    useEffect(()=>{
+        const currentProduct = userCart.filter(item=>item._id === product._id)?.[0];
+
+        if(currentProduct && currentProduct.count){
+            setCartQuantity(currentProduct.count)
+        }else{
+            setCartQuantity(0)
+        }
+    },[userCart]);
+
+    useEffect(() => {
+        if (productId) {
+            catchAsync(async () => {
+                setLoader(true)
+                const response = await getProduct(productId)
+                setLoader(false)
+                if (checkStatus(response)) {
+                    setProduct(response.data.product)
+                }
+            })()
+        }
+    }, [productId]);
+
+    // const handleAdd = (id)=>{
+    //     setUserCart(pre=>pre.map(item=>id === item._id ? {...item,count: item.count + 1} : item))
+
+    // }
+
+    const handleRemove = ()=>{
+        setUserCart(pre=>pre.map(item=>product._id === item._id ? {...item,count: item.count - 1} : item).filter(item=> item.count !== 0))
+    }
+
+    const addCartItem = () => {
+        setUserCart((pre) => {
+            let newProduct = false
+            const ids = pre.map(item => product._id);
+            const arr = [...pre].map(item => {
+                if (product._id === item._id) {
+                    return { ...item, count: item.count + 1 }
+                } else {
+                    return item;
+                }
+            })
+            if (!ids.includes(product._id)) return [...arr, { ...product, count: 1 }]
+            return arr;
+        });
+    }
+
+    const handleBuy = ()=>{
+        if(!user){
+            setAlert({open: true,message: 'Please Log in To Buy'})
+        }else if(user){
+            setAlert({open: true,message: 'Add at least One Product To the Cart'})
+        }else{
+            history.push('/checkout')
+        }
+    }
+
+    if (!productId) return <Redirect to="/shop" />
+
+    if (!product) return (
+        <Box width="100%" height="80vh">
+            <Backdrop style={{ zIndex: 15 }} open={true}>
+                <CircularProgress />
+            </Backdrop>
+        </Box>
+    )
 
     return (
         <div>
@@ -43,45 +129,42 @@ export default function Single() {
                                         <Grid style={{ display: matches ? 'none' : 'initial' }} item xs={2}>
                                             <div>
                                                 <MenuList open={true} >
-                                                    <MenuItem>
-                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
-                                                    </MenuItem>
-                                                    <MenuItem>
-                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
-                                                    </MenuItem>
-                                                    <MenuItem>
-                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
-                                                    </MenuItem>
-                                                    <MenuItem>
-                                                        <img style={{ width: '100%' }} src="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" alt="" />
-                                                    </MenuItem>
+                                                    {product.image.card.map(url =>
+                                                        <MenuItem>
+                                                            <img style={{ width: '100%' }} src={url} alt="" />
+                                                        </MenuItem>
+                                                    )}
                                                 </MenuList>
                                             </div>
                                         </Grid>
                                         <Grid item xs={12} md={10} className="">
-                                            <Carousel component={<Magnifier />} customStyle={{buttonDots: {bottom: -60},buttonNext: {display: 'none'},buttonPrev: {display: 'none'}}} data={[{ image: img},{ image: 'https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_7270f97f-f554-4568-bf1a-30e7490a5a92_2048x2048.jpg?v=1570224584'}]} />
+                                            <Carousel 
+                                                component={<Magnifier />} 
+                                                customStyle={{ buttonDots: { bottom: -60 }, buttonNext: { display: 'none' }, buttonPrev: { display: 'none' } }} 
+                                                data={product.image.original.map(url=>({image: url}))} 
+                                            />
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <div className="">
-                                        <Keyvalue items={{ Sku: 567, Availability: '1 in stock' }} />
+                                        <Keyvalue items={{ Sku: product.productCode, Availability: `${product.quantity} in stock` }} />
                                     </div>
                                     <Box mt={5}>
                                         <Typography variant="h4">
-                                            East Hampton Fleece Hoodie
+                                            {product.name}
                                         </Typography>
                                         <Typography color="primary" variant="h4">
-                                            $677
+                                            ${product.price}
                                         </Typography>
                                         <Typography color="textSecondary">
                                             Tax Included
                                         </Typography>
                                     </Box>
                                     <Box mt={5} display="flex" alignItems="center">
-                                        <Rating value={4} readOnly={true} />
+                                        <Rating value={product.avgRating} readOnly={true} />
                                         <Link style={{ margin: '5px 0 0 5px', cursor: 'pointer' }} >
-                                            7 reviews
+                                            {product.reviews.length} reviews
                                         </Link>
                                     </Box>
                                     <Box mt={5}>
@@ -91,25 +174,25 @@ export default function Single() {
                                             </Typography>
                                         }} />
                                         <Box >
-                                            <VarientColor image="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" />
-                                            <VarientColor image="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" />
-                                            <VarientColor image="https://cdn.shopify.com/s/files/1/0130/5041/3114/products/Featherweight_Pima_Hoodie_4_e2b11fbc-2853-488d-a075-f8bf63034128_2048x2048.jpg" />
+                                            {product.image.small.map(url=>
+                                                <VarientColor image={url} />
+                                            )}
                                         </Box>
                                     </Box>
                                     <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} mt={5}>
                                         <ButtonGroup size="large" fullWidth>
-                                            <Button>
+                                            <Button onClick={handleRemove}>
                                                 <RemoveIcon />
                                             </Button>
                                             <Button color="primary">
-                                                4
+                                                {cartQuantity}
                                             </Button>
-                                            <Button>
+                                            <Button onClick={addCartItem}>
                                                 <AddIcon />
                                             </Button>
                                         </ButtonGroup>
                                         <div style={{ width: 20, height: 20 }} />
-                                        <Button size="large" fullWidth variant="contained" color="primary">Add To Cart</Button>
+                                        <Button onClick={addCartItem} size="large" fullWidth variant="contained" color="primary">Add To Cart</Button>
                                     </Box>
                                     <Box mt={3}>
                                         <FormControlLabel
@@ -122,7 +205,7 @@ export default function Single() {
                                         />
                                     </Box>
                                     <div className="">
-                                        <Button size="large" fullWidth variant="contained" color="textSecondary">
+                                        <Button onClick={handleBuy} size="large" fullWidth variant="contained" color="textSecondary">
                                             Buy Now
                                         </Button>
                                     </div>

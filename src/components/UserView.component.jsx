@@ -46,8 +46,10 @@ export default function UserView({ uploadHandler }) {
     const [textEditPopup, setTextEditPopup] = useState(false)
 
     useEffect(() => {
-        console.log(focus)
-    }, [focus])
+        return ()=>{
+            setuser(null)
+        }
+    }, [])
 
 
 

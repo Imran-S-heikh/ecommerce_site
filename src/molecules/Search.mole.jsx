@@ -28,7 +28,7 @@ const createStyles = makeStyles(theme => ({
     icon: { fontSize: 30 }
 }))
 
-export default function Search({ listItem, handleSearchKey, searchTitle, items = [], loading }) {
+export default function Search({ listItem, handleSearchKey, searchTitle, items = [], loading,onSearch }) {
 
     const classes = createStyles()
     const [searchKey, setSearchKey] = useState('');
@@ -52,7 +52,7 @@ export default function Search({ listItem, handleSearchKey, searchTitle, items =
                                 <Hide hide={loading} fallback={
                                     <CircularProgress />
                                 }>
-                                    <IconButton>
+                                    <IconButton onClick={onSearch}>
                                         <SearchIcon className={classes.icon} />
                                     </IconButton>
                                 </Hide>

@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText, ListItemSecondaryAction, Switch, FormGroup, FormControlLabel, Avatar } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
-// import Search from '../molecules/Search.mole';
-import { useRecoilState } from 'recoil';
+import Search from '../molecules/Search.mole';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { searchOpenState, mainDrawerState, cartDrawerState, darkModeState } from '../recoil/atoms';
 import NavMenu from '../molecules/NavMenu.mole';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -21,6 +21,7 @@ import Hide from '../molecules/Hide.mole';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useRecoilValue } from 'recoil';
 import { cartState } from '../recoil/user/user.selector';
+import ProductSearch from '../molecules/ProductSearch.mole';
 
 
 const createStyle = makeStyles(theme => ({
@@ -86,14 +87,19 @@ export default function Header() {
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
     const cart = useRecoilValue(cartState);
-
-
     const history = useHistory();
+
+
+
+   
+
 
     const handleLogOut = () => {
         setUser(null);
         document.cookie = 'jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+
+    
 
 
     return (
@@ -231,7 +237,7 @@ export default function Header() {
                     </div>
                 </Container>
             </AppBar>
-            {/* <Search /> */}
+            <ProductSearch/>
             <MainDrawer open={drawerOpen} setOpen={setDrawerOpen}>
                 <NavMenu styleProp={{ flxd: 'column', py: 10, fz: 12 }} showIcon={true} />
             </MainDrawer>

@@ -84,7 +84,6 @@ export default function ShopContent() {
 
     useEffect(() => {
         fetchProducts()
-        console.log(shopQuery)
     }, [shopQuery])
 
     const fetchProducts = async () => {

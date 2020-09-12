@@ -14,6 +14,8 @@ import { assets } from '../utils';
 import { green } from '@material-ui/core/colors';
 import SearchIcon from '@material-ui/icons/Search';
 import Search from '../molecules/Search.mole';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/user/user.atoms';
 
 const drawerWidth = 270;
 
@@ -66,6 +68,7 @@ export default function Dashboard() {
     const classes = createStyles();
     const [dashDrawer, setDashDrawer] = useRecoilState(dashDrawerState);
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
+    const user = useRecoilValue(userState);
 
 
     const theme = useTheme();
@@ -97,8 +100,8 @@ export default function Dashboard() {
                                 <SearchIcon/>
                             </IconButton>
                             <IconButton>
-                                <Badge classes={{badge: classes.badgeColor}} variant="dot" size>
-                                    <Avatar className={classes.avatar} src={assets.avatar[0]} />
+                                <Badge invisible={!Boolean(user)} classes={{badge: classes.badgeColor}} variant="dot" size>
+                                    <Avatar className={classes.avatar} src={user?.avatar} />
                                 </Badge>
                             </IconButton>
                         </Box>

@@ -30,6 +30,10 @@ export default function MakeModarator() {
         if(!editUser){
             setSearchPopup(true)
         }
+
+        return ()=>{
+            setEditUser(null)
+        }
     }, [])
 
     const sendRequest = catchAsync(async()=>{
@@ -86,7 +90,7 @@ export default function MakeModarator() {
 
     return (
         <div>
-            <UserView uploadHandler={handleUpload}/>
+            <UserView user={editUser} setUser={setEditUser} uploadHandler={handleUpload}/>
             <Search
                 searchTitle="Type User Name or Email"
                 items={searchItems}

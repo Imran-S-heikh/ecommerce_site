@@ -39,7 +39,9 @@ const createStyles = makeStyles(theme => ({
     cancelled: {
         color: theme.palette.error.main,
         textTransform: 'capitalize'
-
+    },
+    chipColor: {
+        color: theme.palette.text.primary
     }
 }))
 
@@ -195,6 +197,8 @@ export default function ViewOrders() {
                                             <TableCell>
                                                 <Chip 
                                                     onClick={()=>{}} 
+                                                    color="primary"
+                                                    classes={{colorPrimary: classes.chipColor}}
                                                     variant="outlined" 
                                                     style={{textTransform: 'capitalize'}}
                                                     label={item.paymentStatus}
@@ -210,7 +214,8 @@ export default function ViewOrders() {
                                                 <Chip 
                                                     onClick={()=>{}} 
                                                     variant="outlined" 
-                                                    color="default" 
+                                                    color="primary" 
+                                                    classes={{colorPrimary: classes.chipColor}}
                                                     style={{textTransform: 'capitalize'}}
                                                     label={item.deliveryStatus}
                                                     deleteIcon={

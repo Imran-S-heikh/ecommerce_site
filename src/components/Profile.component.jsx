@@ -16,12 +16,12 @@ export default function Profile() {
     const setLoader = useSetRecoilState(loaderState);
 
     useEffect(()=>{
-        if(user){
-            setEditUser(user)
-        }else{
-            setEditUser(null)
-        }
-    });
+        // if(user){
+        //     setEditUser(user)
+        // }else{
+        //     setEditUser(null)
+        // }
+    },[]);
     
 
     const handleupdate = async(updatedUser)=>{
@@ -38,7 +38,7 @@ export default function Profile() {
 
     return (
        <div className="">
-           <UserView uploadHandler={handleupdate} />
+           <UserView user={user} setUser={setUser} uploadHandler={handleupdate} />
        </div>
     )
 }

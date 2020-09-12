@@ -37,26 +37,20 @@ const createStyles = makeStyles(theme => ({
 const select = ['role']
 
 
-export default function UserView({ uploadHandler }) {
+export default function UserView({ uploadHandler,user,setUser }) {
     const classes = createStyles();
     const setAlert = useSetRecoilState(alertSnackbarState)
     const [focus, setFocus] = useState(null)
     const [editMode, setEditMode] = useState(false)
-    const [user, setuser] = useRecoilState(editUserState)
+    // const [user, setuser] = useRecoilState(editUserState)
     const [textEditPopup, setTextEditPopup] = useState(false)
-
-    useEffect(() => {
-        return ()=>{
-            setuser(null)
-        }
-    }, [])
 
 
 
     const handleChange = (e) => {
         const newUser = { ...user }
         newUser[focus] = e.target.value
-        setuser(newUser)
+        setUser(newUser)
         setTextEditPopup(true)
 
     }
@@ -78,7 +72,7 @@ export default function UserView({ uploadHandler }) {
     }
 
     const imageHandler = (_, url) => {
-        setuser({ ...user, avatar: url })
+        setUser({ ...user, avatar: url })
     }
 
     return (

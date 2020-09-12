@@ -5,11 +5,12 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { useState } from 'react';
 import { catchAsync, checkStatus } from '../utils';
-import { userLogin, forgetPassword } from '../request/user.requset';
+import { userLogin, forgetPassword, signinWithGoogle } from '../request/user.requset';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import MailIcon from '@material-ui/icons/Mail';
+import GoogleLogin from 'react-google-login';
 
 export default function Signin() {
 
@@ -57,10 +58,32 @@ export default function Signin() {
             setAlertSnackbar({ open: true, message: response.data.message, severity: 'error' })
         }
     })
+
+    // const googleSigninRequest = catchAsync
     const handleFromSubmit = (event) => {
         event.preventDefault();
         setEmailPopup(false);
         forgetRequest()
+    }
+
+    const handleGoogleSuccess = async ({ code }) => {
+        if (code) {
+            setLoader(true);
+            const response = await signinWithGoogle({ code })
+            setLoader(false);
+            if (checkStatus(response)) {
+                setUser(response.data.user)
+                setAlertSnackbar({ open: true, message: 'Login Successful With Google',severity: 'success' })
+            } else {
+                setAlertSnackbar({ open: true, message: 'Failed To Login', severity: 'error' })
+            }
+        } else {
+            setAlertSnackbar({ open: true, message: 'Failed To Login', severity: 'error' })
+        }
+    }
+
+    const handleGoogleFailure = (err) => {
+        console.log(err)
     }
 
 
@@ -101,9 +124,29 @@ export default function Signin() {
                                     <TextField value={email} onChange={e => setEmail(e.currentTarget.value)} label="Email Address" required fullWidth style={{ marginBottom: 10 }} />
                                     <TextField value={password} onChange={e => setPassword(e.currentTarget.value)} label="Password" required fullWidth />
                                 </Box>
-                                <Button onClick={handleLogin} variant="outlined" color="primary">
-                                    Login
-                                </Button>
+                                <Box display="flex" alignItems="center">
+                                    <Box>
+                                        <Button onClick={handleLogin} variant="outlined" color="primary">
+                                            Login
+                                        </Button>
+                                    </Box>
+                                    <Box px={1}>
+                                        <Typography>
+                                            OR
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <GoogleLogin
+                                            buttonText="Login With Google"
+                                            clientId={process.env.REACT_APP_CLIENT_APT}
+                                            onSuccess={handleGoogleSuccess}
+                                            onFailure={handleGoogleFailure}
+                                            cookiePolicy="single_host_origin"
+                                            responseType="code"
+                                            redirectUri="postmessage"
+                                        />
+                                    </Box>
+                                </Box>
                                 <Typography style={{ cursor: 'pointer' }} component="div" variant="subtitle2" color="priamry" align="right">
                                     <Link onClick={() => setEmailPopup(true)} >Forget Your Password?</Link>
                                 </Typography>

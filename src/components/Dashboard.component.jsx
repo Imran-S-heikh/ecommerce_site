@@ -3,12 +3,16 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { blue, deepOrange, deepPurple, green, grey, orange, purple, red } from '@material-ui/core/colors';
-import MoneyIcon from '@material-ui/icons/Money';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import PersonIcon from '@material-ui/icons/Person';
 import { AvatarGroup, Rating, TabContext, TabPanel } from '@material-ui/lab';
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import  XAxis from 'recharts/es6/cartesian/XAxis';
+import  YAxis from 'recharts/es6/cartesian/YAxis';
+import  Tooltip from 'recharts/es6/component/Tooltip';
+import  LineChart from 'recharts/es6/chart/LineChart'; 
+import Line from 'recharts/es6/cartesian/Line';
+import CartesianGrid from 'recharts/es6/cartesian/CartesianGrid';
 
 const getColor = (color, mode, value = 2, contrast) => {
     return {

@@ -60,3 +60,9 @@ export const getAdmins = catchAsync(async () => {
     return response;
 })
 
+export const signinWithGoogle = catchAsync(async (data) => {
+    const response = await request(data, `/users/signinWithGoogle`,'POST');
+    return response;
+})
+
+

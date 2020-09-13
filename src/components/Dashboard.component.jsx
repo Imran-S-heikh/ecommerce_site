@@ -7,12 +7,18 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import PersonIcon from '@material-ui/icons/Person';
 import { AvatarGroup, Rating, TabContext, TabPanel } from '@material-ui/lab';
-import  XAxis from 'recharts/es6/cartesian/XAxis';
-import  YAxis from 'recharts/es6/cartesian/YAxis';
-import  Tooltip from 'recharts/es6/component/Tooltip';
-import  LineChart from 'recharts/es6/chart/LineChart'; 
+import XAxis from 'recharts/es6/cartesian/XAxis';
+import YAxis from 'recharts/es6/cartesian/YAxis';
+import Tooltip from 'recharts/es6/component/Tooltip';
+import LineChart from 'recharts/es6/chart/LineChart';
 import Line from 'recharts/es6/cartesian/Line';
 import CartesianGrid from 'recharts/es6/cartesian/CartesianGrid';
+import { getStat } from '../request/stats.request';
+import { checkStatus } from '../utils';
+import { getProducts } from '../request/product.request';
+import Hide from '../molecules/Hide.mole';
+import { getAllUser } from '../request/user.requset';
+import { getOrders } from '../request/order.request';
 
 const getColor = (color, mode, value = 2, contrast) => {
     return {
@@ -24,11 +30,11 @@ const getColor = (color, mode, value = 2, contrast) => {
 const data = [
     {
         month: 'Jan',
-        sold: 30 
+        sold: 30
     },
     {
         month: 'Fev',
-        sold: 40 
+        sold: 40
     },
     {
         month: 'Mar',
@@ -36,27 +42,27 @@ const data = [
     },
     {
         month: 'Apr',
-        sold: 24 
+        sold: 24
     },
     {
         month: 'May',
-        sold: 50 
+        sold: 50
     },
     {
         month: 'Jun',
-        sold: 30 
+        sold: 30
     },
     {
         month: 'Jul',
-        sold: 60 
+        sold: 60
     },
     {
         month: 'Aug',
-        sold: 70 
+        sold: 70
     },
     {
         month: 'Sep',
-        sold: 75 
+        sold: 75
     }
 ]
 
@@ -87,8 +93,92 @@ export default function Dashboard() {
 
     const classes = createStyles();
     const [currentTab, setCurrentTab] = useState(0);
+    const [totalIncome, setTotalIncome] = useState('--');
+    const [newOrders, setNewOrders] = useState('--');
+    const [bestSelling, setBestSelling] = useState([]);
+    const [sales, setSales] = useState([]);
+    const [cost, setCost] = useState([]);
+    const [bayers, setBayers] = useState([]);
+    const [recentProducts, setRecentProducts] = useState([]);
+
+
     useEffect(() => {
-        console.log('count this initial render')
+        (async () => {
+            const response = await getStat({}, '');
+            if (checkStatus(response)) {
+                const { stats } = response.data;
+                setNewOrders(stats.newOrders || '--');
+                setTotalIncome(stats.totalIncome || '--')
+            }
+
+        })()
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const response = await getProducts('?sort=createdAt&limit=5');
+            if (checkStatus(response)) {
+                setRecentProducts(response.data.products)
+            }
+
+        })()
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const response = await getProducts('?sort=-sold&limit=5');
+            if (checkStatus(response)) {
+                setBestSelling(response.data.products);
+            }
+
+        })()
+    }, []);
+
+    // useEffect(() => {
+    //     (async () => {
+    //         const response = await getAllUser('?sort=ordered&limit=5');
+    //         if (checkStatus(response)) {
+    //             setBestSelling(response.data.products);
+    //         }
+
+    //     })()
+    // }, []);
+
+    useEffect(() => {
+        (async () => {
+            const response = await getOrders('');
+            if (checkStatus(response)) {
+                const orders = response.data.orders;
+                const dup = [];
+                const length = 5;
+                const arr = [];
+                orders.map(item=>{
+                    if(!dup.includes(item.orderBy._id)){
+                        arr.push({
+                            name: item.orderBy.name,
+                            products: item.products.map(e=>e.product.image.small[0]),
+                            date: item.orderedAt
+                        })
+                    }
+
+                    dup.push(item.orderBy._id);
+                })
+
+
+            }
+
+        })()
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const response = await getStat({}, '/summary');
+            if (checkStatus(response)) {
+                setSales(response.data.sales)
+                setCost(response.data.cost)
+            }
+
+        })()
     }, []);
 
 
@@ -121,8 +211,8 @@ export default function Dashboard() {
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
                                     <Box >
                                         <Typography>NEW ORDERS</Typography>
-                                        <Typography variant="h4">3478</Typography>
-                                        <Typography color="textSecondary">+2.5%(30 Days)</Typography>
+                                        <Typography variant="h4">{newOrders}</Typography>
+                                        {/* <Typography color="textSecondary">+2.5%(30 Days)</Typography> */}
                                     </Box>
                                     <Box>
                                         <Avatar className={classes.avatarSize}>
@@ -139,8 +229,8 @@ export default function Dashboard() {
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
                                     <Box >
                                         <Typography>Total Income</Typography>
-                                        <Typography variant="h4">56545</Typography>
-                                        <Typography color="textSecondary">+2.5%</Typography>
+                                        <Typography variant="h4">${totalIncome}</Typography>
+                                        {/* <Typography color="textSecondary">+2.5%</Typography> */}
                                     </Box>
                                     <Box>
                                         <Avatar className={classes.avatarSize}>
@@ -156,8 +246,8 @@ export default function Dashboard() {
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
                                     <Box >
                                         <Typography>Total Expense</Typography>
-                                        <Typography variant="h4">4355</Typography>
-                                        <Typography color="textSecondary">+2.5%(30 Days)</Typography>
+                                        <Typography variant="h4">{cost.map(item => item.totalCost).reduce((accu, cur) => accu + cur, 0)}</Typography>
+                                        {/* <Typography color="textSecondary">+2.5%(30 Days)</Typography> */}
                                     </Box>
                                     <Box>
                                         <Avatar className={classes.avatarSize}>
@@ -174,7 +264,7 @@ export default function Dashboard() {
                                     <Box >
                                         <Typography>NEW USERS</Typography>
                                         <Typography variant="h4">467</Typography>
-                                        <Typography color="textSecondary">+2.5%(30 Days)</Typography>
+                                        {/* <Typography color="textSecondary">+2.5%(30 Days)</Typography> */}
                                     </Box>
                                     <Box>
                                         <Avatar className={classes.avatarSize}>
@@ -199,7 +289,7 @@ export default function Dashboard() {
                                                 <Tabs
                                                     value={currentTab}
                                                     onChange={handleTabChange}
-                                                    // variant="fullWidth"
+                                                // variant="fullWidth"
                                                 >
                                                     {/* <Tab label="Products" /> */}
                                                     <Tab value={0} label="Sales" />
@@ -210,18 +300,24 @@ export default function Dashboard() {
                                             </Paper>
                                             <TabPanel value={0} >
                                                 <Box>
-                                                    <LineChart width={400} height={300} data={data}>
-                                                        <Line type="monotone" dataKey="sold" stroke={blue[500]} />
+                                                    <LineChart width={400} height={300} data={sales}>
+                                                        <Line type="monotone" dataKey="sale" stroke={blue[500]} />
                                                         <CartesianGrid stroke={grey[300]} strokeDasharray="5 5" />
-                                                        <XAxis dataKey="month" />
-                                                        <YAxis/>
-                                                        <Tooltip/>
+                                                        <XAxis dataKey="_id" />
+                                                        <YAxis />
+                                                        <Tooltip />
                                                     </LineChart>
                                                 </Box>
                                             </TabPanel>
                                             <TabPanel value={1} >
                                                 <Box>
-                                                    Second Tab Panel
+                                                    <LineChart width={400} height={300} data={cost}>
+                                                        <Line type="monotone" dataKey="totalCost" stroke={blue[500]} />
+                                                        <CartesianGrid stroke={grey[300]} strokeDasharray="5 5" />
+                                                        <XAxis dataKey="_id" />
+                                                        <YAxis />
+                                                        <Tooltip />
+                                                    </LineChart>
                                                 </Box>
                                             </TabPanel>
                                             <TabPanel value={2} >Third Tab Panel</TabPanel>
@@ -239,66 +335,35 @@ export default function Dashboard() {
                                     <Divider />
                                     <Box>
                                         <List>
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                    <Avatar src="https://cdn.shopify.com/s/files/1/0036/4806/1509/products/s1071627_1000x1000@2x.jpg?v=1584135740" variant="square" />
-                                                </ListItemAvatar>
-                                                <ListItemText primary={
-                                                    <Box display="flex">
-                                                        <Typography>Google Home</Typography>
-                                                        <Rating
-                                                            value={4}
-                                                            size="small"
-                                                        />
-                                                    </Box>
-                                                } secondary="USB Wireless" />
-                                                <ListItemSecondaryAction>
-                                                    <Typography variant="h6">
-                                                        $129.0
-                                                    </Typography>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
-                                            <Divider />
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                    <Avatar src="https://cdn.shopify.com/s/files/1/0036/4806/1509/products/s1071627_1000x1000@2x.jpg?v=1584135740" variant="square" />
-                                                </ListItemAvatar>
-                                                <ListItemText primary={
-                                                    <Box display="flex">
-                                                        <Typography>Google Home</Typography>
-                                                        <Rating
-                                                            value={4}
-                                                            size="small"
-                                                        />
-                                                    </Box>
-                                                } secondary="USB Wireless" />
-                                                <ListItemSecondaryAction>
-                                                    <Typography variant="h6">
-                                                        $129.0
-                                                    </Typography>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
-                                            <Divider />
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                    <Avatar src="https://cdn.shopify.com/s/files/1/0036/4806/1509/products/s1071627_1000x1000@2x.jpg?v=1584135740" variant="square" />
-                                                </ListItemAvatar>
-                                                <ListItemText primary={
-                                                    <Box display="flex">
-                                                        <Typography>Google Home</Typography>
-                                                        <Rating
-                                                            value={4}
-                                                            size="small"
-                                                        />
-                                                    </Box>
-                                                } secondary="USB Wireless" />
-                                                <ListItemSecondaryAction>
-                                                    <Typography variant="h6">
-                                                        $129.0
-                                                    </Typography>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
-                                            {/* <Divider/> */}
+                                            {bestSelling.map((item, i) =>
+                                                <React.Fragment key={item._id}>
+                                                    <ListItem>
+                                                        <ListItemAvatar>
+                                                            <Avatar src={item.image.small[0]} variant="square" />
+                                                        </ListItemAvatar>
+                                                        <ListItemText primary={
+                                                            <Box display="flex" justifyContent="space-between">
+                                                                <Typography>{item.name}</Typography>
+                                                                <Box mr={3}>
+                                                                    <Rating
+                                                                        value={item.rating}
+                                                                        size="small"
+                                                                    />
+                                                                </Box>
+                                                            </Box>
+                                                        } secondary={item.title} />
+                                                        <ListItemSecondaryAction>
+                                                            <Typography variant="h6">
+                                                                ${item.price}
+                                                            </Typography>
+                                                        </ListItemSecondaryAction>
+                                                    </ListItem>
+                                                    {console.log({ length: bestSelling.length - 1, i })}
+                                                    <Hide hide={bestSelling.length - 1 === i}>
+                                                        <Divider />
+                                                    </Hide>
+                                                </React.Fragment>
+                                            )}
                                         </List>
                                     </Box>
                                 </Box>
@@ -338,22 +403,29 @@ export default function Dashboard() {
                                     <Divider />
                                     <Box>
                                         <List>
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                    <Avatar src="https://cdn.shopify.com/s/files/1/0036/4806/1509/products/s1071627_1000x1000@2x.jpg?v=1584135740" variant="square" />
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography>Google Home</Typography>
-                                                    }
-                                                    secondary={
-                                                        <Typography variant="h6">
-                                                            $129.0
-                                                        </Typography>
-                                                    }
-                                                />
+                                            {recentProducts.map((item, i) =>
+                                                <React.Fragment key={item._id}>
+                                                    <ListItem>
+                                                        <ListItemAvatar>
+                                                            <Avatar src={item.image.small[0]} variant="square" />
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary={
+                                                                <Typography>{item.name}</Typography>
+                                                            }
+                                                            secondary={
+                                                                <Typography variant="h6">
+                                                                    ${item.price}
+                                                                </Typography>
+                                                            }
+                                                        />
 
-                                            </ListItem>
+                                                    </ListItem>
+                                                    <Hide hide={recentProducts.length - 1 === i}>
+                                                        <Divider />
+                                                    </Hide>
+                                                </React.Fragment>
+                                            )}
                                         </List>
                                     </Box>
                                 </Box>
@@ -370,7 +442,7 @@ export default function Dashboard() {
                                         <List>
                                             <ListItem>
                                                 <ListItemAvatar>
-                                                    <Avatar src="https://mattersindia.com/wp-content/uploads/2020/09/bieber.jpg"  />
+                                                    <Avatar src="https://mattersindia.com/wp-content/uploads/2020/09/bieber.jpg" />
                                                 </ListItemAvatar>
                                                 <ListItemText
                                                     primary={

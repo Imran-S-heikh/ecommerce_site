@@ -45,11 +45,11 @@ export default function Checkout() {
     const setAlert = useSetRecoilState(alertSnackbarState);
     const [activeStep, setActiveStep] = useState(0);
     const [user, setUser] = useRecoilState(userState);
-    const [address, setAddress] = useState('')
+    const [address, setAddress] = useState('address')
     const [country, setCountry] = useState('Country-1')
-    const [state, setState] = useState('')
-    const [zipCode, setZipCode] = useState('')
-    const [phone, setPhone] = useState()
+    const [state, setState] = useState('state')
+    const [zipCode, setZipCode] = useState(1024)
+    const [phone, setPhone] = useState(2343434)
 
     const fromRef = useRef();
 

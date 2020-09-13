@@ -12,8 +12,8 @@ export const userLogin = catchAsync(async (data) => {
     return response;
 })
 
-export const getAllUser = catchAsync(async () => {
-    const response = await request({}, '/users','GET');
+export const getAllUser = catchAsync(async (query='') => {
+    const response = await request({}, `/users${query}`,'GET');
     return response;
 })
 

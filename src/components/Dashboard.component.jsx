@@ -1,10 +1,12 @@
-import { Avatar, Box, Button, ButtonGroup, Container, Divider, Grid, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Tab, Tabs, Typography } from '@material-ui/core';
-import React, { useState } from 'react'
+import 'date-fns';
+import { Avatar, Box, Button, ButtonGroup, Container, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Tab, Tabs, Typography } from '@material-ui/core';
+import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { blue, deepOrange, deepPurple, green, grey, orange, purple, red } from '@material-ui/core/colors';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
+import DateFnsUtils from '@date-io/date-fns';
 import PersonIcon from '@material-ui/icons/Person';
 import { AvatarGroup, Rating, TabContext, TabPanel } from '@material-ui/lab';
 import XAxis from 'recharts/es6/cartesian/XAxis';
@@ -19,6 +21,7 @@ import { getProducts } from '../request/product.request';
 import Hide from '../molecules/Hide.mole';
 import { getAllUser } from '../request/user.requset';
 import { getOrders } from '../request/order.request';
+import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 
 const getColor = (color, mode, value = 2, contrast) => {
     return {
@@ -100,29 +103,44 @@ export default function Dashboard() {
     const [cost, setCost] = useState([]);
     const [bayers, setBayers] = useState([]);
     const [recentProducts, setRecentProducts] = useState([]);
+    const [statDate, setStatDate] = useState(new Date());
+    const [range,setRange] = useState('week')
+    const [newUsers, setNewUsers] = useState('--')
+    const pickerRef = useRef();
 
 
     useEffect(() => {
         (async () => {
-            const response = await getStat({}, '');
+            const response = await getStat({range,point: statDate},'');
             if (checkStatus(response)) {
                 const { stats } = response.data;
                 setNewOrders(stats.newOrders || '--');
-                setTotalIncome(stats.totalIncome || '--')
+                setTotalIncome(stats.totalIncome || '--');
+                setNewUsers(stats.newUsers || '--')
             }
 
         })()
-    }, []);
+    }, [range,statDate]);
 
     useEffect(() => {
         (async () => {
-            const response = await getProducts('?sort=createdAt&limit=5');
+            const response = await getProducts('?sort=-createdAt&limit=5');
             if (checkStatus(response)) {
                 setRecentProducts(response.data.products)
             }
 
         })()
     }, []);
+
+    useEffect(() => {
+        (async () => {
+            const response = await getStat({range,point: statDate},'latestBayers');
+            if (checkStatus(response)) {
+                setBayers(response.data.bayers)
+            }
+
+        })()
+    }, [range,statDate]);
 
     useEffect(() => {
         (async () => {
@@ -152,11 +170,11 @@ export default function Dashboard() {
                 const dup = [];
                 const length = 5;
                 const arr = [];
-                orders.map(item=>{
-                    if(!dup.includes(item.orderBy._id)){
+                orders.map(item => {
+                    if (!dup.includes(item.orderBy._id)) {
                         arr.push({
                             name: item.orderBy.name,
-                            products: item.products.map(e=>e.product.image.small[0]),
+                            products: item.products.map(e => e.product.image.small[0]),
                             date: item.orderedAt
                         })
                     }
@@ -172,18 +190,22 @@ export default function Dashboard() {
 
     useEffect(() => {
         (async () => {
-            const response = await getStat({}, '/summary');
+            const response = await getStat({range,point: statDate},'/summary');
             if (checkStatus(response)) {
                 setSales(response.data.sales)
                 setCost(response.data.cost)
             }
 
         })()
-    }, []);
+    }, [range,statDate]);
 
 
     const handleTabChange = (_, nxt) => {
         setCurrentTab(nxt)
+    }
+
+    const handleDateChange = (date) => {
+        setStatDate(date)
     }
 
     return (
@@ -195,14 +217,27 @@ export default function Dashboard() {
                     </Grid>
 
                     <Grid item>
-                        <ButtonGroup>
-                            <Button>Day</Button>
-                            <Button>Week</Button>
-                            <Button>Month</Button>
-                            <Button>Year</Button>
-                        </ButtonGroup>
+                        <Box mb={2} display="flex" justifyContent="end">
+                            <ButtonGroup>
+                                <Button color={range === 'day'? 'primary':'default'} onClick={()=>setRange('day')}>Day</Button>
+                                <Button color={range === 'week'? 'primary':'default'} onClick={()=>setRange('week')}>Week</Button>
+                                <Button color={range === 'month'? 'primary':'default'} onClick={()=>setRange('month')}>Month</Button>
+                                <Button color={range === 'year'? 'primary':'default'} onClick={()=>setRange('year')}>Year</Button>
+                                <Button color="secondary" onClick={() => pickerRef.current.click()}>{statDate.toLocaleDateString().replaceAll('/', '-')}</Button>
+                            </ButtonGroup>
+                        </Box>
+                        <Box mb={2} display="none">
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    value={statDate}
+                                    KeyboardButtonProps={{ ref: pickerRef }}
+                                    onChange={handleDateChange}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </Box>
                     </Grid>
                 </Grid>
+
                 <Box mt={3}>
                     <Grid container spacing={2}>
                         <Grid item xs={3}>
@@ -263,7 +298,7 @@ export default function Dashboard() {
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
                                     <Box >
                                         <Typography>NEW USERS</Typography>
-                                        <Typography variant="h4">467</Typography>
+                                        <Typography variant="h4">{newUsers}</Typography>
                                         {/* <Typography color="textSecondary">+2.5%(30 Days)</Typography> */}
                                     </Box>
                                     <Box>
@@ -440,27 +475,34 @@ export default function Dashboard() {
                                     <Divider />
                                     <Box>
                                         <List>
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                    <Avatar src="https://mattersindia.com/wp-content/uploads/2020/09/bieber.jpg" />
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography>Justin Bieber</Typography>
-                                                    }
-                                                    secondary={
-                                                        <Typography color="textSecondary">
-                                                            12 Sept,2020
-                                                        </Typography>
-                                                    }
-                                                />
-                                                <ListItemSecondaryAction>
-                                                    <AvatarGroup >
-                                                        <Avatar src="https://timesofindia.indiatimes.com/thumb/msid-73984558,width-1200,height-900,resizemode-4/.jpg" />
-                                                        <Avatar src="https://i.pinimg.com/originals/2d/43/1f/2d431f765ad31dae82a632aa8246d28c.jpg" />
-                                                    </AvatarGroup>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
+                                            {bayers.map((item, i) =>
+                                                <React.Fragment key={item._id}>
+                                                    <ListItem>
+                                                        <ListItemAvatar>
+                                                            <Avatar src={item?.avatar} />
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary={
+                                                                <Typography>{item.name}</Typography>
+                                                            }
+                                                            secondary={
+                                                                <Typography color="textSecondary">
+                                                                    {new Date(item.orderedAt).toDateString()}
+                                                                </Typography>
+                                                            }
+                                                        />
+                                                        {/* <ListItemSecondaryAction>
+                                                            <AvatarGroup >
+                                                                <Avatar src="https://timesofindia.indiatimes.com/thumb/msid-73984558,width-1200,height-900,resizemode-4/.jpg" />
+                                                                <Avatar src="https://i.pinimg.com/originals/2d/43/1f/2d431f765ad31dae82a632aa8246d28c.jpg" />
+                                                            </AvatarGroup>
+                                                        </ListItemSecondaryAction> */}
+                                                    </ListItem>
+                                                    <Hide hide={bayers.length - 1 === i}>
+                                                        <Divider />
+                                                    </Hide>
+                                                </React.Fragment>
+                                            )}
                                         </List>
                                     </Box>
                                 </Box>
@@ -470,6 +512,6 @@ export default function Dashboard() {
                 </Box>
 
             </Container>
-        </Box>
+        </Box >
     )
 }

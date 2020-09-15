@@ -219,7 +219,7 @@ export default function DashboardDrawer() {
                                     <ListItemIcon className={classes.white}>
                                         <WebIcon />
                                     </ListItemIcon>
-                                    <ListItemText className={classes.white}>
+                                    <ListItemText className={classes.white} onClick={()=>setRoute(routes.SITE_PROPERTIES)}>
                                         Site properties
                                 </ListItemText>
                                 </MenuItem>

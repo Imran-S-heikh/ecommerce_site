@@ -3,7 +3,7 @@ import { MenuList, MenuItem, makeStyles, Box } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { useHistory } from 'react-router-dom';
 
-const navItems = ['home', 'shop', 'women', 'men','dashboard','checkout']
+const navItems = ['home', 'shop','cart','checkout','dashboard']
 
 const createStyles = makeStyles(theme => ({
     root: {

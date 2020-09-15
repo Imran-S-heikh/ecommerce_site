@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener, Container, TextareaAutosize, Chip, Dialog } from '@material-ui/core'
+import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener, Container, TextareaAutosize, Chip, Dialog, MenuItem } from '@material-ui/core'
 import Color from '../molecules/Color.mole';
 import AddIcon from '@material-ui/icons/Add';
 import { useState } from 'react';
@@ -11,6 +11,8 @@ import ImageIcon from '@material-ui/icons/Image';
 import { useSetRecoilState } from 'recoil';
 import { alertSnackbarState } from '../recoil/atoms';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { catchAsync, checkStatus } from '../utils';
+import { getSiteProperties } from '../request/other.request';
 
 const createStyles = makeStyles(theme => ({
     root: {
@@ -60,24 +62,24 @@ const brands = [
     }
 ];
 
-const catagories = [
-    {
-        value: 'men',
-        label: 'Men'
-    },
-    {
-        value: 'women',
-        label: 'Women'
-    },
-    {
-        value: 'child',
-        label: 'Child'
-    },
-    {
-        value: 'men-and-women',
-        label: 'Men and Women'
-    }
-];
+// const catagories = [
+//     {
+//         value: 'men',
+//         label: 'Men'
+//     },
+//     {
+//         value: 'women',
+//         label: 'Women'
+//     },
+//     {
+//         value: 'child',
+//         label: 'Child'
+//     },
+//     {
+//         value: 'men-and-women',
+//         label: 'Men and Women'
+//     }
+// ];
 
 const types = [
     {
@@ -98,35 +100,7 @@ const types = [
     }
 ];
 
-const sizes = ['XS', 'M', 'L', 'XL'];
-const cropSizes = [
-    {
-        value: [200, 500],
-        label: 'Card'
-    },
-    {
-        value: [400, 800],
-        label: 'Preview'
-    },
-    {
-        value: [40, 40],
-        label: 'Tiny'
-    }
-]
-const initialColor = [
-    {
-        value: 'red',
-        label: 'Red'
-    },
-    {
-        value: 'grey',
-        label: 'Grey'
-    },
-    {
-        value: 'black',
-        label: 'Black'
-    }
-]
+
 
 export default function MakeProduct(props) {
 
@@ -154,12 +128,27 @@ export default function MakeProduct(props) {
     const [tags, setTags] = useState(props.tags || []);
     const [newTag,setNewTag] = useState(null);
     const [tagPopoverOpen,setTagPopover] = useState(false);
+    const [sizes,setSizes] = useState([]);
+    const [catagories,setCatagories] = useState([]);
+
 
     const submitRef = useRef();
 
     useEffect(() => {
         console.log(color)
     }, [color])
+
+    useEffect(()=>{
+        catchAsync(async ()=>{
+            const response = await getSiteProperties();
+            if(checkStatus(response)){
+                const {siteProperties} = response.data; 
+                setSizes(siteProperties.sizes)
+                setCatagories(siteProperties.catagories)
+                setCatagory(siteProperties.catagories[1])
+            }
+        })()
+    },[])
 
     const handleFile = (file, url) => {
         setProductImage([...productImage, { src: url }])
@@ -229,7 +218,7 @@ export default function MakeProduct(props) {
                             <Paper>
 
                                 <Box p={3}>
-                                    <Box mb={2}>
+                                    {/* <Box mb={2}>
                                         <FormControl>
                                             <FormLabel>Select Crop Sizes</FormLabel>
                                             <FormGroup row>
@@ -246,7 +235,7 @@ export default function MakeProduct(props) {
                                                 ))}
                                             </FormGroup>
                                         </FormControl>
-                                    </Box>
+                                    </Box> */}
                                     <ImageUpload fullWidth onUpload={handleFile} />
                                 </Box>
                             </Paper>
@@ -290,16 +279,14 @@ export default function MakeProduct(props) {
                                     <TextField required onChange={(e) => setProductCode(e.currentTarget.value)} value={productCode} label="Product Code" fullWidth />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField onChange={(e) => setCatagory(e.currentTarget.value)} value={catagory}
+                                    <TextField
                                         value={catagory}
                                         select fullWidth
-                                        SelectProps={{ native: true }}
                                         label="Catagory"
-                                        onChange={e => setCatagory(e.currentTarget.value)}
-
+                                        onChange={e => setCatagory(e.target.value)}
                                     >
-                                        {catagories.map(catagory =>
-                                            <option key={catagory.value} value={catagory.value}>{catagory.label}</option>
+                                        {catagories.map(item =>
+                                            <MenuItem key={item} value={item}>{item.toUpperCase()}</MenuItem>
                                         )}
                                     </TextField>
                                 </Grid>
@@ -317,7 +304,7 @@ export default function MakeProduct(props) {
                                         )}
                                     </TextField>
                                 </Grid>
-                                <Grid item xs={6}>
+                                {/* <Grid item xs={6}>
                                     <Box mt={2}>
                                         <FormGroup>
                                             <FormControlLabel
@@ -335,7 +322,7 @@ export default function MakeProduct(props) {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <TextField value={variantCode} onChange={e => setVariantCode(e.currentTarget.value)} label="variant Code" fullWidth />
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12}>
                                     <Divider />
                                     <Box mt={1}>
@@ -347,7 +334,7 @@ export default function MakeProduct(props) {
                                                         key={item}
                                                         classes={{ label: classes.labelFix }}
                                                         control={
-                                                            <Checkbox onChange={(e)=>handleCheckBox(e,item)} onU checked={size.includes(item)} color="primary" />
+                                                            <Checkbox onChange={(e)=>handleCheckBox(e,item)} checked={size.includes(item)} color="primary" />
                                                         }
                                                         label={item}
                                                     />
@@ -356,7 +343,7 @@ export default function MakeProduct(props) {
                                         </FormControl>
                                     </Box>
                                 </Grid>
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <Divider />
                                     <Box mt={1}>
                                         <FormControl>
@@ -380,7 +367,7 @@ export default function MakeProduct(props) {
                                             </FormGroup>
                                         </FormControl>
                                     </Box>
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12}>
                                     <Divider />
                                     <Box mt={1}>

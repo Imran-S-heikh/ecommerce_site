@@ -14,10 +14,10 @@ import Signin from './pages/Signin.page';
 import Signup from './pages/Signup.page';
 import Cart from './pages/Cart.page';
 import Dashboard from './pages/Dashboard.page';
-import { darkModeState } from './recoil/atoms';
+import { darkModeState, propertyState } from './recoil/atoms';
 import { blue } from '@material-ui/core/colors';
 import HideComponentOnRoute from './molecules/HideComponentOnRoute.mole';
-import { catchAsync } from './utils';
+import { catchAsync, checkStatus } from './utils';
 import {checkUser} from './request/user.requset';
 import { userState } from './recoil/user/user.atoms';
 import Defaults from './components/Defaults.component';
@@ -25,6 +25,7 @@ import WishList from './pages/WishList.page';
 import PasswordReset from './pages/PasswordReset.page';
 import Checkout from './pages/Checkout.page';
 import PaymentSuccess from './pages/PaymentSuccess.page';
+import { getSiteProperties } from './request/other.request';
 
 
 
@@ -33,6 +34,7 @@ function App() {
 
   const darkMode = useRecoilValue(darkModeState);
   const setUser  = useSetRecoilState(userState);
+  const setProperty  = useSetRecoilState(propertyState);
 
   const theme = unstable_createMuiStrictModeTheme({
     palette: {
@@ -46,8 +48,11 @@ function App() {
   useEffect(()=>{
     const checkMe = catchAsync(async()=>{
       const response = await checkUser();
-      if (response.data.status === 'success') {
-        console.log(response,'==============================================')
+      const siteRes = await getSiteProperties();
+      if(checkStatus(siteRes)){
+          setProperty(siteRes.data.siteProperties)
+      }
+      if (checkStatus(response)) {
         setUser(response.data.user);
       }else{
         setUser(null);

@@ -6,14 +6,16 @@ import Size from '../molecules/Size.mole'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { shopQueryState } from '../recoil/atoms'
+import { propertyState, shopQueryState } from '../recoil/atoms'
 import { useIsInit } from '../customHooks'
+import { useRecoilValue } from 'recoil'
 
 
 
 export default function Sidebar() {
 
     const [priceRange, setPriceRange] = useState([60, 4000])
+    const property = useRecoilValue(propertyState);
     const [sortby, setSortby] = useState('')
     const [catagory, setCatagory] = useState('')
     const [productType, setProductType] = useState('')
@@ -94,15 +96,12 @@ export default function Sidebar() {
                 </Typography>
             }>
                 <List dense={true} >
-                    <ListItem onClick={() => setCatagory('men')} button={true}>
-                        Men
-                        </ListItem>
-                    <ListItem onClick={() => setCatagory('women')} button={true}>
-                        Women
-                        </ListItem>
-                    <ListItem onClick={() => setCatagory('child')} button={true}>
-                        Child
-                    </ListItem>
+                    {property.catagories.map((item,i) =>
+                         <ListItem key={i} onClick={() => setCatagory(item)} button={true}>
+                             {item.toUpperCase()}
+                         </ListItem>
+                    
+                    )}
                 </List>
             </ControlledAccordion>
             <ControlledAccordion title={
@@ -197,10 +196,9 @@ export default function Sidebar() {
 
             }>
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                    <Size onClick={()=>setSize('S')} size="S" />
-                    <Size onClick={()=>setSize('L')} size="L" />
-                    <Size onClick={()=>setSize('M')} size="M" />
-                    <Size onClick={()=>setSize('A')} size="A" />
+                    {property.sizes.map((item,i)=>
+                        <Size key={i} onClick={() => setSize(item)} size={item.toUpperCase()} />
+                    )}
                 </div>
 
             </ControlledAccordion>

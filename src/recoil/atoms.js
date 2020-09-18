@@ -74,7 +74,9 @@ export const propertyState = atom({
     key: PROPERTY,
     default: {
         catagories: [],
-        sizes: []
+        sizes: [],
+        productTypes: [],
+        brands: []
     }
 });
 

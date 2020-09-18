@@ -1,12 +1,9 @@
 import React from 'react'
 import LinkGallaryItem from '../molecules/LinkGallaryItem.mole'
-import { Grid } from '@material-ui/core'
-import linkImg1 from '../assets/demo01_03_312x.jpg';
-import linkImg2 from '../assets/demo01_04_312x.jpg';
-import linkImg3 from '../assets/demo01_05_312x.jpg';
-import linkImg4 from '../assets/demo01_06_312x.jpg';
-import linkImg5 from '../assets/demo01_07_312x.jpg';
-import linkImg6 from '../assets/demo01_08_644x.jpg';
+import { Box, Grid } from '@material-ui/core'
+import link_image from '../assets/link_image.jpg';
+import link_long from '../assets/link_long.jpg';
+import link_hori from '../assets/link_hori.jpg';
 
 export default function LinkGallary() {
     return (
@@ -17,28 +14,30 @@ export default function LinkGallary() {
                         <Grid item xs={12} sm={6}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <LinkGallaryItem image={linkImg1} />
+                                    <LinkGallaryItem image={link_image} />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <LinkGallaryItem image={linkImg2} />
+                                    <LinkGallaryItem image={link_image} />
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <LinkGallaryItem image={linkImg4} />
+                            <LinkGallaryItem image={link_long} height={260*2 + 15} />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                            <LinkGallaryItem image={linkImg3} />
+                            <LinkGallaryItem image={link_image} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <LinkGallaryItem image={linkImg5} />
+                            <LinkGallaryItem image={link_image} />
                         </Grid>
                         <Grid item xs={12}>
-                            <LinkGallaryItem image={linkImg6} />
+                            {/* <Box maxHeight={260}> */}
+                                <LinkGallaryItem image={link_hori} />
+                            {/* </Box> */}
                         </Grid>
                     </Grid>
                 </Grid>

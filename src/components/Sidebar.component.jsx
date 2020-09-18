@@ -20,6 +20,7 @@ export default function Sidebar() {
     const [catagory, setCatagory] = useState('')
     const [productType, setProductType] = useState('')
     const [size, setSize] = useState('')
+    const [brand, setBrand] = useState('')
     const setShopQuery = useSetRecoilState(shopQueryState);
     const isInit = useIsInit();
     const timer = useRef();
@@ -71,6 +72,18 @@ export default function Sidebar() {
             setShopQuery(pre => {
                 return {
                     ...pre,
+                    brand,
+                }
+            })
+        }
+        console.log(brand)
+    }, [brand])
+
+    useEffect(() => {
+        if (!isInit) {
+            setShopQuery(pre => {
+                return {
+                    ...pre,
                     productType: productType
                 }
             })
@@ -96,11 +109,11 @@ export default function Sidebar() {
                 </Typography>
             }>
                 <List dense={true} >
-                    {property.catagories.map((item,i) =>
-                         <ListItem key={i} onClick={() => setCatagory(item)} button={true}>
-                             {item.toUpperCase()}
-                         </ListItem>
-                    
+                    {property.catagories.map((item, i) =>
+                        <ListItem key={i} onClick={() => setCatagory(item)} button={true}>
+                            {item.toUpperCase()}
+                        </ListItem>
+
                     )}
                 </List>
             </ControlledAccordion>
@@ -111,18 +124,25 @@ export default function Sidebar() {
             }>
 
                 <List dense={true} >
-                    <ListItem onClick={() => setProductType('jacket')} button={true}>
-                        Jacket
-                    </ListItem>
-                    <ListItem onClick={() => setProductType('shoe')} button={true}>
-                        Shoe
-                    </ListItem>
-                    <ListItem onClick={() => setProductType('shirt')} button={true}>
-                        Shirt
+                    {property.productTypes.map(item =>
+                        <ListItem key={item} onClick={() => setProductType(item)} button={true}>
+                            {item}
                         </ListItem>
-                    <ListItem onClick={() => setProductType('jeans')} button={true}>
-                        Jeans
-                    </ListItem>
+                    )}
+                </List>
+            </ControlledAccordion>
+            <ControlledAccordion title={
+                <Typography component="span">
+                    Brands
+                </Typography>
+            }>
+
+                <List dense={true} >
+                    {property.brands.map(item =>
+                        <ListItem key={item} onClick={() => setBrand(item)} button={true}>
+                            {item.toUpperCase()}
+                        </ListItem>
+                    )}
                 </List>
             </ControlledAccordion>
             <ControlledAccordion title={
@@ -196,7 +216,7 @@ export default function Sidebar() {
 
             }>
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {property.sizes.map((item,i)=>
+                    {property.sizes.map((item, i) =>
                         <Size key={i} onClick={() => setSize(item)} size={item.toUpperCase()} />
                     )}
                 </div>

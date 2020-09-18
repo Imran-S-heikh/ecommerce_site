@@ -20,8 +20,10 @@ export default function SiteProperties() {
     const [catagory, setCatagory] = useState();
     const [sizes, setSizes] = useState([]);
     const [size, setSize] = useState();
+    const [brand, setBrand] = useState();
     const [productTypes,setProductTypes] = useState([])
     const [productType,setProductType] = useState()
+    const [brands,setBrands] = useState([])
     const isInit = useIsInit()
 
 
@@ -29,9 +31,11 @@ export default function SiteProperties() {
         catchAsync(async () => {
             const response = await getSiteProperties();
             if (checkStatus(response)) {
+                console.log(response.data)
                 setCatagories(response.data.siteProperties.catagories)
                 setSizes(response.data.siteProperties.sizes)
-                productTypes(response.data.siteProperties.productTypes)
+                setProductTypes(response.data.siteProperties.productTypes)
+                setBrands(response.data.siteProperties.brands)
             }
         })()
     }, [])
@@ -50,6 +54,27 @@ export default function SiteProperties() {
             })()
         }
     }, [sizes])
+
+    useEffect(() => {
+        if (!isInit) {
+            catchAsync(async () => {
+                await updateSiteProperties({ productTypes });
+            })()
+        }
+    }, [productTypes])
+
+    useEffect(() => {
+        console.log({brands})
+        if (!isInit) {
+            catchAsync(async () => {
+                await updateSiteProperties({ brands });
+            })()
+        }
+    }, [brands])
+
+    useEffect(()=>{
+        console.log({brand})
+    },[brand])
 
 
     const handleCatagory = (e) => {
@@ -77,6 +102,21 @@ export default function SiteProperties() {
             setSizes([...sizes.filter(val => val !== size), size])
         }
     }
+
+    const handleProductTypes = () => {
+        if (productType && productType !== '') {
+            setProductType('')
+            setProductTypes([...productTypes.filter(val => val !== productType), productType])
+        }
+    }
+
+    const handleBrands = () => {
+        if (brand && brand !== '') {
+            setBrand('')
+            setBrands([...brands.filter(val => val !== brand), brand])
+        }
+    }
+
 
     return (
         <div>
@@ -106,7 +146,7 @@ export default function SiteProperties() {
                         <Box>
                             <ButtonGroup>
                                 <Box flexGrow={1}>
-                                    <TextField onChange={handleCatagory} value={catagory} size="small" variant="outlined" />
+                                    <TextField placeholder="Add a catagory" onChange={handleCatagory} value={catagory} size="small" variant="outlined" />
                                 </Box>
                                 <Button onClick={handleCatagories} variant="outlined">
                                     <AddIcon />
@@ -133,7 +173,7 @@ export default function SiteProperties() {
                         <Box>
                             <ButtonGroup>
                                 <Box flexGrow={1}>
-                                    <TextField onChange={(e) => setSize(e.currentTarget.value.toLowerCase())} value={size} size="small" variant="outlined" />
+                                    <TextField placeholder="add new size" onChange={(e) => setSize(e.currentTarget.value.toLowerCase())} value={size} size="small" variant="outlined" />
                                 </Box>
                                 <Button onClick={handleSizes} variant="outlined">
                                     <AddIcon />
@@ -146,7 +186,7 @@ export default function SiteProperties() {
                             Product Types
                         </Typography>
                         <List>
-                            {sizes.map((name, i) =>
+                            {productTypes.map((name, i) =>
                                 <ListItem key={i} className={classes.item}>
                                     <ListItemText primary={name.toUpperCase()} />
                                     <ListItemSecondaryAction>
@@ -160,15 +200,41 @@ export default function SiteProperties() {
                         <Box>
                             <ButtonGroup>
                                 <Box flexGrow={1}>
-                                    <TextField onChange={(e) => setSize(e.currentTarget.value.toLowerCase())} value={size} size="small" variant="outlined" />
+                                    <TextField placeholder="add new product type" onChange={(e) => setProductType(e.currentTarget.value.toLowerCase())} value={productType} size="small" variant="outlined" />
                                 </Box>
-                                <Button onClick={handleSizes} variant="outlined">
+                                <Button onClick={handleProductTypes} variant="outlined">
                                     <AddIcon />
                                 </Button>
                             </ButtonGroup>
                         </Box>
                     </Grid>
-                    <Grid item xs={3}></Grid>
+                    <Grid item xs={3}>
+                    <Typography variant="h5">
+                            Brands
+                        </Typography>
+                        <List>
+                            {brands.map((name, i) =>
+                                <ListItem key={i} className={classes.item}>
+                                    <ListItemText primary={name.toUpperCase()} />
+                                    <ListItemSecondaryAction>
+                                        <IconButton onClick={() => setBrands(brands.filter(val => name !== val))}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            )}
+                        </List>
+                        <Box>
+                            <ButtonGroup>
+                                <Box flexGrow={1}>
+                                    <TextField placeholder="Add new Brand" onChange={(e) => setBrand(e.currentTarget.value.toLowerCase())} value={brand} size="small" variant="outlined" />
+                                </Box>
+                                <Button onClick={handleBrands} variant="outlined">
+                                    <AddIcon />
+                                </Button>
+                            </ButtonGroup>
+                        </Box>
+                    </Grid>
                 </Grid>
             </Container>
         </div>

@@ -81,24 +81,24 @@ const brands = [
 //     }
 // ];
 
-const types = [
-    {
-        value: 'shoe',
-        label: 'Shoe'
-    },
-    {
-        value: 'jacket',
-        label: 'Jacket'
-    },
-    {
-        value: 'jeans',
-        label: 'Jeans'
-    },
-    {
-        value: 'gown',
-        label: 'Ladies Gown'
-    }
-];
+// const types = [
+//     {
+//         value: 'shoe',
+//         label: 'Shoe'
+//     },
+//     {
+//         value: 'jacket',
+//         label: 'Jacket'
+//     },
+//     {
+//         value: 'jeans',
+//         label: 'Jeans'
+//     },
+//     {
+//         value: 'gown',
+//         label: 'Ladies Gown'
+//     }
+// ];
 
 
 
@@ -130,6 +130,8 @@ export default function MakeProduct(props) {
     const [tagPopoverOpen,setTagPopover] = useState(false);
     const [sizes,setSizes] = useState([]);
     const [catagories,setCatagories] = useState([]);
+    const [productTypes,setProductTypes] = useState([]);
+    const [brands,setBrands] = useState([]);
 
 
     const submitRef = useRef();
@@ -146,6 +148,8 @@ export default function MakeProduct(props) {
                 setSizes(siteProperties.sizes)
                 setCatagories(siteProperties.catagories)
                 setCatagory(siteProperties.catagories[1])
+                setProductTypes(siteProperties.productTypes)
+                setBrands(siteProperties.brands)
             }
         })()
     },[])
@@ -266,12 +270,11 @@ export default function MakeProduct(props) {
                                     <TextField onChange={(e) => setBrand(e.currentTarget.value)}
                                         value={brand}
                                         select fullWidth
-                                        SelectProps={{ native: true }}
                                         label="Brand"
                                         onChange={e => setBrand(e.currentTarget.value)}
                                     >
-                                        {brands.map(brand =>
-                                            <option key={brand.value} value={brand.value}>{brand.label}</option>
+                                        {brands.map(item =>
+                                            <MenuItem key={item} value={item}>{item.toUpperCase()}</MenuItem>
                                         )}
                                     </TextField>
                                 </Grid>
@@ -294,13 +297,12 @@ export default function MakeProduct(props) {
                                     <TextField onChange={(e) => setProductType(e.currentTarget.value)}
                                         value={productType}
                                         select fullWidth
-                                        SelectProps={{ native: true }}
                                         label="Product Type"
                                         onChange={e => setProductType(e.currentTarget.value)}
 
                                     >
-                                        {types.map(type =>
-                                            <option key={type.value} value={type.value}>{type.label}</option>
+                                         {productTypes.map(item =>
+                                            <MenuItem key={item} value={item}>{item.toUpperCase()}</MenuItem>
                                         )}
                                     </TextField>
                                 </Grid>

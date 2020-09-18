@@ -17,8 +17,10 @@ export default function WishList() {
 
     
 
-    const addToCart = (item)=>{
-        setCartItem((prev)=>[...prev,item])
+    const addToCart = (product)=>{
+        console.log(product)
+        setWishList([...wishList.filter(item=>item._id === product.id)])
+        setCartItem((prev)=>[...prev,product])
     }
 
     return (
@@ -34,7 +36,7 @@ export default function WishList() {
                     <Showcase
                         items={wishList}
                         title="Wish To Buy"
-                        component={<CartItem wishCart={true} handler={addToCart}/>}
+                        component={<CartItem handleRemove={()=>{}} handleAdd={()=>{}} handleDelete={()=>{}} wishCart={true} handler={addToCart}/> }
                         breakPoints={{ xs: 12, sm: 12, md: 12, lg: 12 }}
                     />
                 </Hide>

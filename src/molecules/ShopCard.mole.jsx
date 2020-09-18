@@ -123,7 +123,7 @@ export default function ShopCard({ width = 280, item }) {
     const addCartItem = () => {
         setCardItems((pre) => {
             let newProduct = false
-            const ids = pre.map(item => item._id);
+            const ids = pre.map(e => e._id);
             const arr = [...pre].map(product => {
                 if (item._id === product._id) {
                     return { ...product, count: product.count + 1 }
@@ -134,6 +134,10 @@ export default function ShopCard({ width = 280, item }) {
             if (!ids.includes(item._id)) return [...arr, { ...item, count: 1 }]
             return arr;
         });
+    }
+
+    const addToWishList = ()=>{
+        setWishList(pre=>[...pre.filter(e=>e._id !== item._id),item]);
     }
 
     const handleView = ()=>{
@@ -147,12 +151,12 @@ export default function ShopCard({ width = 280, item }) {
                 <IconButton>
                     <VisibilityIcon />
                 </IconButton>
-                <IconButton onClick={() => setWishList(prev => [...prev, { name, image, rating, price, brand }])}>
+                <IconButton onClick={addToWishList}>
                     <FavoriteIcon />
                 </IconButton>
-                <IconButton>
+                {/* <IconButton>
                     <CompareArrowsIcon />
-                </IconButton>
+                </IconButton> */}
             </CardActions>
             <CardActionArea onClick={handleView}>
                 <Hide hide={!loading}>

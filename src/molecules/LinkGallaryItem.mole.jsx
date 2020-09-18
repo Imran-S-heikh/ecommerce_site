@@ -7,7 +7,7 @@ const createStyles = makeStyles(theme => ({
     },
     img: {
         width: '100%',
-        height: '100%',
+        // height: '100%',
         transition: 'all 300ms',
         '$container:hover &': {
             transform: 'scale(1.3)'
@@ -15,6 +15,8 @@ const createStyles = makeStyles(theme => ({
     },
     container: {
         position: 'relative',
+        maxHeight: (props)=> props.height ? props.height : 260,
+        width: '100%',
         overflow: 'hidden',
         '&:before': {
             content: `''`,
@@ -41,9 +43,9 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function LinkGallaryItem({ image, children, hover }) {
+export default function LinkGallaryItem({ image, children, hover,height }) {
 
-    const classes = createStyles()
+    const classes = createStyles({height})
 
     return (
         <div className={classes.container}>

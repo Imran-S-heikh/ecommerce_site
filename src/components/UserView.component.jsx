@@ -12,6 +12,8 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { useSetRecoilState } from 'recoil';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import ImageUpload from './ImageUpload.component';
+import { catchAsync } from '../utils';
+import { uploadprofilePicture } from '../request/user.requset';
 
 
 const createStyles = makeStyles(theme => ({
@@ -44,6 +46,16 @@ export default function UserView({ uploadHandler,user,setUser }) {
     const [editMode, setEditMode] = useState(false)
     // const [user, setuser] = useRecoilState(editUserState)
     const [textEditPopup, setTextEditPopup] = useState(false)
+    const [newAvatar,setNewAvatar] = useState(null);
+    
+
+    useEffect(()=>{
+        catchAsync(async()=>{
+            if(newAvatar){
+                const response = await uploadprofilePicture({newImage: newAvatar});
+            }
+        })()
+    },[newAvatar])
 
 
 
@@ -73,6 +85,7 @@ export default function UserView({ uploadHandler,user,setUser }) {
 
     const imageHandler = (_, url) => {
         setUser({ ...user, avatar: url })
+        setNewAvatar(url)
     }
 
     return (

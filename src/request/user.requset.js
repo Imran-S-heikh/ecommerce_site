@@ -65,4 +65,9 @@ export const signinWithGoogle = catchAsync(async (data) => {
     return response;
 })
 
+export const uploadprofilePicture = catchAsync(async (data) => {
+    const response = await request(data, `/users/updateProfilePicture`);
+    return response;
+})
+
 

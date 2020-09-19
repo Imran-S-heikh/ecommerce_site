@@ -137,8 +137,8 @@ export default function MakeProduct(props) {
     const submitRef = useRef();
 
     useEffect(() => {
-        console.log(color)
-    }, [color])
+        console.log(brand)
+    }, [brand])
 
     useEffect(()=>{
         catchAsync(async ()=>{
@@ -271,7 +271,7 @@ export default function MakeProduct(props) {
                                         value={brand}
                                         select fullWidth
                                         label="Brand"
-                                        onChange={e => setBrand(e.currentTarget.value)}
+                                        onChange={e => setBrand(e.target.value)}
                                     >
                                         {brands.map(item =>
                                             <MenuItem key={item} value={item}>{item.toUpperCase()}</MenuItem>
@@ -298,7 +298,7 @@ export default function MakeProduct(props) {
                                         value={productType}
                                         select fullWidth
                                         label="Product Type"
-                                        onChange={e => setProductType(e.currentTarget.value)}
+                                        onChange={e => setProductType(e.target.value)}
 
                                     >
                                          {productTypes.map(item =>

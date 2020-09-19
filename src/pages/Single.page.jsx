@@ -24,6 +24,7 @@ import { Redirect, useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import ControlledAccordion from '../molecules/ControlledAccordion.mole'
 import Hide from '../molecules/Hide.mole'
+import { createReview, getReviews } from '../request/review.request'
 
 
 export default function Single() {
@@ -38,6 +39,9 @@ export default function Single() {
     const history = useHistory();
     const user = useRecoilValue(userState);
     const setAlert = useSetRecoilState(alertSnackbarState);
+    const [rating, setRating] = useState(5);
+    const [description, setDescription] = useState('');
+    const [reviews, setReviews] = useState(null);
 
 
     useEffect(() => {
@@ -58,6 +62,16 @@ export default function Single() {
                 setLoader(false)
                 if (checkStatus(response)) {
                     setProduct(response.data.product)
+                }
+            })()
+        }
+    }, [productId]);
+    useEffect(() => {
+        if (productId) {
+            catchAsync(async () => {
+                const response = await getReviews(productId)
+                if (checkStatus(response)) {
+                    setReviews(response.data.reviews)
                 }
             })()
         }
@@ -97,6 +111,13 @@ export default function Single() {
             history.push('/checkout')
         }
     }
+
+    const handleReview = catchAsync(async () => {
+        const response = await createReview({ rating, description, product: productId })
+        if (checkStatus(response)) {
+            console.log(response.data)
+        }
+    })
 
     if (!productId) return <Redirect to="/shop" />
 
@@ -166,9 +187,9 @@ export default function Single() {
                                         </Typography>
                                     </Box>
                                     <Box mt={5} display="flex" alignItems="center">
-                                        <Rating value={product.avgRating} readOnly={true} />
+                                        <Rating value={reviews?.totalRating / reviews?.totalReview} readOnly={true} />
                                         <Link style={{ margin: '5px 0 0 5px', cursor: 'pointer' }} >
-                                            {product.reviews.length} reviews
+                                            {reviews?.totalReview} reviews
                                         </Link>
                                     </Box>
                                     <Box mt={5}>
@@ -221,69 +242,29 @@ export default function Single() {
                                             <Box flex={1}>
                                                 <List>
                                                     <Box maxHeight={200} overflow="auto scroll">
-                                                        <Box>
-                                                            <ListItem>
-                                                                <ListItemAvatar>
-                                                                    <Avatar />
-                                                                </ListItemAvatar>
-                                                                <ListItemText
-                                                                    primary="Imran Sheikh"
-                                                                    secondary="2020-10-16"
-                                                                />
-                                                                <ListItemSecondaryAction>
-                                                                    <Rating readOnly size="small" value={4} />
-                                                                </ListItemSecondaryAction>
+                                                        {reviews?.allReview.map(item =>
+                                                            <Box key={item._id}>
+                                                                <ListItem>
+                                                                    <ListItemAvatar>
+                                                                        <Avatar src={item?.user.avatar}/>
+                                                                    </ListItemAvatar>
+                                                                    <ListItemText
+                                                                        primary={item.user.name}
+                                                                        secondary={new Date(item.createdAt).toDateString()}
+                                                                    />
+                                                                    <ListItemSecondaryAction>
+                                                                        <Rating readOnly size="small" value={item.rating} />
+                                                                    </ListItemSecondaryAction>
 
-                                                            </ListItem>
-                                                            <Box mx={3} mb={3}>
-                                                                <Typography>
-                                                                    an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets c
-                                                            </Typography>
+                                                                </ListItem>
+                                                                <Box mx={3} mb={3}>
+                                                                    <Typography>
+                                                                        {item.description}
+                                                                    </Typography>
+                                                                </Box>
+                                                                <Divider />
                                                             </Box>
-                                                            <Divider />
-                                                        </Box>
-                                                        <Box>
-                                                            <ListItem>
-                                                                <ListItemAvatar>
-                                                                    <Avatar />
-                                                                </ListItemAvatar>
-                                                                <ListItemText
-                                                                    primary="Imran Sheikh"
-                                                                    secondary="2020-10-16"
-                                                                />
-                                                                <ListItemSecondaryAction>
-                                                                    <Rating readOnly size="small" value={4} />
-                                                                </ListItemSecondaryAction>
-
-                                                            </ListItem>
-                                                            <Box mx={3} mb={3}>
-                                                                <Typography>
-                                                                    an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets c
-                                                            </Typography>
-                                                            </Box>
-                                                            <Divider />
-                                                        </Box>
-                                                        <Box>
-                                                            <ListItem>
-                                                                <ListItemAvatar>
-                                                                    <Avatar />
-                                                                </ListItemAvatar>
-                                                                <ListItemText
-                                                                    primary="Imran Sheikh"
-                                                                    secondary="2020-10-16"
-                                                                />
-                                                                <ListItemSecondaryAction>
-                                                                    <Rating readOnly size="small" value={4} />
-                                                                </ListItemSecondaryAction>
-
-                                                            </ListItem>
-                                                            <Box mx={3} mb={3}>
-                                                                <Typography>
-                                                                    an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets c
-                                                            </Typography>
-                                                            </Box>
-                                                            <Divider />
-                                                        </Box>
+                                                        )}
                                                     </Box>
                                                 </List>
                                             </Box>
@@ -301,15 +282,15 @@ export default function Single() {
                                                                 secondary={new Date().toDateString()}
                                                             />
                                                             <ListItemSecondaryAction>
-                                                                <Rating value={4} />
+                                                                <Rating onChange={(_, val) => setRating(val)} value={rating} />
                                                             </ListItemSecondaryAction>
 
                                                         </ListItem>
                                                     </List>
                                                     <Box mx={3} mb={3}>
-                                                        <TextareaAutosize style={{ width: '100%' }} rowsMin={3} maxLength={40} placeholder="Share some words" />
+                                                        <TextareaAutosize onChange={(e => setDescription(e.target.value))} value={description} style={{ width: '100%' }} rowsMin={3} maxLength={40} placeholder="Share some words" />
                                                         <Box mt={2}>
-                                                            <Button variant="outlined" fullWidth>Submit Review</Button>
+                                                            <Button onClick={handleReview} variant="outlined" fullWidth>Submit Review</Button>
                                                         </Box>
                                                     </Box>
                                                     <Divider />

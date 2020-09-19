@@ -1,5 +1,8 @@
 import React from 'react'
 import { Button, makeStyles, Box } from '@material-ui/core'
+import { useSetRecoilState } from 'recoil'
+import { shopQueryState } from '../recoil/atoms'
+import { useHistory } from 'react-router-dom'
 
 const createStyles = makeStyles(theme => ({
     center: {
@@ -43,9 +46,16 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function LinkGallaryItem({ image, children, hover,height }) {
+export default function LinkGallaryItem({ image, children, hover,height,link,title }) {
 
     const classes = createStyles({height})
+    const setShopQuery = useSetRecoilState(shopQueryState);
+    const history = useHistory();
+
+    const handleClick = ()=>{
+        setShopQuery(pre=>({catagory: link}))
+        history.push('/shop')
+    }
 
     return (
         <div className={classes.container}>
@@ -57,7 +67,7 @@ export default function LinkGallaryItem({ image, children, hover,height }) {
                 transform: 'translate(-50%,-50%)',
                 zIndex: 2
             }}>
-                {children ? children : <Button color="primary" variant="contained">Women</Button>}
+                {children ? children : <Button onClick={handleClick} color="primary" variant="contained">{title}</Button>}
             </Box>
         </div>
     )

@@ -5,7 +5,7 @@ import Color from '../molecules/Color.mole'
 import Size from '../molecules/Size.mole'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { propertyState, shopQueryState } from '../recoil/atoms'
 import { useIsInit } from '../customHooks'
 import { useRecoilValue } from 'recoil'
@@ -21,7 +21,7 @@ export default function Sidebar() {
     const [productType, setProductType] = useState('')
     const [size, setSize] = useState('')
     const [brand, setBrand] = useState('')
-    const setShopQuery = useSetRecoilState(shopQueryState);
+    const [shopQuery,setShopQuery] = useRecoilState(shopQueryState);
     const isInit = useIsInit();
     const timer = useRef();
 
@@ -110,7 +110,7 @@ export default function Sidebar() {
             }>
                 <List dense={true} >
                     {property.catagories.map((item, i) =>
-                        <ListItem key={i} onClick={() => setCatagory(item)} button={true}>
+                        <ListItem key={i} selected={shopQuery?.catagory === item} onClick={() => setCatagory(item)} button={true}>
                             {item.toUpperCase()}
                         </ListItem>
 
@@ -125,8 +125,8 @@ export default function Sidebar() {
 
                 <List dense={true} >
                     {property.productTypes.map(item =>
-                        <ListItem key={item} onClick={() => setProductType(item)} button={true}>
-                            {item}
+                        <ListItem key={item} selected={shopQuery?.productType === item}  onClick={() => setProductType(item)} button={true}>
+                            {item.toUpperCase()}
                         </ListItem>
                     )}
                 </List>
@@ -139,7 +139,7 @@ export default function Sidebar() {
 
                 <List dense={true} >
                     {property.brands.map(item =>
-                        <ListItem key={item} onClick={() => setBrand(item)} button={true}>
+                        <ListItem key={item} selected={shopQuery?.brand === item} onClick={() => setBrand(item)} button={true}>
                             {item.toUpperCase()}
                         </ListItem>
                     )}
@@ -158,10 +158,10 @@ export default function Sidebar() {
                     {/* <ListItem button={true}>
                         Latest
                     </ListItem> */}
-                    <ListItem onClick={() => setSortby('-price')} button={true}>
+                    <ListItem selected={sortby === '-price'} onClick={() => setSortby('-price')} button={true}>
                         Highest Price
                     </ListItem>
-                    <ListItem onClick={() => setSortby('price')} button={true}>
+                    <ListItem selected={sortby === 'price'} onClick={() => setSortby('price')} button={true}>
                         Lowest Price
                     </ListItem>
                 </List>
@@ -194,7 +194,7 @@ export default function Sidebar() {
                 />
 
             </ControlledAccordion>
-            <ControlledAccordion title={
+            {/* <ControlledAccordion title={
                 <Typography component="span">
                     Colors
                 </Typography>
@@ -208,7 +208,7 @@ export default function Sidebar() {
 
                 </div>
 
-            </ControlledAccordion>
+            </ControlledAccordion> */}
             <ControlledAccordion title={
                 <Typography component="span">
                     Size

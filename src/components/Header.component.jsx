@@ -89,6 +89,23 @@ export default function Header() {
     const cart = useRecoilValue(cartState);
     const history = useHistory();
 
+    useEffect(()=>{
+        const mode = localStorage.getItem('@mode')
+        if(mode === 'dark'){
+            setDarkMode(true)
+        }else{
+            setDarkMode(false)
+        }
+    },[])
+
+    useEffect(()=>{
+        if(darkMode){
+            localStorage.setItem('@mode','dark')
+        }else{
+            localStorage.setItem('@mode','light')
+        }
+    },[darkMode])
+
 
 
    

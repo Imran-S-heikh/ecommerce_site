@@ -3,7 +3,7 @@ import Header from '../components/Header.component'
 import Footer from '../components/Footer.component'
 import Magnifier from '../molecules/Magnifier.mole'
 import { assets, catchAsync, checkStatus } from '../utils'
-import { Container, Breadcrumbs, Link, Grid, Box, Menu, MenuItem, MenuList, Typography, ButtonBase, Avatar, ButtonGroup, Button, IconButton, FormControlLabel, Checkbox, FormGroup, Backdrop, CircularProgress } from '@material-ui/core'
+import { Container, Breadcrumbs, Link, Grid, Box, Menu, MenuItem, MenuList, Typography, ButtonBase, Avatar, ButtonGroup, Button, IconButton, FormControlLabel, Checkbox, FormGroup, Backdrop, CircularProgress, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, Divider, TextareaAutosize } from '@material-ui/core'
 import Carousel from '../components/Carousel.component'
 import Keyvalue from '../molecules/Keyvalue.mole'
 import Rating from '@material-ui/lab/Rating'
@@ -22,6 +22,8 @@ import { getProduct } from '../request/product.request'
 import { userCartState, userState } from '../recoil/user/user.atoms'
 import { Redirect, useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
+import ControlledAccordion from '../molecules/ControlledAccordion.mole'
+import Hide from '../molecules/Hide.mole'
 
 
 export default function Single() {
@@ -31,22 +33,22 @@ export default function Single() {
     const [product, setProduct] = useState(null)
     const [productId, setProductId] = useRecoilState(singleProductId);
     const setLoader = useSetRecoilState(loaderState);
-    const [userCart,setUserCart] = useRecoilState(userCartState);
-    const [cartQuantity,setCartQuantity] = useState(0);
+    const [userCart, setUserCart] = useRecoilState(userCartState);
+    const [cartQuantity, setCartQuantity] = useState(0);
     const history = useHistory();
     const user = useRecoilValue(userState);
     const setAlert = useSetRecoilState(alertSnackbarState);
 
 
-    useEffect(()=>{
-        const currentProduct = userCart.filter(item=>item._id === product._id)?.[0];
+    useEffect(() => {
+        const currentProduct = userCart.filter(item => item._id === product?._id)?.[0];
 
-        if(currentProduct && currentProduct.count){
+        if (currentProduct && currentProduct.count) {
             setCartQuantity(currentProduct.count)
-        }else{
+        } else {
             setCartQuantity(0)
         }
-    },[userCart]);
+    }, [userCart]);
 
     useEffect(() => {
         if (productId) {
@@ -66,8 +68,8 @@ export default function Single() {
 
     // }
 
-    const handleRemove = ()=>{
-        setUserCart(pre=>pre.map(item=>product._id === item._id ? {...item,count: item.count - 1} : item).filter(item=> item.count !== 0))
+    const handleRemove = () => {
+        setUserCart(pre => pre.map(item => product._id === item._id ? { ...item, count: item.count - 1 } : item).filter(item => item.count !== 0))
     }
 
     const addCartItem = () => {
@@ -86,12 +88,12 @@ export default function Single() {
         });
     }
 
-    const handleBuy = ()=>{
-        if(!user){
-            setAlert({open: true,message: 'Please Log in To Buy'})
-        }else if(user){
-            setAlert({open: true,message: 'Add at least One Product To the Cart'})
-        }else{
+    const handleBuy = () => {
+        if (!user) {
+            setAlert({ open: true, message: 'Please Log in To Buy' })
+        } else if (userCart.length === 0) {
+            setAlert({ open: true, message: 'Add at least One Product To the Cart' })
+        } else {
             history.push('/checkout')
         }
     }
@@ -138,11 +140,13 @@ export default function Single() {
                                             </div>
                                         </Grid>
                                         <Grid item xs={12} md={10} className="">
-                                            <Carousel 
-                                                component={<Magnifier />} 
-                                                customStyle={{ buttonDots: { bottom: -60 }, buttonNext: { display: 'none' }, buttonPrev: { display: 'none' } }} 
-                                                data={product.image.original.map(url=>({image: url}))} 
-                                            />
+                                            <Box mt={3}>
+                                                <Carousel
+                                                    component={<Magnifier />}
+                                                    customStyle={{ buttonDots: { bottom: -60 }, buttonNext: { display: 'none' }, buttonPrev: { display: 'none' } }}
+                                                    data={product.image.original.map(url => ({ image: url }))}
+                                                />
+                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -174,7 +178,7 @@ export default function Single() {
                                             </Typography>
                                         }} />
                                         <Box >
-                                            {product.image.small.map(url=>
+                                            {product.image.small.map(url =>
                                                 <VarientColor image={url} />
                                             )}
                                         </Box>
@@ -209,6 +213,110 @@ export default function Single() {
                                             Buy Now
                                         </Button>
                                     </div>
+                                    <Box mt={2}>
+                                        <ControlledAccordion title="Description">
+                                            <Typography>{product.description}</Typography>
+                                        </ControlledAccordion>
+                                        <ControlledAccordion title="Reviews">
+                                            <Box flex={1}>
+                                                <List>
+                                                    <Box maxHeight={200} overflow="auto scroll">
+                                                        <Box>
+                                                            <ListItem>
+                                                                <ListItemAvatar>
+                                                                    <Avatar />
+                                                                </ListItemAvatar>
+                                                                <ListItemText
+                                                                    primary="Imran Sheikh"
+                                                                    secondary="2020-10-16"
+                                                                />
+                                                                <ListItemSecondaryAction>
+                                                                    <Rating readOnly size="small" value={4} />
+                                                                </ListItemSecondaryAction>
+
+                                                            </ListItem>
+                                                            <Box mx={3} mb={3}>
+                                                                <Typography>
+                                                                    an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets c
+                                                            </Typography>
+                                                            </Box>
+                                                            <Divider />
+                                                        </Box>
+                                                        <Box>
+                                                            <ListItem>
+                                                                <ListItemAvatar>
+                                                                    <Avatar />
+                                                                </ListItemAvatar>
+                                                                <ListItemText
+                                                                    primary="Imran Sheikh"
+                                                                    secondary="2020-10-16"
+                                                                />
+                                                                <ListItemSecondaryAction>
+                                                                    <Rating readOnly size="small" value={4} />
+                                                                </ListItemSecondaryAction>
+
+                                                            </ListItem>
+                                                            <Box mx={3} mb={3}>
+                                                                <Typography>
+                                                                    an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets c
+                                                            </Typography>
+                                                            </Box>
+                                                            <Divider />
+                                                        </Box>
+                                                        <Box>
+                                                            <ListItem>
+                                                                <ListItemAvatar>
+                                                                    <Avatar />
+                                                                </ListItemAvatar>
+                                                                <ListItemText
+                                                                    primary="Imran Sheikh"
+                                                                    secondary="2020-10-16"
+                                                                />
+                                                                <ListItemSecondaryAction>
+                                                                    <Rating readOnly size="small" value={4} />
+                                                                </ListItemSecondaryAction>
+
+                                                            </ListItem>
+                                                            <Box mx={3} mb={3}>
+                                                                <Typography>
+                                                                    an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets c
+                                                            </Typography>
+                                                            </Box>
+                                                            <Divider />
+                                                        </Box>
+                                                    </Box>
+                                                </List>
+                                            </Box>
+                                        </ControlledAccordion>
+                                        <Hide hide={!Boolean(user)}>
+                                            <ControlledAccordion title="Add A Review">
+                                                <Box flex={1}>
+                                                    <List>
+                                                        <ListItem>
+                                                            <ListItemAvatar>
+                                                                <Avatar src={user?.avatar} />
+                                                            </ListItemAvatar>
+                                                            <ListItemText
+                                                                primary={user?.name}
+                                                                secondary={new Date().toDateString()}
+                                                            />
+                                                            <ListItemSecondaryAction>
+                                                                <Rating value={4} />
+                                                            </ListItemSecondaryAction>
+
+                                                        </ListItem>
+                                                    </List>
+                                                    <Box mx={3} mb={3}>
+                                                        <TextareaAutosize style={{ width: '100%' }} rowsMin={3} maxLength={40} placeholder="Share some words" />
+                                                        <Box mt={2}>
+                                                            <Button variant="outlined" fullWidth>Submit Review</Button>
+                                                        </Box>
+                                                    </Box>
+                                                    <Divider />
+                                                </Box>
+                                            </ControlledAccordion>
+                                        </Hide>
+                                    </Box>
 
                                 </Grid>
                             </Grid>

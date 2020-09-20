@@ -82,7 +82,7 @@ export default function DashboardDrawer() {
     const classes = createStyles();
     const [selected, setSelected] = useState('Dashboard');
     const [drawerOpen, setDrawerOpen] = useRecoilState(dashDrawerState)
-    const [route,setRoute] = useRecoilState(dashboardRouteState);
+    const [route, setRoute] = useRecoilState(dashboardRouteState);
 
     return (
         <Drawer
@@ -116,13 +116,13 @@ export default function DashboardDrawer() {
                         <ControlledAccordionBlack onClick={(title) => {
                             setSelected(title);
                             setRoute(routes.DASHBOARD)
-                            }} 
-                            selected={selected} 
-                            title="Dashboard" 
+                        }}
+                            selected={selected}
+                            title="Dashboard"
                             startIcon={<DashIcon />} />
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Products" startIcon={<TshirtIcon />}>
                             <MenuList color="textPrimary">
-                                <MenuItem onClick={()=>setRoute(routes.CREATE_PRODUCT)} className={classes.menuItem} button={true} >
+                                <MenuItem onClick={() => setRoute(routes.CREATE_PRODUCT)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <AddIcon />
                                     </ListItemIcon>
@@ -130,7 +130,7 @@ export default function DashboardDrawer() {
                                         Create A Product
                                 </ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={()=>setRoute(routes.EDIT_PRODUCT)} className={classes.menuItem} button={true} >
+                                <MenuItem onClick={() => setRoute(routes.EDIT_PRODUCT)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <UpdateIcon />
                                     </ListItemIcon>
@@ -138,7 +138,7 @@ export default function DashboardDrawer() {
                                         Update Product
                                 </ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={()=>setRoute(routes.VIEW_PRODUCTS)} className={classes.menuItem} button={true} >
+                                <MenuItem onClick={() => setRoute(routes.VIEW_PRODUCTS)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <ViewListIcon />
                                     </ListItemIcon>
@@ -150,7 +150,7 @@ export default function DashboardDrawer() {
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Management" startIcon={<PeopleIcon />}>
                             <MenuList color="textPrimary">
-                                <MenuItem onClick={()=>setRoute(routes.MAKE_MODARATOR)} className={classes.menuItem} button={true} >
+                                <MenuItem onClick={() => setRoute(routes.MAKE_MODARATOR)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <AddIcon />
                                     </ListItemIcon>
@@ -166,7 +166,7 @@ export default function DashboardDrawer() {
                                         Update User
                                     </ListItemText>
                                 </MenuItem> */}
-                                <MenuItem onClick={()=>setRoute(routes.ADMIN_LIST)} className={classes.menuItem} button={true} >
+                                <MenuItem onClick={() => setRoute(routes.ADMIN_LIST)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <ViewListIcon />
                                     </ListItemIcon>
@@ -178,7 +178,7 @@ export default function DashboardDrawer() {
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Orders" startIcon={<AddShoppingCartIcon />}>
                             <MenuList color="textPrimary">
-                                <MenuItem onClick={()=>setRoute(routes.VIEW_ORDERS)} className={classes.menuItem} button={true} >
+                                <MenuItem onClick={() => setRoute(routes.VIEW_ORDERS)} className={classes.menuItem} button={true} >
                                     <ListItemIcon className={classes.white}>
                                         <LocalShippingIcon />
                                     </ListItemIcon>
@@ -204,7 +204,7 @@ export default function DashboardDrawer() {
                                 </MenuItem> */}
                             </MenuList>
                         </ControlledAccordionBlack>
-                        <ControlledAccordionBlack onClick={(title)=>{setRoute(routes.PROFILE);setSelected(title)}} selected={selected} title="Profile" startIcon={<PersonIcon />} />
+                        <ControlledAccordionBlack onClick={(title) => { setRoute(routes.PROFILE); setSelected(title) }} selected={selected} title="Profile" startIcon={<PersonIcon />} />
                         <ControlledAccordionBlack onClick={(title) => setSelected(title)} selected={selected} title="Settings" startIcon={<SettingsIcon />}>
                             <MenuList color="textPrimary">
                                 <MenuItem className={classes.menuItem} button={true} >
@@ -219,8 +219,16 @@ export default function DashboardDrawer() {
                                     <ListItemIcon className={classes.white}>
                                         <WebIcon />
                                     </ListItemIcon>
-                                    <ListItemText className={classes.white} onClick={()=>setRoute(routes.SITE_PROPERTIES)}>
+                                    <ListItemText className={classes.white} onClick={() => setRoute(routes.SITE_PROPERTIES)}>
                                         Site properties
+                                </ListItemText>
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem} button={true} >
+                                    <ListItemIcon className={classes.white}>
+                                        <WebIcon />
+                                    </ListItemIcon>
+                                    <ListItemText className={classes.white} onClick={() => setRoute(routes.COUPON)}>
+                                        Coupons
                                 </ListItemText>
                                 </MenuItem>
                             </MenuList>

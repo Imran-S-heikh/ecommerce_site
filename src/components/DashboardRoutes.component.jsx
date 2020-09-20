@@ -13,6 +13,7 @@ import NewOrders from './ViewOrders.component';
 import CompletedOrders from './CompletedOrders.component';
 import ViewOrders from './ViewOrders.component';
 import SiteProperties from './SiteProperties.component';
+import Coupon from './Coupon.component';
 
 export default function DashboardRoutes() {
 
@@ -45,12 +46,9 @@ export default function DashboardRoutes() {
     if(route === routes.SITE_PROPERTIES){
         return <SiteProperties />
     }
-    // if(route === routes.COMPLETED_ORDERS){
-    //     return <CompletedOrders />
-    // }
-    // if(route === routes.PENDING_ORDERS){
-    //     return <Pending />
-    // }
+    if(route === routes.COUPON){
+        return <Coupon />
+    }
     return null;
 
 }

@@ -167,7 +167,7 @@ export default function ShopCard({ width = 280, item }) {
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.brand}>
                     <span style={{ display: 'block' }}>{brand}</span>
-                    <Rating readOnly={true} value={Number(rating)} size="small" />
+                    <Rating readOnly={true} value={item.totalStar/item.totalReview} size="small" />
                 </Typography>
                 <Typography className={classes.name}>
                     {name}

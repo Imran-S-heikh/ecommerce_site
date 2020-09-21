@@ -104,7 +104,7 @@ export default function Dashboard() {
     const [bayers, setBayers] = useState([]);
     const [recentProducts, setRecentProducts] = useState([]);
     const [statDate, setStatDate] = useState(new Date());
-    const [range,setRange] = useState('week')
+    const [range,setRange] = useState('month')
     const [newUsers, setNewUsers] = useState('--')
     const pickerRef = useRef();
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { makeStyles, Box, Container, Grid, Typography, Button, TextField, Stepper, Step, StepLabel, StepContent, IconButton, useTheme, Paper, Divider, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
+import { makeStyles, Box, Container, Grid, Typography, Button, TextField, Stepper, Step, StepLabel, StepContent, IconButton, useTheme, Paper, Divider, List, ListItem, ListItemAvatar, Avatar, ListItemText, Dialog } from '@material-ui/core';
 import Hide from '../molecules/Hide.mole';
 import { ReactComponent as StripeLogoSlate } from '../assets/stripe-logo-slate.svg';
 import { ReactComponent as StripeLogoWhite } from '../assets/stripe-logo-white.svg';
@@ -12,11 +12,12 @@ import { catchAsync, checkStatus } from '../utils';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { cartState } from '../recoil/user/user.selector';
 import { useSetRecoilState } from 'recoil';
-import { alertSnackbarState } from '../recoil/atoms';
+import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { Redirect } from 'react-router-dom';
 import { userState } from '../recoil/user/user.atoms';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import CheckoutForm from '../components/CheckoutForm.component';
 
 const stripe_key = 'pk_test_51HPJo6IvWIe2khAihM3N4JnnVCeShsbEZv9qyCVFumpX2msHAjqWkqJ7mumtwpJbBRxkdZTq5vWwxXOhXuKX1IUc003JLceeIC';
 const stripe_promise = loadStripe(stripe_key);
@@ -43,6 +44,7 @@ export default function Checkout() {
     const theme = useTheme();
     const cart = useRecoilValue(cartState);
     const setAlert = useSetRecoilState(alertSnackbarState);
+    const setLoader = useSetRecoilState(loaderState);
     const [activeStep, setActiveStep] = useState(0);
     const [user, setUser] = useRecoilState(userState);
     const [address, setAddress] = useState('address')
@@ -50,6 +52,8 @@ export default function Checkout() {
     const [state, setState] = useState('state')
     const [zipCode, setZipCode] = useState(1024)
     const [phone, setPhone] = useState(2343434)
+    const [clientSecret,setClientSecret] = useState(null);
+    const [orderId,setOrderId] = useState(null);
 
     const fromRef = useRef();
 
@@ -76,14 +80,20 @@ export default function Checkout() {
             address,
             email: user?.email
         }
-        const stripe = await stripe_promise;
+        // const stripe = await stripe_promise;
+        setLoader(true)
         const response = await checkoutRequest(data);
-
-        if(checkStatus(response) && stripe){
-            const result = await stripe.redirectToCheckout({
-                sessionId: response.data.session.id
-            });
+        console.log(response.data)
+        if(checkStatus(response)){
+            setClientSecret(response.data.clientSecret)
+            setOrderId(response.data.orderId)
         }
+        setLoader(false)
+        // if(checkStatus(response) && stripe){
+        //     const result = await stripe.redirectToCheckout({
+        //         sessionId: response.data.session.id
+        //     });
+        // }
 
     })
 
@@ -243,6 +253,11 @@ export default function Checkout() {
                     </Grid>
                 </Grid>
             </Container>
+            <Dialog open={Boolean(clientSecret)}>
+                <Elements stripe={stripe_promise}>
+                    <CheckoutForm orderId={orderId} clientSecret={clientSecret} setDialog={setClientSecret}/>
+                </Elements>
+            </Dialog>
         </div>
     )
 }

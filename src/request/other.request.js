@@ -20,3 +20,8 @@ export const createCoupon = catchAsync(async (data)=>{
     const response = await request(data,`/others/coupons`)
     return response;
 });
+
+export const deleteCoupon = catchAsync(async (data)=>{
+    const response = await request(data,`/others/coupons`,'DELETE')
+    return response;
+});

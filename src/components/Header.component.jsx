@@ -22,6 +22,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useRecoilValue } from 'recoil';
 import { cartState } from '../recoil/user/user.selector';
 import ProductSearch from '../molecules/ProductSearch.mole';
+import { singleProductId } from '../recoil/product/product.aton';
 
 
 const createStyle = makeStyles(theme => ({
@@ -83,6 +84,7 @@ export default function Header() {
     const [user, setUser] = useRecoilState(userState);
     const [darkMode, setDarkMode] = useRecoilState(darkModeState);
     const [cartDrawerOpen, setCartDrawerOpen] = useRecoilState(cartDrawerState);
+    const setProductId = useSetRecoilState(singleProductId)
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [personOpen, setPersonOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
@@ -116,7 +118,10 @@ export default function Header() {
         document.cookie = 'jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
-    
+    const handleProduct = (id)=>{
+        setProductId(id);
+        history.push('/single')
+    }
 
 
     return (
@@ -254,7 +259,7 @@ export default function Header() {
                     </div>
                 </Container>
             </AppBar>
-            <ProductSearch/>
+            <ProductSearch getId={handleProduct}/>
             <MainDrawer open={drawerOpen} setOpen={setDrawerOpen}>
                 <NavMenu styleProp={{ flxd: 'column', py: 10, fz: 12 }} showIcon={true} />
             </MainDrawer>

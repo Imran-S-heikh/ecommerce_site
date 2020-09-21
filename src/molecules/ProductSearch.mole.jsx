@@ -10,13 +10,12 @@ import { singleProductId } from '../recoil/product/product.aton';
 import { useHistory } from 'react-router-dom';
 
 
-export default function ProductSearch() {
+export default function ProductSearch({getId}) {
     const [searchOpen, setSearchOpen] = useRecoilState(searchOpenState);
     const [searchKey, setSearchKey] = useState('');
     const timer = useRef();
     const [searchItems, setSearchItems] = useState([])
     const [searchLoader, setSearchLoader] = useState(false)
-    const setProductId = useSetRecoilState(singleProductId)
     const setSearchQuery = useSetRecoilState(shopQueryState)
     const history = useHistory();
     const keyRef = useRef('');
@@ -72,14 +71,13 @@ export default function ProductSearch() {
         if (!(keyRef.current === '')) {
             setSearchQuery({ search: keyRef.current })
             setSearchOpen(false)
-            history.push('/shop')
+            // history.push('/shop')
         }
     }
 
-    const handleView = (id) => {
-        setProductId(id);
+    const handleView = (id,code) => {
+        getId(id,code)
         setSearchOpen(false)
-        history.push('/single')
     }
 
     useEffect(() => {
@@ -96,7 +94,7 @@ export default function ProductSearch() {
     return (
         <Search
             searchTitle="Search For Products"
-            items={searchItems.map(item => ({ name: item.name, _id: item._id, src: item.image.small[0], email: item.price }))}
+            items={searchItems.map(item => ({ name: item.name, _id: item._id, src: item.image.small[0], email: item.price,productCode: item.productCode }))}
             handleSearchKey={handleSearchKey}
             listItem={<SearchPreviewItem handleClick={handleView} />}
             loading={searchLoader}

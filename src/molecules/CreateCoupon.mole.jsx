@@ -5,26 +5,32 @@ import DateFnsUtils from '@date-io/date-fns';
 import { TreeItem, TreeView } from '@material-ui/lab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { Box, Button, ButtonGroup, Checkbox, Dialog, FormControlLabel, TextField, Typography } from '@material-ui/core'
+import { Avatar, Box, Button, ButtonGroup, Checkbox, Chip, Dialog, FormControlLabel, TextField, Typography } from '@material-ui/core'
 import { useRecoilValue } from 'recoil';
-import { alertSnackbarState, loaderState, propertyState } from '../recoil/atoms';
+import { alertSnackbarState, loaderState, propertyState, searchOpenState } from '../recoil/atoms';
 import { catchAsync, checkStatus } from '../utils';
 import { createCoupon } from '../request/other.request';
 import { useSetRecoilState } from 'recoil';
+import ProductSearch from './ProductSearch.mole';
 
 
 export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupons }) {
     const { catagories, productTypes, brands, _id } = useRecoilValue(propertyState);
     const [selectByGroupOpen, setSelectBygroupOpen] = useState(false)
     const [validationDate, setValidationDate] = useState(new Date());
-    const [purchaseLimit, setPurchaseLimit] = useState(0);
+    const [purchaseLimit, setPurchaseLimit] = useState('0');
     const [allChecked, setAllChecked] = useState(true);
     const [discount,setDiscount] = useState();
     const [selectBygroup, setSelectBygroup] = useState(null);
     const [code,setCode] = useState(null);
     const setLoader = useSetRecoilState(loaderState);
     const setAlert = useSetRecoilState(alertSnackbarState);
-    const [validFor,setValidFor] = useState({for: 'All',catagories: [],productTypes: [],brands: []});
+    const [validFor,setValidFor] = useState({all: 'all',catagories: [],productTypes: [],brands: [],id:[]});
+    const [idInput,setIdInput] = useState('')
+    const [idInputOpen,setIdInputOpen] = useState(false)
+    const setSearchOpen = useSetRecoilState(searchOpenState);
+
+    const keys = Object.keys(validFor);
 
     useEffect(() => {
         if (_id && selectBygroup === null) {
@@ -39,10 +45,10 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
     useEffect(() => {
         if(!allChecked){
         const obj = {...validFor}
-            delete obj.for
+            delete obj.all
             setValidFor(obj)
         }else{
-            setValidFor({...validFor,for: 'All'})
+            setValidFor({...validFor,all: 'All'})
         }
     }, [allChecked])
 
@@ -85,6 +91,10 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
             }
         }
     });
+
+    const handleIdAdd = (_,code)=>{
+        setValidFor({...validFor,id: [...validFor.id.filter(item=>item !== code),code]})
+    }
 
 
     return (
@@ -133,12 +143,17 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
                                         labelPlacement="start"
                                     />
                                 </Box>
+                                {!Boolean(validFor.all) && <Box maxWidth={280} m={'auto'}>
+                                    {keys.map(key=>
+                                        [...validFor[key]].map(item=><Chip style={{margin: 2}} color="primary" size="small" avatar={<Avatar>{key.split('').slice(0,1).join('').toUpperCase()}</Avatar>} key={`${key}-${item}`} label={item} />)
+                                    )}
+                                </Box>}
                                 <Box>
                                     <Typography color="textSecondary">Select by</Typography>
                                     <ButtonGroup disabled={allChecked} fullWidth >
                                         <Button onClick={() => setSelectBygroupOpen(true)}>Group</Button>
-                                        <Button>ID</Button>
-                                        <Button>Search</Button>
+                                        <Button onClick={() => setIdInputOpen(true)}>ID</Button>
+                                        <Button onClick={()=>  setSearchOpen(true)}>Search</Button>
                                     </ButtonGroup>
                                 </Box>
                             </Box>
@@ -157,22 +172,31 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
                     >
                         <TreeItem nodeId="A" label="Catagories">
                             {selectBygroup?.catagories.map((item, i) =>
-                                <TreeItem onClick={() => handleSelectGroup('catagories', item)} key={`A${i}`} nodeId={i} label={item} />
+                                <TreeItem onClick={() => handleSelectGroup('catagories', item)} key={`A${i}`} nodeId={`${i}`} label={item} />
                             )}
                         </TreeItem>
                         <TreeItem nodeId="B" label="Product Types">
                             {selectBygroup?.productTypes.map((item, i) =>
-                                <TreeItem onClick={() => handleSelectGroup('productTypes', item)} key={`B${i}`} nodeId={i} label={item} />
+                                <TreeItem onClick={() => handleSelectGroup('productTypes', item)} key={`B${i}`} nodeId={`${i}`} label={item} />
                             )}
                         </TreeItem>
                         <TreeItem nodeId="C" label="Brands">
                             {selectBygroup?.brands.map((item, i) =>
-                                <TreeItem onClick={() => handleSelectGroup('brands', item)} key={`C${i}`} nodeId={i} label={item} />
+                                <TreeItem onClick={() => handleSelectGroup('brands', item)} key={`C${i}`} nodeId={`${i}`} label={item} />
                             )}
                         </TreeItem>
                     </TreeView>
                 </Box>
             </Dialog>
+            <Dialog open={idInputOpen} onClose={()=>setIdInputOpen(false)}>
+                <Box p={3}>
+                    <TextField value={idInput} onChange={(e)=>setIdInput(e.target.value)} placeholder="Product ID" variant="outlined" />
+                    <Box mt={2}>
+                        <Button variant="contained" color="primary" fullWidth>ADD</Button>
+                    </Box>
+                </Box>
+            </Dialog>
+           <ProductSearch getId={handleIdAdd} />
         </div>
     )
 }

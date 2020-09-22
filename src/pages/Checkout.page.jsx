@@ -18,6 +18,7 @@ import { userState } from '../recoil/user/user.atoms';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import CheckoutForm from '../components/CheckoutForm.component';
+import { getCoupon } from '../request/other.request';
 
 const stripe_key = 'pk_test_51HPJo6IvWIe2khAihM3N4JnnVCeShsbEZv9qyCVFumpX2msHAjqWkqJ7mumtwpJbBRxkdZTq5vWwxXOhXuKX1IUc003JLceeIC';
 const stripe_promise = loadStripe(stripe_key);
@@ -52,8 +53,57 @@ export default function Checkout() {
     const [state, setState] = useState('state')
     const [zipCode, setZipCode] = useState(1024)
     const [phone, setPhone] = useState(2343434)
-    const [clientSecret,setClientSecret] = useState(null);
-    const [orderId,setOrderId] = useState(null);
+    const [clientSecret, setClientSecret] = useState(null);
+    const [orderId, setOrderId] = useState(null);
+    const [coupon, setCoupon] = useState(null);
+    const [isValidCoupon, setIsvalidCoupon] = useState(false)
+    const [discount, setDiscount] = useState(0);
+
+
+    const handleCouponCode = catchAsync(async () => {
+        if (!coupon) return;
+        const response = await getCoupon(coupon);
+        
+        if (checkStatus(response) && response.data.doc.coupons[0].code === coupon) {
+            const coupon = response.data.doc.coupons[0];
+            const { catagories, productTypes, brands, id } = response.data.doc.coupons[0].validFor;
+
+            if (coupon.validFor.all === 'All') {
+                setDiscount(coupon.discount)
+                setIsvalidCoupon(true)
+            } else {
+                let isValid = [];
+
+                cart.products.map(item => {
+                    let productValid = false;
+                    if (catagories.includes(item.catagory)) {
+                        productValid = true
+                    }
+                    if (productTypes.includes(item.productType)) {
+                        productValid = true
+                    }
+                    if (brands.includes(item.brand)) {
+                        productValid = true
+                    }
+                    if (id.includes(item.productCode)) {
+                        productValid = true
+                    }
+                    isValid.push(productValid);
+                });
+
+                console.log({ isValid })
+
+                if (isValid.includes(false)) {
+                    setAlert({ open: true, message: 'Coupon Is Not valid', severity: 'error' });
+                } else {
+                    setDiscount(coupon.discount);
+                    setIsvalidCoupon(true)
+
+                }
+            }
+
+        }
+    })
 
     const fromRef = useRef();
 
@@ -61,30 +111,32 @@ export default function Checkout() {
         console.log(user)
     })
 
-    if(!user){
-        setAlert({open: true,message: 'Please Login for Checkout'})
+    if (!user) {
+        setAlert({ open: true, message: 'Please Login for Checkout' })
         return <Redirect to="/" />
     }
 
-    if(cart.products.length === 0){
-        setAlert({open: true,message: 'You Don\'t have product for Checkout'})
+    if (cart.products.length === 0) {
+        setAlert({ open: true, message: 'You Don\'t have product for Checkout' })
         return <Redirect to="/shop" />
     }
 
     const handleStripePayment = catchAsync(async () => {
         const data = {
-            products: cart.products.map(product=>({id: product._id,quantity: product.count})) ,
+            products: cart.products.map(product => ({ id: product._id, quantity: product.count })),
             country,
             state,
             paymentMethod: 'stripe',
             address,
             email: user?.email
         }
-        // const stripe = await stripe_promise;
+        if (isValidCoupon) {
+            data.couponCode = coupon
+        }
         setLoader(true)
         const response = await checkoutRequest(data);
         console.log(response.data)
-        if(checkStatus(response)){
+        if (checkStatus(response)) {
             setClientSecret(response.data.clientSecret)
             setOrderId(response.data.orderId)
         }
@@ -172,9 +224,9 @@ export default function Checkout() {
                                                     </Grid>
                                                 </Grid>
 
-                                            <Box mb={-4} mt={2} display="flex" justifyContent="end">
-                                                <Button color="primary" onClick={() => { fromRef.current.requestSubmit() }}>Next</Button>
-                                            </Box>
+                                                <Box mb={-4} mt={2} display="flex" justifyContent="end">
+                                                    <Button color="primary" onClick={() => { fromRef.current.requestSubmit() }}>Next</Button>
+                                                </Box>
                                             </Hide>
                                             <Hide hide={!(activeStep === 1)}>
                                                 <Box>
@@ -200,7 +252,17 @@ export default function Checkout() {
                     </Grid>
                     <Grid item xs={4}>
                         <Paper>
+                            <Box mb={2} p={4}>
+                                <TextField size="small" onChange={e => setCoupon(e.target.value)} placeholder="Coupon Code" variant="outlined" value={coupon} />
+                                <Box mt={1}>
+                                    <Button fullWidth variant="contained" color="primary" onClick={handleCouponCode}>Apply Coupon</Button>
+                                </Box>
+                            </Box>
+                        </Paper>
+                        <Paper>
+
                             <Box p={4}>
+
                                 <Box display="flex" justifyContent="space-between">
                                     <Typography color="textSecondary" variant="subtitle1" >SubTotal:</Typography>
                                     <Typography  > ${cart.totalPrice}</Typography>
@@ -217,19 +279,23 @@ export default function Checkout() {
                                     <Typography color="textSecondary" variant="subtitle1" >Delivery Charge:</Typography>
                                     <Typography  > 0</Typography>
                                 </Box>
+                                {Boolean(discount) && <Box display="flex" justifyContent="space-between">
+                                    <Typography color="textSecondary" variant="subtitle1" >Discount:</Typography>
+                                    <Typography  > {discount}</Typography>
+                                </Box>}
                                 <Box my={2}>
                                     <Divider />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between">
                                     <Typography color="textSecondary" variant="h6" >Total Price:</Typography>
-                                    <Typography variant="h6" > ${cart.totalPrice}</Typography>
+                                    <Typography variant="h6" > ${cart.totalPrice - discount}</Typography>
                                 </Box>
                             </Box>
                         </Paper>
                         <Box mt={2}>
                             <Paper>
                                 <List>
-                                    {cart.products.map((product,i) =>
+                                    {cart.products.map((product, i) =>
                                         <React.Fragment key={product._id}>
                                             <ListItem>
                                                 <ListItemAvatar>
@@ -244,7 +310,7 @@ export default function Checkout() {
                                                     </Typography>
                                                 </ListItemText>
                                             </ListItem>
-                                            {i !== cart.products.length - 1 && <Divider /> }
+                                            {i !== cart.products.length - 1 && <Divider />}
                                         </React.Fragment>
                                     )}
                                 </List>
@@ -255,7 +321,7 @@ export default function Checkout() {
             </Container>
             <Dialog open={Boolean(clientSecret)}>
                 <Elements stripe={stripe_promise}>
-                    <CheckoutForm orderId={orderId} clientSecret={clientSecret} setDialog={setClientSecret}/>
+                    <CheckoutForm orderId={orderId} clientSecret={clientSecret} setDialog={setClientSecret} />
                 </Elements>
             </Dialog>
         </div>

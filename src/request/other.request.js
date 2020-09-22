@@ -16,6 +16,11 @@ export const getCoupons = catchAsync(async ()=>{
     return response;
 });
 
+export const getCoupon = catchAsync(async (code)=>{
+    const response = await request({code},`/others/getCoupon`)
+    return response;
+});
+
 export const createCoupon = catchAsync(async (data)=>{
     const response = await request(data,`/others/coupons`)
     return response;

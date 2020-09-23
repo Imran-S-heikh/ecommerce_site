@@ -1,13 +1,11 @@
 import React from 'react'
 import Showcase from '../components/Showcase.component'
-import { assets } from '../utils'
 import CartItem from '../components/CartItem.component'
 import { Container, Typography, Box } from '@material-ui/core'
-import { useRecoilValue, useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { userCartState, userWishListState } from '../recoil/user/user.atoms'
 import Hide from '../molecules/Hide.mole'
 import { useSetRecoilState } from 'recoil'
-import { useEffect } from 'react'
 
 
 export default function WishList() {

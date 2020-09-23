@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { makeStyles, Box, Container, Grid, Typography, Button, TextField, Stepper, Step, StepLabel, StepContent, IconButton, useTheme, Paper, Divider, List, ListItem, ListItemAvatar, Avatar, ListItemText, Dialog } from '@material-ui/core';
+import { Box, Container, Grid, Typography, Button, TextField, Stepper, Step, StepLabel, StepContent, useTheme, Paper, Divider, List, ListItem, ListItemAvatar, Avatar, ListItemText, Dialog } from '@material-ui/core';
 import Hide from '../molecules/Hide.mole';
 import { ReactComponent as StripeLogoSlate } from '../assets/stripe-logo-slate.svg';
 import { ReactComponent as StripeLogoWhite } from '../assets/stripe-logo-white.svg';
-import { ReactComponent as PoweredByStripe } from '../assets/powered_by_stripe.svg';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -23,31 +22,13 @@ import { getCoupon } from '../request/other.request';
 const stripe_key = 'pk_test_51HPJo6IvWIe2khAihM3N4JnnVCeShsbEZv9qyCVFumpX2msHAjqWkqJ7mumtwpJbBRxkdZTq5vWwxXOhXuKX1IUc003JLceeIC';
 const stripe_promise = loadStripe(stripe_key);
 
-const data = {
-    "products": [
-        {
-            "id": "5f57821920046b12c2b83315",
-            "quantity": 1
-        },
-        {
-            "id": "5f51ca081b1b4e1475106e7b",
-            "quantity": 3
-        }
-    ],
-    "country": "Bangladesh",
-    "state": "Khulna",
-    "paymentMethod": "cash-on-delivery",
-    "address": "Udaypur,Mollahat",
-    "email": "imransheikhsadi2@gmail.com"
-}
-
 export default function Checkout() {
     const theme = useTheme();
     const cart = useRecoilValue(cartState);
     const setAlert = useSetRecoilState(alertSnackbarState);
     const setLoader = useSetRecoilState(loaderState);
     const [activeStep, setActiveStep] = useState(0);
-    const [user, setUser] = useRecoilState(userState);
+    const [user] = useRecoilState(userState);
     const [address, setAddress] = useState('address')
     const [country, setCountry] = useState('Country-1')
     const [state, setState] = useState('state')
@@ -74,7 +55,7 @@ export default function Checkout() {
             } else {
                 let isValid = [];
 
-                cart.products.map(item => {
+                cart.products.forEach(item => {
                     let productValid = false;
                     if (catagories.includes(item.catagory)) {
                         productValid = true

@@ -1,27 +1,18 @@
 import React from 'react'
 import UserView from './UserView.component';
-import { userState, editUserState } from '../recoil/user/user.atoms';
+import { userState } from '../recoil/user/user.atoms';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { updateUser } from '../request/user.requset';
-import { extractFilter, checkStatus } from '../utils';
-import { useEffect } from 'react';
+import { checkStatus } from '../utils';
 
 
 export default function Profile() {
 
     const [user,setUser] = useRecoilState(userState);
-    const setEditUser = useSetRecoilState(editUserState);
     const setAlert = useSetRecoilState(alertSnackbarState);
     const setLoader = useSetRecoilState(loaderState);
 
-    useEffect(()=>{
-        // if(user){
-        //     setEditUser(user)
-        // }else{
-        //     setEditUser(null)
-        // }
-    },[]);
     
 
     const handleupdate = async(updatedUser)=>{

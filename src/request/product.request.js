@@ -1,4 +1,4 @@
-import { catchAsync, extractFilter } from "../utils";
+import { catchAsync } from "../utils";
 import request from "./request";
 
 export const createProduct = catchAsync(async (newProduct)=>{

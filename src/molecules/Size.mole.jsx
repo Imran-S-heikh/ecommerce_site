@@ -1,9 +1,9 @@
 import React from 'react'
-import { makeStyles, Box, Tooltip,ButtonBase, fade } from '@material-ui/core'
+import { makeStyles, ButtonBase, fade } from '@material-ui/core'
 
 const createStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: fade(theme.palette.primary.main,.3),
+        backgroundColor: (props)=> props.selected ? theme.palette.primary.main : fade(theme.palette.primary.main,.3),
         width: 30,
         height: 30,
         display: 'flex',
@@ -18,9 +18,9 @@ const createStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Size({onClick,size}) {
+export default function Size({onClick,size,selected}) {
 
-    const classes = createStyles();
+    const classes = createStyles({selected});
 
     return (
         <ButtonBase onClick={onClick} className={classes.root}>

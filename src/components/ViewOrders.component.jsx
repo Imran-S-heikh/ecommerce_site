@@ -1,19 +1,14 @@
 import React, { useState } from 'react'
-import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, Container, TableBody, Avatar, Button, TableFooter, TablePagination, IconButton, Menu, MenuItem, makeStyles, Dialog, List, ListItem, ListItemAvatar, ListItemText, Divider, Chip } from '@material-ui/core'
-import { assets, routes, checkStatus, catchAsync } from '../utils'
-import Rating from '@material-ui/lab/Rating'
-import EditIcon from '@material-ui/icons/Edit';
-import { useRecoilState } from 'recoil';
-import { updateProductState, dashboardRouteState, alertSnackbarState } from '../recoil/atoms';
+import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, Container, TableBody, Avatar, Button, TableFooter, TablePagination, IconButton, Menu, MenuItem, makeStyles, Dialog, List, ListItem, ListItemAvatar, ListItemText, Chip } from '@material-ui/core'
+import { checkStatus, catchAsync } from '../utils'
+import { alertSnackbarState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
-import { getProducts } from '../request/product.request';
 import Hide from '../molecules/Hide.mole';
 import LazySkeleton from './LazySkeleton.component';
 import { getOrders, updateOrder } from '../request/order.request';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import CloseIcon from '@material-ui/icons/Close';
-import { useRef } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useIsInit } from '../customHooks';
 import DoneIcon from '@material-ui/icons/Done';
@@ -47,9 +42,7 @@ const createStyles = makeStyles(theme => ({
 
 export default function ViewOrders() {
     const classes = createStyles()
-    const setProduct = useSetRecoilState(updateProductState);
     const setAlert = useSetRecoilState(alertSnackbarState);
-    const setRoute = useSetRecoilState(dashboardRouteState);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -195,35 +188,35 @@ export default function ViewOrders() {
                                             <TableCell>{item.orderBy.name}</TableCell>
                                             <TableCell>{item.totalPrice}</TableCell>
                                             <TableCell>
-                                                <Chip 
-                                                    onClick={()=>{}} 
+                                                <Chip
+                                                    onClick={() => { }}
                                                     color="primary"
-                                                    classes={{colorPrimary: classes.chipColor}}
-                                                    variant="outlined" 
-                                                    style={{textTransform: 'capitalize'}}
+                                                    classes={{ colorPrimary: classes.chipColor }}
+                                                    variant="outlined"
+                                                    style={{ textTransform: 'capitalize' }}
                                                     label={item.paymentStatus}
                                                     deleteIcon={
-                                                        item.paymentStatus === 'paid' ? <DoneIcon className={classes[item.paymentStatus]}  /> : 
-                                                        item.paymentStatus === 'pending' ? <HourglassEmptyIcon className={classes[item.paymentStatus]}  /> :
-                                                        <CloseIcon className={classes[item.paymentStatus]}  />
+                                                        item.paymentStatus === 'paid' ? <DoneIcon className={classes[item.paymentStatus]} /> :
+                                                            item.paymentStatus === 'pending' ? <HourglassEmptyIcon className={classes[item.paymentStatus]} /> :
+                                                                <CloseIcon className={classes[item.paymentStatus]} />
                                                     }
-                                                    onDelete={()=>{}}
+                                                    onDelete={() => { }}
                                                 />
                                             </TableCell>
                                             <TableCell>
-                                                <Chip 
-                                                    onClick={()=>{}} 
-                                                    variant="outlined" 
-                                                    color="primary" 
-                                                    classes={{colorPrimary: classes.chipColor}}
-                                                    style={{textTransform: 'capitalize'}}
+                                                <Chip
+                                                    onClick={() => { }}
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    classes={{ colorPrimary: classes.chipColor }}
+                                                    style={{ textTransform: 'capitalize' }}
                                                     label={item.deliveryStatus}
                                                     deleteIcon={
-                                                        item.deliveryStatus === 'complete' ? <DoneIcon className={classes[item.deliveryStatus]}  /> : 
-                                                        item.deliveryStatus === 'pending' ? <HourglassEmptyIcon className={classes[item.deliveryStatus]}  /> :
-                                                        <CloseIcon className={classes[item.deliveryStatus]}  />
+                                                        item.deliveryStatus === 'complete' ? <DoneIcon className={classes[item.deliveryStatus]} /> :
+                                                            item.deliveryStatus === 'pending' ? <HourglassEmptyIcon className={classes[item.deliveryStatus]} /> :
+                                                                <CloseIcon className={classes[item.deliveryStatus]} />
                                                     }
-                                                    onDelete={()=>{}}
+                                                    onDelete={() => { }}
                                                 />
                                             </TableCell>
                                             <TableCell>

@@ -1,16 +1,11 @@
 import React from 'react'
-import { Container, makeStyles, Box, Paper, Typography, Avatar, Input, Dialog, TextField, MenuItem, IconButton, Tooltip } from '@material-ui/core'
-import { useRecoilState } from 'recoil';
-import { userState, editUserState } from '../recoil/user/user.atoms';
+import { Container, makeStyles, Box, Paper, Typography, Avatar,  Dialog, TextField, MenuItem, IconButton, Tooltip } from '@material-ui/core'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useRef } from 'react';
 import Hide from '../molecules/Hide.mole';
 import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 import PublishIcon from '@material-ui/icons/Publish';
-import { useSetRecoilState } from 'recoil';
-import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import ImageUpload from './ImageUpload.component';
 import { catchAsync } from '../utils';
 import { uploadprofilePicture } from '../request/user.requset';
@@ -41,10 +36,8 @@ const select = ['role']
 
 export default function UserView({ uploadHandler,user,setUser }) {
     const classes = createStyles();
-    const setAlert = useSetRecoilState(alertSnackbarState)
     const [focus, setFocus] = useState(null)
     const [editMode, setEditMode] = useState(false)
-    // const [user, setuser] = useRecoilState(editUserState)
     const [textEditPopup, setTextEditPopup] = useState(false)
     const [newAvatar,setNewAvatar] = useState(null);
     
@@ -52,7 +45,7 @@ export default function UserView({ uploadHandler,user,setUser }) {
     useEffect(()=>{
         catchAsync(async()=>{
             if(newAvatar){
-                const response = await uploadprofilePicture({newImage: newAvatar});
+                await uploadprofilePicture({newImage: newAvatar});
             }
         })()
     },[newAvatar])
@@ -76,7 +69,6 @@ export default function UserView({ uploadHandler,user,setUser }) {
 
 
     const handleSave = () => {
-        // setAlert({ open: true, message: 'Changes Saved Successfully', severity: 'success' });
         setEditMode(false)
         if(user){
             uploadHandler(user);
@@ -157,7 +149,6 @@ export default function UserView({ uploadHandler,user,setUser }) {
                         select.includes(focus) ?
                             <TextField
                                 value={user?.[focus]}
-                                onChange={handleChange}
                                 select
                                 onChange={handleChange}
                             >

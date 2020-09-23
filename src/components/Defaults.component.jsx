@@ -3,14 +3,15 @@ import { Snackbar, Backdrop, CircularProgress } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
 import { useRecoilState } from 'recoil';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
+import Hide from '../molecules/Hide.mole';
 
 export default function Defaults() {
 
-    const [alertSnackbar,setAlertSnackbar] = useRecoilState(alertSnackbarState);
-    const [loader,setLoader] = useRecoilState(loaderState);
+    const [alertSnackbar, setAlertSnackbar] = useRecoilState(alertSnackbarState);
+    const [loader] = useRecoilState(loaderState);
 
-    const snackbarClose = ()=>{
-        setAlertSnackbar({...alertSnackbar,open: false,message: ''})
+    const snackbarClose = () => {
+        setAlertSnackbar({ ...alertSnackbar, open: false, message: '' })
     }
 
     return (
@@ -20,9 +21,11 @@ export default function Defaults() {
                     {alertSnackbar.message}
                 </MuiAlert>
             </Snackbar>
-            <Backdrop style={{zIndex: 15}} open={loader}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            <Hide hide={!loader}>
+                <Backdrop style={{ zIndex: 15 }} open={true}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            </Hide>
         </div>
     )
 }

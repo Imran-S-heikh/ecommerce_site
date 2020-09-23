@@ -1,14 +1,14 @@
 import React, { useRef } from 'react'
 import ControlledAccordion from '../molecules/ControlledAccordion.mole'
-import { Typography, Box, List, ListItem, Divider, ButtonBase, Button, Slider } from '@material-ui/core'
-import Color from '../molecules/Color.mole'
+import { Typography, Box, List, ListItem, Slider } from '@material-ui/core'
 import Size from '../molecules/Size.mole'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { propertyState, shopQueryState } from '../recoil/atoms'
 import { useIsInit } from '../customHooks'
 import { useRecoilValue } from 'recoil'
+import { subTract } from '../utils'
 
 
 
@@ -21,7 +21,7 @@ export default function Sidebar() {
     const [productType, setProductType] = useState('')
     const [size, setSize] = useState('')
     const [brand, setBrand] = useState('')
-    const [shopQuery,setShopQuery] = useRecoilState(shopQueryState);
+    const [shopQuery, setShopQuery] = useRecoilState(shopQueryState);
     const isInit = useIsInit();
     const timer = useRef();
 
@@ -42,14 +42,12 @@ export default function Sidebar() {
             clearTimeout(timer.current);
             timer.current = setTimeout(() => {
                 setShopQuery(pre => {
-                    console.log(pre)
                     return {
                         ...pre,
                         'price[lte]': priceRange[1],
                         'price[gte]': priceRange[0],
                     }
                 })
-                console.log(priceRange)
             }, 600)
         }
     }, [priceRange])
@@ -58,30 +56,31 @@ export default function Sidebar() {
     useEffect(() => {
         if (!isInit) {
             setShopQuery(pre => {
+                if(catagory === '')return subTract(pre,'catagory')
                 return {
                     ...pre,
                     catagory: catagory
                 }
             })
         }
-        console.log(catagory)
     }, [catagory])
 
     useEffect(() => {
         if (!isInit) {
             setShopQuery(pre => {
+                if(brand === '')return subTract(pre,'brand')
                 return {
                     ...pre,
                     brand,
                 }
             })
         }
-        console.log(brand)
     }, [brand])
 
     useEffect(() => {
         if (!isInit) {
             setShopQuery(pre => {
+                if(productType === '')return subTract(pre,'productType')
                 return {
                     ...pre,
                     productType: productType
@@ -93,6 +92,7 @@ export default function Sidebar() {
     useEffect(() => {
         if (!isInit) {
             setShopQuery(pre => {
+                if(size === '')return subTract(pre,'size')
                 return {
                     ...pre,
                     size
@@ -115,6 +115,9 @@ export default function Sidebar() {
                         </ListItem>
 
                     )}
+                    <ListItem onClick={() => setCatagory('')} button={true}>
+                        REST
+                    </ListItem>
                 </List>
             </ControlledAccordion>
             <ControlledAccordion title={
@@ -125,10 +128,13 @@ export default function Sidebar() {
 
                 <List dense={true} >
                     {property.productTypes.map(item =>
-                        <ListItem key={item} selected={shopQuery?.productType === item}  onClick={() => setProductType(item)} button={true}>
+                        <ListItem key={item} selected={shopQuery?.productType === item} onClick={() => setProductType(item)} button={true}>
                             {item.toUpperCase()}
                         </ListItem>
                     )}
+                    <ListItem onClick={() => setProductType('')} button={true}>
+                        REST
+                    </ListItem>
                 </List>
             </ControlledAccordion>
             <ControlledAccordion title={
@@ -143,6 +149,9 @@ export default function Sidebar() {
                             {item.toUpperCase()}
                         </ListItem>
                     )}
+                    <ListItem onClick={() => setBrand('')} button={true}>
+                        REST
+                    </ListItem>
                 </List>
             </ControlledAccordion>
             <ControlledAccordion title={
@@ -217,8 +226,9 @@ export default function Sidebar() {
             }>
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                     {property.sizes.map((item, i) =>
-                        <Size key={i} onClick={() => setSize(item)} size={item.toUpperCase()} />
+                        <Size selected={size === item} key={i} onClick={() => setSize(item)} size={item.toUpperCase()} />
                     )}
+                    <Size onClick={() => setSize('')} size={'-'} />
                 </div>
 
             </ControlledAccordion>

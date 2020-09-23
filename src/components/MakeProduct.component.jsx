@@ -1,16 +1,13 @@
 import React, { useRef } from 'react'
-import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Switch, Checkbox, FormControl, FormLabel, Divider, IconButton, Popover, Button, ClickAwayListener, Container, TextareaAutosize, Chip, Dialog, MenuItem } from '@material-ui/core'
-import Color from '../molecules/Color.mole';
+import { makeStyles, Box, TextField, Grid, Paper, Typography, FormGroup, FormControlLabel, Checkbox, FormControl, FormLabel, Divider, IconButton, Button, ClickAwayListener, Container, Chip, Dialog, MenuItem } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add';
 import { useState } from 'react';
-import Hide from '../molecules/Hide.mole';
 import Carousel from './Carousel.component';
 import ImageUpload from './ImageUpload.component';
 import { useEffect } from 'react';
 import ImageIcon from '@material-ui/icons/Image';
 import { useSetRecoilState } from 'recoil';
 import { alertSnackbarState } from '../recoil/atoms';
-import CancelIcon from '@material-ui/icons/Cancel';
 import { catchAsync, checkStatus } from '../utils';
 import { getSiteProperties } from '../request/other.request';
 
@@ -18,26 +15,15 @@ const createStyles = makeStyles(theme => ({
     root: {
         margin: 'auto',
         marginBottom: theme.spacing(4),
-        // width: '80%',
-        // [theme.breakpoints.down('sm')]: {
-        //     width: "100vw"
-        // }
     },
     paper: {
         padding: theme.spacing(3),
-        // width: '100%'
-    },
-    image: {
-        // width: 200
     },
     labelFix: {
         marginTop: 3
     },
     imageContainer: {
         maxWidth: 400,
-        // [theme.breakpoints.down('sm')]: {
-        //     maxWidth: 500
-        // },
         [theme.breakpoints.down(450)]: {
             maxWidth: 380
         },
@@ -46,59 +32,6 @@ const createStyles = makeStyles(theme => ({
         }
     }
 }));
-
-const brands = [
-    {
-        value: 'nike',
-        label: 'Nike'
-    },
-    {
-        value: 'kelvin-klein',
-        label: 'Kelvin Klein'
-    },
-    {
-        value: 'wow-product',
-        label: 'Wow Product'
-    }
-];
-
-// const catagories = [
-//     {
-//         value: 'men',
-//         label: 'Men'
-//     },
-//     {
-//         value: 'women',
-//         label: 'Women'
-//     },
-//     {
-//         value: 'child',
-//         label: 'Child'
-//     },
-//     {
-//         value: 'men-and-women',
-//         label: 'Men and Women'
-//     }
-// ];
-
-// const types = [
-//     {
-//         value: 'shoe',
-//         label: 'Shoe'
-//     },
-//     {
-//         value: 'jacket',
-//         label: 'Jacket'
-//     },
-//     {
-//         value: 'jeans',
-//         label: 'Jeans'
-//     },
-//     {
-//         value: 'gown',
-//         label: 'Ladies Gown'
-//     }
-// ];
 
 
 
@@ -118,12 +51,11 @@ export default function MakeProduct(props) {
     const [quantity, setQuantity] = useState(props.quantity);
     const [brand, setBrand] = useState(props.brand);
     const [catagory, setCatagory] = useState(props.catagory);
-    const [variant, setVariant] = useState(props.variant);
-    const [variantCode, setVariantCode] = useState(props.variantCode);
+    const [variant] = useState(props.variant);
+    const [variantCode] = useState(props.variantCode);
     const [productCode, setProductCode] = useState(props.productCode);
     const [productType, setProductType] = useState(props.productType);
     const [size, setSize] = useState(props.size || []);
-    const [imageCropSize, setImageCropSize] = useState([]);
     const [description, setDescription] = useState(props.description);
     const [tags, setTags] = useState(props.tags || []);
     const [newTag,setNewTag] = useState(null);
@@ -212,7 +144,7 @@ export default function MakeProduct(props) {
                                 </Box> :
                                 <Carousel
                                     component={
-                                        <img width="100%" />
+                                        <img width="100%" alt="Product"/>
                                     }
                                     data={productImage}
                                 />
@@ -222,24 +154,6 @@ export default function MakeProduct(props) {
                             <Paper>
 
                                 <Box p={3}>
-                                    {/* <Box mb={2}>
-                                        <FormControl>
-                                            <FormLabel>Select Crop Sizes</FormLabel>
-                                            <FormGroup row>
-                                                {cropSizes.map(size => (
-                                                    <FormControlLabel
-                                                        onClick={() => imageCropSize([...imageCropSize, size])}
-                                                        key={size.label}
-                                                        classes={{ label: classes.labelFix }}
-                                                        control={
-                                                            <Checkbox color="primary" />
-                                                        }
-                                                        label={size.label}
-                                                    />
-                                                ))}
-                                            </FormGroup>
-                                        </FormControl>
-                                    </Box> */}
                                     <ImageUpload fullWidth onUpload={handleFile} />
                                 </Box>
                             </Paper>
@@ -267,7 +181,7 @@ export default function MakeProduct(props) {
                                     <TextField onChange={(e) => setBasePrice(e.currentTarget.value)} value={basePrice} type="number" label="Base Price" fullWidth />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField onChange={(e) => setBrand(e.currentTarget.value)}
+                                    <TextField
                                         value={brand}
                                         select fullWidth
                                         label="Brand"
@@ -294,7 +208,7 @@ export default function MakeProduct(props) {
                                     </TextField>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField onChange={(e) => setProductType(e.currentTarget.value)}
+                                    <TextField
                                         value={productType}
                                         select fullWidth
                                         label="Product Type"

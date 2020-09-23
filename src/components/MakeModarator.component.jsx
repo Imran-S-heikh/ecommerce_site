@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { useSetRecoilState, useRecoilState } from 'recoil'
-import { searchOpenState, alertSnackbarState, loaderState, dashboardRouteState } from '../recoil/atoms'
+import { searchOpenState, alertSnackbarState, loaderState } from '../recoil/atoms'
 import { useEffect } from 'react';
-import { Dialog, Box } from '@material-ui/core';
 import Search from '../molecules/Search.mole';
 import SearchPreviewItem from '../molecules/SearchPreviewItem.mole';
 import { searchUser, getSingleUser, createModarator } from '../request/user.requset';
-import { checkStatus, routes, catchAsync, extractFilter } from '../utils';
+import { checkStatus, catchAsync, extractFilter } from '../utils';
 import { useRef } from 'react';
 import UserView from './UserView.component';
 import { editUserState } from '../recoil/user/user.atoms';
@@ -20,7 +19,6 @@ export default function MakeModarator() {
     const setLoader = useSetRecoilState(loaderState);
     const [editUser,setEditUser] = useRecoilState(editUserState);
     const [oldState,setOldState] = useState(null)
-    const setRoute = useSetRecoilState(dashboardRouteState);
     const [searchItems, setSearchItems] = useState(null)
     const [searchKey, setSearchKey] = useState('');
     const [searchLoader,setSearchLoader] = useState(false);

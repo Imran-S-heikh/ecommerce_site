@@ -6,7 +6,6 @@ import { useRecoilState } from 'recoil';
 import { searchOpenState, shopQueryState } from '../recoil/atoms';
 import Search from './Search.mole';
 import { useSetRecoilState } from 'recoil';
-import { singleProductId } from '../recoil/product/product.aton';
 import { useHistory } from 'react-router-dom';
 
 
@@ -17,7 +16,6 @@ export default function ProductSearch({getId}) {
     const [searchItems, setSearchItems] = useState([])
     const [searchLoader, setSearchLoader] = useState(false)
     const setSearchQuery = useSetRecoilState(shopQueryState)
-    const history = useHistory();
     const keyRef = useRef('');
 
 

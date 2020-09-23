@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 import { catchAsync, checkStatus } from '../utils';
 import { loaderState, alertSnackbarState } from '../recoil/atoms';
 
-const createStyles = makeStyles(theme => ({
+const createStyles = makeStyles(() => ({
     fieldContainer: {
         '& > *': {
             marginBottom: 15

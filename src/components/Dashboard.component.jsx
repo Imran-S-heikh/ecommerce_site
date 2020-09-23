@@ -1,14 +1,14 @@
 import 'date-fns';
-import { Avatar, Box, Button, ButtonGroup, Container, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Tab, Tabs, Typography } from '@material-ui/core';
+import { Avatar, Box, Button, ButtonGroup, Container, Divider, Grid, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Tab, Tabs, Typography } from '@material-ui/core';
 import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import { blue, deepOrange, deepPurple, green, grey, orange, purple, red } from '@material-ui/core/colors';
+import { blue, deepOrange, deepPurple, green, grey}  from '@material-ui/core/colors';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import DateFnsUtils from '@date-io/date-fns';
 import PersonIcon from '@material-ui/icons/Person';
-import { AvatarGroup, Rating, TabContext, TabPanel } from '@material-ui/lab';
+import { Rating, TabContext, TabPanel } from '@material-ui/lab';
 import XAxis from 'recharts/es6/cartesian/XAxis';
 import YAxis from 'recharts/es6/cartesian/YAxis';
 import Tooltip from 'recharts/es6/component/Tooltip';
@@ -19,7 +19,6 @@ import { getStat } from '../request/stats.request';
 import { checkStatus } from '../utils';
 import { getProducts } from '../request/product.request';
 import Hide from '../molecules/Hide.mole';
-import { getAllUser } from '../request/user.requset';
 import { getOrders } from '../request/order.request';
 import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 
@@ -29,45 +28,6 @@ const getColor = (color, mode, value = 2, contrast) => {
         color: mode === 'light' ? contrast(color[100 * value]) : contrast(color[100 * (10 - value)])
     }
 }
-
-const data = [
-    {
-        month: 'Jan',
-        sold: 30
-    },
-    {
-        month: 'Fev',
-        sold: 40
-    },
-    {
-        month: 'Mar',
-        sold: 35
-    },
-    {
-        month: 'Apr',
-        sold: 24
-    },
-    {
-        month: 'May',
-        sold: 50
-    },
-    {
-        month: 'Jun',
-        sold: 30
-    },
-    {
-        month: 'Jul',
-        sold: 60
-    },
-    {
-        month: 'Aug',
-        sold: 70
-    },
-    {
-        month: 'Sep',
-        sold: 75
-    }
-]
 
 
 
@@ -168,9 +128,8 @@ export default function Dashboard() {
             if (checkStatus(response)) {
                 const orders = response.data.orders;
                 const dup = [];
-                const length = 5;
                 const arr = [];
-                orders.map(item => {
+                orders.forEach(item => {
                     if (!dup.includes(item.orderBy._id)) {
                         arr.push({
                             name: item.orderBy.name,

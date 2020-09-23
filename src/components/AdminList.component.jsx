@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import { getAdmins } from '../request/user.requset';
 import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, Container, TableBody, Avatar, Button } from '@material-ui/core'
-import { assets, routes, checkStatus, catchAsync } from '../utils'
-import Rating from '@material-ui/lab/Rating'
+import { routes, checkStatus, catchAsync } from '../utils'
 import EditIcon from '@material-ui/icons/Edit';
-import { useRecoilState } from 'recoil';
-import { updateProductState, dashboardRouteState } from '../recoil/atoms';
+import { dashboardRouteState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
-import { getProducts } from '../request/product.request';
 import { editUserState } from '../recoil/user/user.atoms';
 import LazySkeleton from './LazySkeleton.component';
 import Hide from '../molecules/Hide.mole';

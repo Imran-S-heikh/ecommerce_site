@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, AppBar, Typography, Button, makeStyles, Box, Input, InputBase } from '@material-ui/core'
+import { Container, AppBar, Typography, Button, makeStyles, Box, InputBase } from '@material-ui/core'
 import SocialIcons from './SocialIcons.mole';
 
 import ControlledAccordion from './ControlledAccordion.mole';
@@ -7,10 +7,6 @@ import ControlledAccordion from './ControlledAccordion.mole';
 
 const createStyles = makeStyles(theme => ({
     root: {
-
-        // maxWidth: '40%'
-
-        // padding: '15px 0'
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',

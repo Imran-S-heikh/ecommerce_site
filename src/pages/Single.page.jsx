@@ -1,9 +1,7 @@
-import React, { useRef } from 'react'
-import Header from '../components/Header.component'
-import Footer from '../components/Footer.component'
+import React from 'react'
 import Magnifier from '../molecules/Magnifier.mole'
-import { assets, catchAsync, checkStatus } from '../utils'
-import { Container, Breadcrumbs, Link, Grid, Box, Menu, MenuItem, MenuList, Typography, ButtonBase, Avatar, ButtonGroup, Button, IconButton, FormControlLabel, Checkbox, FormGroup, Backdrop, CircularProgress, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, Divider, TextareaAutosize } from '@material-ui/core'
+import { catchAsync, checkStatus } from '../utils'
+import { Container, Breadcrumbs, Link, Grid, Box, MenuItem, MenuList, Typography, Avatar, ButtonGroup, Button, FormControlLabel, Checkbox, Backdrop, CircularProgress, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, Divider, TextareaAutosize } from '@material-ui/core'
 import Carousel from '../components/Carousel.component'
 import Keyvalue from '../molecules/Keyvalue.mole'
 import Rating from '@material-ui/lab/Rating'
@@ -32,7 +30,7 @@ export default function Single() {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'));
     const [product, setProduct] = useState(null)
-    const [productId, setProductId] = useRecoilState(singleProductId);
+    const [productId] = useRecoilState(singleProductId);
     const setLoader = useSetRecoilState(loaderState);
     const [userCart, setUserCart] = useRecoilState(userCartState);
     const [cartQuantity, setCartQuantity] = useState(0);
@@ -135,14 +133,14 @@ export default function Single() {
                 <Container>
                     <div style={{ padding: '15px 0' }}>
                         <Breadcrumbs>
-                            <Link color="inherit">
-                                Home
+                            <Link  color="inherit">
+                                Shop
                             </Link>
                             <Link color="inherit">
-                                Treanding
+                                {product.catagory.toUpperCase()}
                             </Link>
                             <Link color="textPrimary">
-                                Men Hoody
+                                {product.name.toUpperCase()}
                             </Link>
                         </Breadcrumbs>
                         <div className="">

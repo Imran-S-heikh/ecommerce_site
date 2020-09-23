@@ -1,7 +1,7 @@
-import { Box, Button, Card, makeStyles, Typography, useTheme } from '@material-ui/core'
+import { Box, Button, Typography, useTheme } from '@material-ui/core'
 import { TramOutlined } from '@material-ui/icons';
-import { CardCvcElement, CardElement, ins, CardExpiryElement, CardNumberElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import React, { useEffect, useRef } from 'react'
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import React, { useRef } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';

@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react'
-import { Container, Grid, Typography, makeStyles } from '@material-ui/core'
+import React from 'react'
+import { Container, Typography, makeStyles } from '@material-ui/core'
 import GridLayout from './GridLayout.component';
 
 const createStyles = makeStyles(theme => ({

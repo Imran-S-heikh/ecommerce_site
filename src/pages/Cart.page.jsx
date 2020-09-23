@@ -1,6 +1,5 @@
 import React from 'react'
 import Showcase from '../components/Showcase.component'
-import { assets } from '../utils'
 import CartItem from '../components/CartItem.component'
 import { Container, Typography, Box } from '@material-ui/core'
 import { useRecoilValue } from 'recoil'
@@ -8,19 +7,6 @@ import { userCartState } from '../recoil/user/user.atoms'
 import Hide from '../molecules/Hide.mole'
 import { cartState } from '../recoil/user/user.selector'
 import { useSetRecoilState } from 'recoil'
-
-const showcaseItems = [
-    {
-        "rating": "4.6",
-        "name": "Premier Cropped Skinny Jean", "brand": "GAP", "price": "$380.00",
-        "image": assets.product[0]
-    },
-    {
-        "rating": "4.571428571428571",
-        "name": "East Hampton Fleece Hoodie", "brand": "GAP", "price": "$440.00",
-        "image": assets.product[1]
-    }
-]
 
 export default function Cart() {
 

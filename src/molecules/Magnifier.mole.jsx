@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
-import { useState } from 'react';
 import { createRef } from 'react';
 import { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -47,9 +46,6 @@ export default function Magnifier({ image }) {
         imageZoom.current = zoom;
         imageRef.current.style.transform = `scale(${zoom})`
     }
-    useEffect(()=>{
-        console.log(image)
-    },[])
 
     useEffect(()=>{
         offset.current = {x: containerRef.current.getBoundingClientRect().x,y: containerRef.current.getBoundingClientRect().y}

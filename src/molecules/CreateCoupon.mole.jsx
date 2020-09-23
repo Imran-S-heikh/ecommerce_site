@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CachedIcon from '@material-ui/icons/Cached';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -8,7 +8,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { Avatar, Box, Button, ButtonGroup, Checkbox, Chip, Dialog, FormControlLabel, TextField, Typography } from '@material-ui/core'
 import { useRecoilValue } from 'recoil';
 import { alertSnackbarState, loaderState, propertyState, searchOpenState } from '../recoil/atoms';
-import { catchAsync, checkStatus } from '../utils';
+import { catchAsync, checkStatus, randomString } from '../utils';
 import { createCoupon } from '../request/other.request';
 import { useSetRecoilState } from 'recoil';
 import ProductSearch from './ProductSearch.mole';
@@ -22,13 +22,14 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
     const [allChecked, setAllChecked] = useState(true);
     const [discount,setDiscount] = useState();
     const [selectBygroup, setSelectBygroup] = useState(null);
-    const [code,setCode] = useState(null);
+    const [code,setCode] = useState(randomString(30));
     const setLoader = useSetRecoilState(loaderState);
     const setAlert = useSetRecoilState(alertSnackbarState);
     const [validFor,setValidFor] = useState({all: 'all',catagories: [],productTypes: [],brands: [],id:[]});
     const [idInput,setIdInput] = useState('')
     const [idInputOpen,setIdInputOpen] = useState(false)
     const setSearchOpen = useSetRecoilState(searchOpenState);
+    const formRef = useRef();
 
     const keys = Object.keys(validFor);
 
@@ -78,7 +79,9 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
         }
     }
 
-    const handleCreate = catchAsync(async()=>{
+    const handleCreate = catchAsync(async(event)=>{
+        event.preventDefault();
+
         if(code && code !== ''){
             setNewCouponOpen(false)
             setLoader(true)
@@ -101,17 +104,17 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
         <div>
             <Dialog open={newCouponOpen} onClose={() => setNewCouponOpen(false)}>
                 <Box m={3}>
-                    <form>
+                    <form ref={formRef} onSubmit={handleCreate}>
                         <Box mb={1}>
                             <ButtonGroup >
-                                <TextField value={code} onChange={e=>setCode(e.target.value)} fullWidth variant="outlined" placeholder="Coupon Code" />
-                                <Button>
+                                <TextField required value={code} onChange={e=>setCode(e.target.value)} fullWidth variant="outlined" placeholder="Coupon Code" />
+                                <Button onClick={()=>setCode(randomString(30))}>
                                     <CachedIcon />
                                 </Button>
                             </ButtonGroup>
                         </Box>
                         <Box mb={1}>
-                            <TextField value={discount} onChange={handleDiscount} fullWidth type="number" variant="outlined" placeholder="Coupon Discount" />
+                            <TextField required value={discount} onChange={handleDiscount} fullWidth type="number" variant="outlined" placeholder="Coupon Discount" />
                         </Box>
                         <Box>
                             <Box mb={1}>
@@ -158,7 +161,7 @@ export default function CreateCoupon({ newCouponOpen, setNewCouponOpen,setCoupon
                                 </Box>
                             </Box>
                             <Box mt={2}>
-                                <Button onClick={handleCreate} fullWidth color="primary" variant="contained">Create</Button>
+                                <Button onClick={()=>formRef.current.requestSubmit()} fullWidth color="primary" variant="contained">Create</Button>
                             </Box>
                         </Box>
                     </form>

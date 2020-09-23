@@ -1,12 +1,11 @@
 import React from 'react'
-import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typography, ClickAwayListener, Box, List, ListItem, ListItemAvatar, ListItemText, Avatar, MenuItem, MenuList, CircularProgress } from '@material-ui/core'
+import { Drawer, InputBase, Container, IconButton, makeStyles, Divider, Typography, ClickAwayListener, Box, MenuList, CircularProgress } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { searchOpenState } from '../recoil/atoms';
 import Hide from './Hide.mole';
-import { useEffect } from 'react';
 
 const createStyles = makeStyles(theme => ({
     search: {

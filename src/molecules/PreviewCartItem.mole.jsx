@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, Typography, IconButton, Box } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
-import shoe from '../assets/shoe.jpg'
 
 
 

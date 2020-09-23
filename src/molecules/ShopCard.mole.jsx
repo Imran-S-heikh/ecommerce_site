@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardMedia, IconButton, CardActions, makeStyles, fade, CardActionArea, Typography, Button, CardContent, Box, Avatar, ButtonBase } from '@material-ui/core'
+import { Card, CardMedia, IconButton, CardActions, makeStyles, fade, CardActionArea, Typography, Button, CardContent, Box } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
@@ -122,7 +122,6 @@ export default function ShopCard({ width = 280, item }) {
 
     const addCartItem = () => {
         setCardItems((pre) => {
-            let newProduct = false
             const ids = pre.map(e => e._id);
             const arr = [...pre].map(product => {
                 if (item._id === product._id) {
@@ -177,8 +176,8 @@ export default function ShopCard({ width = 280, item }) {
                 </Typography>
                 <Box >
                     {
-                        image.small.map(img =>
-                            <VarientColor image={img} />
+                        image.small.map((img,i) =>
+                            <VarientColor key={i} image={img} />
                         )
                     }
                 </Box>
@@ -191,8 +190,8 @@ export default function ShopCard({ width = 280, item }) {
                         <IconButton>
                             <VisibilityIcon />
                         </IconButton>
-                        <IconButton>
-                            <FavoriteIcon onClick={() => setWishList(prev => [...prev, { name, image, rating, price, brand }])} />
+                        <IconButton onClick={() => setWishList(prev => [...prev, { name, image, rating, price, brand }])}>
+                            <FavoriteIcon  />
                         </IconButton>
                         <IconButton>
                             <CompareArrowsIcon />

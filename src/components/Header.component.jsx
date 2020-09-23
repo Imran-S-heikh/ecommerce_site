@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, List, ListItem, Menu, MenuList, ListItemIcon, Typography, ListItemText, ListItemSecondaryAction, Switch, FormGroup, FormControlLabel, Avatar } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { AppBar, Toolbar, IconButton, makeStyles, MenuItem, Container, ClickAwayListener, Box, Tooltip, Badge, MenuList, ListItemIcon, ListItemText, Switch, FormGroup, FormControlLabel, Avatar } from '@material-ui/core'
 import logo from '../assets/logo.png'
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import PersonIcon from '@material-ui/icons/Person';
 import TuneIcon from '@material-ui/icons/Tune';
-import Search from '../molecules/Search.mole';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { searchOpenState, mainDrawerState, cartDrawerState, darkModeState } from '../recoil/atoms';
 import NavMenu from '../molecules/NavMenu.mole';
@@ -16,7 +15,7 @@ import CartPreview from '../molecules/CartPreview.mole';
 import EnhancedEncryptionIcon from '@material-ui/icons/EnhancedEncryption';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Link, useHistory } from 'react-router-dom';
-import { userState, userCartState } from '../recoil/user/user.atoms';
+import { userState } from '../recoil/user/user.atoms';
 import Hide from '../molecules/Hide.mole';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useRecoilValue } from 'recoil';

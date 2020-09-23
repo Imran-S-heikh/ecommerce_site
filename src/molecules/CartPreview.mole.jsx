@@ -1,11 +1,10 @@
 import React from 'react'
 import PreviewCartItem from './PreviewCartItem.mole'
 import { Divider, Box, Typography, Button } from '@material-ui/core'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { userCartState } from '../recoil/user/user.atoms'
 import { cartState } from '../recoil/user/user.selector'
 import Hide from './Hide.mole'
-import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 export default function CartPreview() {

@@ -14,7 +14,6 @@ const createStyles = makeStyles(theme=>({
         paddingLeft: props=>props.drawerOpen ? 8 : 30,
         transition: 'all 300ms',
         paddingTop: 3,
-        // fontWeight: "bold",
         color: props=> props.selected ? theme.palette.common.white : theme.palette.grey[400]
     },
     startIcon: {
@@ -28,7 +27,7 @@ export default function ControlledAccordionBlack({children,title,startIcon,selec
 
     const [drawerOpen,setDrawerOpen] = useRecoilState(dashDrawerState)
     const [expandable, setExpandable] = useState(true);
-    const classes = createStyles({selected: selected == title,drawerOpen});
+    const classes = createStyles({selected: selected === title,drawerOpen});
 
 
     useEffect(()=>{

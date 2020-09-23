@@ -1,8 +1,5 @@
 import React from 'react'
-import { makeStyles, AppBar, Toolbar, Drawer, CssBaseline, Box, Paper, Typography, IconButton, useTheme, Avatar, Badge } from '@material-ui/core'
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import ControlledAccordion from '../molecules/ControlledAccordion.mole';
-import StopIcon from '@material-ui/icons/Stop';
+import { makeStyles, AppBar, Toolbar, Box, IconButton, useTheme, Avatar, Badge } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import DashboardDrawer from '../components/DashboardDrawer.component';
 import clsx from 'clsx';
@@ -10,10 +7,7 @@ import { useRecoilState } from 'recoil';
 import { dashDrawerState, searchOpenState } from '../recoil/atoms';
 import { useEffect } from 'react';
 import DashboardRoutes from '../components/DashboardRoutes.component';
-import { assets } from '../utils';
-import { green } from '@material-ui/core/colors';
 import SearchIcon from '@material-ui/icons/Search';
-import Search from '../molecules/Search.mole';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 

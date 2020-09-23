@@ -8,7 +8,7 @@ import { useSetRecoilState } from 'recoil'
 
 
 export default function EditProduct() {
-    const [product,setProduct] = useRecoilState(updateProductState)
+    const [product] = useRecoilState(updateProductState)
     const setLoader = useSetRecoilState(loaderState);
     const setAlert = useSetRecoilState(alertSnackbarState);
 

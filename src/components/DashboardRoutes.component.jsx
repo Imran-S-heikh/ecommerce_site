@@ -9,8 +9,6 @@ import EditProduct from './EditProduct.component';
 import Profile from './Profile.component';
 import MakeModarator from './MakeModarator.component';
 import AdminList from './AdminList.component';
-import NewOrders from './ViewOrders.component';
-import CompletedOrders from './CompletedOrders.component';
 import ViewOrders from './ViewOrders.component';
 import SiteProperties from './SiteProperties.component';
 import Coupon from './Coupon.component';

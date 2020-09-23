@@ -1,6 +1,6 @@
 import React from 'react'
 import LinkGallaryItem from '../molecules/LinkGallaryItem.mole'
-import { Box, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import link_image from '../assets/link_image.jpg';
 import link_long from '../assets/link_long.jpg';
 import link_hori from '../assets/link_hori.jpg';

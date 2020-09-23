@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, Box, Container, Grid, Typography, Button } from '@material-ui/core';
+import { makeStyles, Box, Container, Grid, Typography } from '@material-ui/core';
 import Carousel from '../components/Carousel.component';
 import slideDemoImage from '../assets/hero_bg.jpg';
 import HeroItem from '../molecules/HeroItem.mole';
@@ -8,11 +8,9 @@ import Showcase from '../components/Showcase.component';
 import ShopCard from '../molecules/ShopCard.mole';
 import LinkGallaryItem from '../molecules/LinkGallaryItem.mole';
 import BigButton from '../molecules/BigButton.mole';
-import BlogCard from '../molecules/BlogCard.mole';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { assets, catchAsync, checkStatus } from '../utils';
+import { catchAsync, checkStatus } from '../utils';
 import LazySkeleton from '../components/LazySkeleton.component';
-import { getAllUser } from '../request/user.requset';
 import { useEffect } from 'react';
 import { getProducts } from '../request/product.request';
 import link_image from '../assets/link_image.jpg';
@@ -34,7 +32,7 @@ function Home() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        (async () => {
+        catchAsync(async () => {
             const response = await getProducts();
             if (checkStatus(response)) {
                 setProducts(response.data.products)
@@ -89,20 +87,6 @@ function Home() {
 
                 />
             </div>
-            {/* <div className="">
-                <Showcase
-                    title="Latest From Our Blog"
-                    subTitle="THE FRESHEST AND MOST EXCITING NEWS"
-                    items={[
-                        { image: link_image },
-                        { image: link_image },
-                        { image: link_image }
-                    ]}
-                    component={<BlogCard />}
-                    breakPoints={{ xs: 12, md: 4, lg: 4 }}
-                    fallback={<LazySkeleton width="100%" height={250} breakPoints={{ xs: 12, md: 4, lg: 4 }} items={3} />}
-                />
-            </div> */}
             <div className="">
                 <Showcase
                     title={

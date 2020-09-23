@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, ButtonGroup, Checkbox, Chip, Container, Dialog, Divider, FormControlLabel, Grid, IconButton, MenuItem, Paper, TextField, Tooltip, Typography } from '@material-ui/core'
+import { Avatar, Box, Button, Chip, Container, Divider, Grid, IconButton, Paper, Tooltip, Typography } from '@material-ui/core'
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@material-ui/icons/Add';
@@ -45,11 +45,11 @@ export default function Coupon() {
         return (new Date()).getTime() < (new Date(d)).getTime()
     }
 
-    const handleDelete = catchAsync(async(code)=>{
+    const handleDelete = catchAsync(async (code) => {
         setLoader(true)
-        const response = await deleteCoupon({code});
+        const response = await deleteCoupon({ code });
         setLoader(false)
-        if(checkStatus(response)){
+        if (checkStatus(response)) {
             console.log(response.data)
             setCoupons(response.data.doc.coupons)
         }
@@ -71,7 +71,9 @@ export default function Coupon() {
                             <Paper>
                                 <Box p={3}>
                                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                                        <Typography align="center" variant="h6">{item.code}</Typography>
+                                        <Box overflow="hidden">
+                                            <Typography align="center" variant="h6">{item.code}</Typography>
+                                        </Box>
                                         <Tooltip title="Copy" arrow={true}>
                                             <IconButton color={clipText === item.code ? 'primary' : 'default'} onClick={() => handleCopy(item.code)}>
                                                 <FileCopyIcon style={{ width: 15, height: 15 }} />
@@ -100,7 +102,7 @@ export default function Coupon() {
                                         </Box>}
                                     </Box>
                                     <Box mt={2}>
-                                        <Button onClick={()=>handleDelete(item.code)} variant="outlined" color="secondary" fullWidth >Delete</Button>
+                                        <Button onClick={() => handleDelete(item.code)} variant="outlined" fullWidth >Delete</Button>
                                     </Box>
                                 </Box>
                             </Paper>

@@ -1,8 +1,7 @@
 import React from 'react'
-import { Grid, Container, Box, Breadcrumbs, Link, makeStyles } from '@material-ui/core'
+import { Grid, Container, Box, makeStyles } from '@material-ui/core'
 import Sidebar from '../components/Sidebar.component'
 import ShopContent from '../components/ShopContent.component'
-import { useState } from 'react'
 import MainDrawer from '../molecules/MainDrawer.mole'
 import { useRecoilState } from 'recoil'
 import { sideDrawerState } from '../recoil/atoms'
@@ -21,23 +20,10 @@ export default function Shop() {
     const [sideBarOpen, setSideBarOpen] = useRecoilState(sideDrawerState);
 
     return (
-        <div>
+        <Box mt={3}>
             <Container maxWidth="lg">
-                <Box my={3}>
-                    <Breadcrumbs>
-                        <Link color="inherit">
-                            Home
-                            </Link>
-                        <Link color="inherit">
-                            Treanding
-                            </Link>
-                        <Link color="textPrimary">
-                            Men Hoody
-                            </Link>
-                    </Breadcrumbs>
-                </Box>
                 <Grid container spacing={2}>
-                    <Grid className={classes.sideBar} item xs={0} md={2}>
+                    <Grid className={classes.sideBar} item xs={false} md={2}>
                         <Box mt={6}>
                             <Sidebar />
                         </Box>
@@ -50,6 +36,6 @@ export default function Shop() {
             <MainDrawer open={sideBarOpen} setOpen={setSideBarOpen}>
                 <Sidebar />
             </MainDrawer>
-        </div>
+        </Box>
     )
 }

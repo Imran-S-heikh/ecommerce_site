@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Grid } from '@material-ui/core'
 import Showcase from '../components/Showcase.component'
 import BlogCard from '../molecules/BlogCard.mole'
-import { assets } from '../utils'
+// import { assets } from '../utils'
 
 const items = [
     {
@@ -28,7 +28,7 @@ function BlogComponent({ image }) {
 export default function Blog() {
     return (
         <div>
-            <Container maxWidth="lg">
+            {/* <Container maxWidth="lg">
                 <Showcase
                     title="News"
                     items={[
@@ -41,7 +41,7 @@ export default function Blog() {
                     }
                     breakPoints={{ lg: 12 }}
                 />
-            </Container>
+            </Container> */}
         </div>
     )
 }

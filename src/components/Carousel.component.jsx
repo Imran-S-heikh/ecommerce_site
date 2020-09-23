@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { IconButton, makeStyles, Box } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { slideChangeEvent } from '../recoil/atoms';
 
 
@@ -47,7 +47,6 @@ export default function Carousel({ component, data, customStyle }) {
 
     const settings = {
         dots: true,
-        infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,

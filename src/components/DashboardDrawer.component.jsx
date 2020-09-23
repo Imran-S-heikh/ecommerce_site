@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import { Drawer, IconButton, makeStyles, Typography, Box, ListItemIcon, ListItem, ListItemText, List, fade, MenuList, MenuItem } from '@material-ui/core'
+import { Drawer, IconButton, makeStyles, Typography, Box, ListItemIcon, ListItemText, fade, MenuList, MenuItem } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import ControlledAccordion from '../molecules/ControlledAccordion.mole';
-import StopIcon from '@material-ui/icons/Stop';
 import ControlledAccordionBlack from '../molecules/ControlledAccordion.variant.mole';
 import { ReactComponent as DashIcon } from '../assets/svgs/rectangle.svg';
 import { ReactComponent as TshirtIcon } from '../assets/svgs/tshirt.svg';
@@ -16,9 +14,6 @@ import clsx from 'clsx';
 import AddIcon from '@material-ui/icons/Add';
 import UpdateIcon from '@material-ui/icons/Update';
 import ViewListIcon from '@material-ui/icons/ViewList';
-import NewReleasesIcon from '@material-ui/icons/NewReleases';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import TimelapseIcon from '@material-ui/icons/Timelapse';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import WebIcon from '@material-ui/icons/Web';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
@@ -186,22 +181,6 @@ export default function DashboardDrawer() {
                                         View Orders
                                     </ListItemText>
                                 </MenuItem>
-                                {/* <MenuItem className={classes.menuItem} button={true} >
-                                    <ListItemIcon className={classes.white}>
-                                        <AssignmentTurnedInIcon />
-                                    </ListItemIcon>
-                                    <ListItemText className={classes.white}>
-                                        Completed Orders
-                                    </ListItemText>
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem} button={true} >
-                                    <ListItemIcon className={classes.white}>
-                                        <TimelapseIcon />
-                                    </ListItemIcon>
-                                    <ListItemText className={classes.white}>
-                                        Pending Orders
-                                </ListItemText>
-                                </MenuItem> */}
                             </MenuList>
                         </ControlledAccordionBlack>
                         <ControlledAccordionBlack onClick={(title) => { setRoute(routes.PROFILE); setSelected(title) }} selected={selected} title="Profile" startIcon={<PersonIcon />} />

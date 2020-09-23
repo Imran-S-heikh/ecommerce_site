@@ -1,13 +1,12 @@
 import React from 'react'
-import { Container, Paper, Typography, Button, Grid, Box, TextField, makeStyles, Link, Dialog, ClickAwayListener } from '@material-ui/core'
-import { useHistory, Redirect } from 'react-router-dom'
+import { Container, Paper, Typography, Button, Grid, Box, TextField, Link, Dialog, ClickAwayListener } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { useState } from 'react';
 import { catchAsync, checkStatus } from '../utils';
 import { userLogin, forgetPassword, signinWithGoogle } from '../request/user.requset';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
-import { useEffect } from 'react';
 import { useRef } from 'react';
 import MailIcon from '@material-ui/icons/Mail';
 import GoogleLogin from 'react-google-login';

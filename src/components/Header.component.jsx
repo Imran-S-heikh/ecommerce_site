@@ -204,6 +204,16 @@ export default function Header() {
                                         </ListItemText>
                                         </MenuItem>
                                     </Hide>
+                                    <Hide hide={!user}>
+                                        <MenuItem onClick={() => history.push('/dashboard')}>
+                                            <ListItemIcon classes={{ root: classes.listIcon }}>
+                                                <PersonIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Profile
+                                        </ListItemText>
+                                        </MenuItem>
+                                    </Hide>
                                     <MenuItem onClick={() => history.push('/cart')}>
                                         <ListItemIcon classes={{ root: classes.listIcon }}>
                                             <ShoppingBasketIcon />

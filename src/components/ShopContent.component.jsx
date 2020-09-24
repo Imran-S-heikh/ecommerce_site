@@ -16,7 +16,7 @@ import LazySkeleton from './LazySkeleton.component';
 import { useEffect } from 'react';
 import { getProducts } from '../request/product.request';
 import Hide from '../molecules/Hide.mole';
-import { useIsInit } from '../customHooks';
+import { useFetch, useIsInit } from '../customHooks';
 
 
 const single = { xs: 12, sm: 12, md: 6, lg: 6 }
@@ -24,7 +24,7 @@ const double = { xs: 12, sm: 6, md: 6, lg: 4 }
 const max = { xs: 12, sm: 6, md: 4, lg: 3 }
 
 export default function ShopContent() {
-
+    const fetch = useFetch();
     const [limitEl, setLimitEl] = useState(null);
     const [breakPoints, setBreakPoints] = useState(max);
     const setSideBarOpen = useSetRecoilState(sideDrawerState)
@@ -38,9 +38,7 @@ export default function ShopContent() {
     }, [shopQuery])
 
     const fetchProducts = async () => {
-        setLoading(true)
-        const response = await getProducts(queryBuilder(shopQuery));
-        setLoading(false)
+        const response = await fetch(getProducts,queryBuilder(shopQuery),setLoading);
         if (checkStatus(response)) {
             setShopItems(response.data.products)
             setTotalProducts(response.data.total)

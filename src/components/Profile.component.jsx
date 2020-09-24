@@ -4,26 +4,23 @@ import { userState } from '../recoil/user/user.atoms';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { updateUser } from '../request/user.requset';
-import { checkStatus } from '../utils';
+import { checkStatus, filter } from '../utils';
+import { useFetch } from '../customHooks';
 
 
 export default function Profile() {
 
     const [user,setUser] = useRecoilState(userState);
     const setAlert = useSetRecoilState(alertSnackbarState);
-    const setLoader = useSetRecoilState(loaderState);
+    const fetch = useFetch()
 
     
 
     const handleupdate = async(updatedUser)=>{
-        setLoader(true)
-        const response = await updateUser(updatedUser,user._id);
-        setLoader(false)
+        const response = await fetch(()=>updateUser(filter(updatedUser,'name'),user._id));
         if(checkStatus(response)){
             setAlert({open: true,message: 'User Updated Successfully',severity: 'success'})
 
-        }else{
-            setAlert({open: true,message: response.data.message,severity: 'error'})
         }
     }
 

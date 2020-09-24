@@ -69,7 +69,6 @@ export default function ProductSearch({getId}) {
         if (!(keyRef.current === '')) {
             setSearchQuery({ search: keyRef.current })
             setSearchOpen(false)
-            // history.push('/shop')
         }
     }
 
@@ -80,7 +79,7 @@ export default function ProductSearch({getId}) {
 
     useEffect(() => {
         clearTimeout(timer.current)
-        timer.current = setTimeout(sendRequest, 1200)
+        timer.current = setTimeout(sendRequest, 800)
 
     }, [searchKey])
 

@@ -5,8 +5,9 @@ import { createUser } from '../request/user.requset';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { Redirect } from 'react-router-dom';
-import { catchAsync, checkStatus } from '../utils';
-import { loaderState, alertSnackbarState } from '../recoil/atoms';
+import { checkStatus } from '../utils';
+import { alertSnackbarState } from '../recoil/atoms';
+import { useFetch } from '../customHooks';
 
 const createStyles = makeStyles(() => ({
     fieldContainer: {
@@ -17,6 +18,7 @@ const createStyles = makeStyles(() => ({
 }));
 
 export default function Signup() {
+    const fetch = useFetch();
     const classes = createStyles()
 
     const [firstName, setFirstName] = useState('');
@@ -25,7 +27,6 @@ export default function Signup() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [user, setUser] = useRecoilState(userState);
-    const setLoader = useSetRecoilState(loaderState);
     const setAlertSnackbar = useSetRecoilState(alertSnackbarState);
 
     if (user) {
@@ -34,20 +35,15 @@ export default function Signup() {
     }
 
 
-    const handleCreate = catchAsync(async () => {
-        setLoader(true)
+    const handleCreate = async () => {
         const name = `${firstName} ${lastName}`
         const newUser = { name, email, password, confirmPassword }
-        const response = await createUser(newUser);
-        setLoader(false)
+        const response = await fetch(createUser,newUser);
         if (checkStatus(response)) {
             setUser(response.data.user)
             setAlertSnackbar({open: true,message: 'User Created Successfully',severity: 'success'})
-        }else{
-            setAlertSnackbar({open: true,message: response.data.message,severity: 'error',time: 6000})
         }
-
-    })
+    }
 
     return (
         <Box my={6}>

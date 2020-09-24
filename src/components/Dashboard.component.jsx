@@ -112,15 +112,6 @@ export default function Dashboard() {
         })()
     }, []);
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const response = await getAllUser('?sort=ordered&limit=5');
-    //         if (checkStatus(response)) {
-    //             setBestSelling(response.data.products);
-    //         }
-
-    //     })()
-    // }, []);
 
     useEffect(() => {
         (async () => {

@@ -10,9 +10,11 @@ import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useRef } from 'react';
 import MailIcon from '@material-ui/icons/Mail';
 import GoogleLogin from 'react-google-login';
+import { useFetch } from '../customHooks';
 
 export default function Signin() {
 
+    const fetch = useFetch();
     const history = useHistory();
     const [user, setUser] = useRecoilState(userState);
     const setAlertSnackbar = useSetRecoilState(alertSnackbarState);
@@ -32,18 +34,13 @@ export default function Signin() {
 
 
 
-    const handleLogin = catchAsync(async () => {
-        setLoader(true);
-        const response = await userLogin({ email, password })
-        setLoader(false)
+    const handleLogin = async () => {
+        const response = await fetch(userLogin,{ email, password })
         if (checkStatus(response)) {
             setUser(response.data.user);
             setAlertSnackbar({ open: true, message: 'Logged In Successfully', time: 4000, severity: 'success' })
-
-        } else {
-            setAlertSnackbar({ open: true, message: response.data.message, time: 4000, severity: 'error' })
         }
-    });
+    };
 
 
     const forgetRequest = catchAsync(async () => {
@@ -67,14 +64,10 @@ export default function Signin() {
 
     const handleGoogleSuccess = async ({ code }) => {
         if (code) {
-            setLoader(true);
-            const response = await signinWithGoogle({ code })
-            setLoader(false);
+            const response = await fetch(signinWithGoogle,{ code })
             if (checkStatus(response)) {
                 setUser(response.data.user)
                 setAlertSnackbar({ open: true, message: 'Login Successful With Google',severity: 'success' })
-            } else {
-                setAlertSnackbar({ open: true, message: 'Failed To Login', severity: 'error' })
             }
         } else {
             setAlertSnackbar({ open: true, message: 'Failed To Login', severity: 'error' })

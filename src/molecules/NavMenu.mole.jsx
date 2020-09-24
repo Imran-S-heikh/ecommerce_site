@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MenuList, MenuItem, makeStyles, Box } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { useHistory } from 'react-router-dom';
+import { useIsModarator } from '../customHooks';
 
-const navItems = ['home', 'shop','cart','checkout','dashboard']
+const navItems = ['home', 'shop','cart','checkout'];
 
 const createStyles = makeStyles(theme => ({
     root: {
@@ -31,6 +32,13 @@ export default function NavMenu({ styleProp, showIcon }) {
     const classes = createStyles(styleProp);
     const [selected, setSelected] = useState(0);
     const history = useHistory();
+    const isModarator = useIsModarator();
+
+    useEffect(()=>{
+        if(isModarator){
+            navItems.push('dashboard')
+        }
+    },[isModarator])
 
 
     const handleNavClick = (event, index,path) => {

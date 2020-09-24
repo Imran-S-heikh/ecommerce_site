@@ -2,25 +2,22 @@ import React from 'react'
 import MakeProduct from './MakeProduct.component';
 import { catchAsync } from '../utils';
 import { createProduct } from '../request/product.request';
+import { useFetch } from '../customHooks';
 import { useSetRecoilState } from 'recoil';
-import { loaderState, alertSnackbarState } from '../recoil/atoms';
+import { alertSnackbarState } from '../recoil/atoms';
+
 
 export default function CreateProduct() {
 
-    const setLoader = useSetRecoilState(loaderState);
+    const fetch = useFetch();
     const setAlert = useSetRecoilState(alertSnackbarState);
 
-
     const handleProduct = catchAsync(async(product)=>{
-        console.log(product)
-        setLoader(true);
-        const response = await createProduct(product);
-        setLoader(false)
-        console.log(response)
+
+        const response = await fetch(createProduct,product);
+        
         if(response.data.status === 'success'){
             setAlert({open: true,message: 'Product Created Successfully',severity: 'success'})
-        }else{
-            setAlert({open: true,message: response.data.message,severity: 'error'})
         }
         
     });

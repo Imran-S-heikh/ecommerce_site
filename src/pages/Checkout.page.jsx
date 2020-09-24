@@ -153,7 +153,7 @@ export default function Checkout() {
             <Container maxWidth="md">
 
                 <Grid container spacing={2}>
-                    <Grid item xs={8}>
+                    <Grid item xs={12} md={8}>
                         <form ref={fromRef} onSubmit={handleSubmit}>
                             <Stepper orientation="vertical" activeStep={activeStep}>
                                 {['Delivery', 'Payment'].map((label, i) =>
@@ -231,10 +231,10 @@ export default function Checkout() {
 
                         </form>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4}>
                         <Paper>
                             <Box mb={2} p={4}>
-                                <TextField size="small" onChange={e => setCoupon(e.target.value)} placeholder="Coupon Code" variant="outlined" value={coupon} />
+                                <TextField fullWidth size="small" onChange={e => setCoupon(e.target.value)} placeholder="Coupon Code" variant="outlined" value={coupon} />
                                 <Box mt={1}>
                                     <Button fullWidth variant="contained" color="primary" onClick={handleCouponCode}>Apply Coupon</Button>
                                 </Box>

@@ -12,9 +12,11 @@ import AdminList from './AdminList.component';
 import ViewOrders from './ViewOrders.component';
 import SiteProperties from './SiteProperties.component';
 import Coupon from './Coupon.component';
+import { useIsModarator } from '../customHooks';
 
 export default function DashboardRoutes() {
 
+    const isModarator = useIsModarator();
     const route = useRecoilValue(dashboardRouteState);
 
     if(route === routes.CREATE_PRODUCT){
@@ -47,6 +49,10 @@ export default function DashboardRoutes() {
     if(route === routes.COUPON){
         return <Coupon />
     }
-    return null;
+    if(isModarator){
+        return  <Dashboard/>
+    }
+
+    return <Profile/>;
 
 }

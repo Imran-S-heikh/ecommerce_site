@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { alertSnackbarState, loaderState } from "./recoil/atoms";
 import { userState } from "./recoil/user/user.atoms";
@@ -30,16 +30,16 @@ export const useIsAdmin = ()=>{
 
 export const useIsModarator = ()=>{
     const user = useRecoilValue(userState);
-    const userRef = useRef(false);
+    const [state,setState] = useState(false);
 
     useEffect(()=>{
         if(!user)return;
         if(user.role === 'admin' || user.role === 'moderator'){
-            userRef.current = true;
+            setState(true)
         }
     },[user])
 
-    return userRef.current;
+    return state;
 }
 
 export const useFetch = ()=>{

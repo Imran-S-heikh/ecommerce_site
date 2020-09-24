@@ -35,7 +35,6 @@ const createStyles = makeStyles(function (theme) {
     const isLight = theme.palette.type === 'light';
     const mode = theme.palette.type;
     const { getContrastText } = theme.palette;
-    // theme.palette.getHello()
 
     return {
         avatarSize: {
@@ -343,7 +342,6 @@ export default function Dashboard() {
                                                             </Typography>
                                                         </ListItemSecondaryAction>
                                                     </ListItem>
-                                                    {console.log({ length: bestSelling.length - 1, i })}
                                                     <Hide hide={bestSelling.length - 1 === i}>
                                                         <Divider />
                                                     </Hide>

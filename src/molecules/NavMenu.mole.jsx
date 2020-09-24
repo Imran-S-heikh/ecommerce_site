@@ -3,8 +3,9 @@ import { MenuList, MenuItem, makeStyles, Box } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { useHistory } from 'react-router-dom';
 import { useIsModarator } from '../customHooks';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/user/user.atoms';
 
-const navItems = ['home', 'shop','cart','checkout'];
 
 const createStyles = makeStyles(theme => ({
     root: {
@@ -33,10 +34,12 @@ export default function NavMenu({ styleProp, showIcon }) {
     const [selected, setSelected] = useState(0);
     const history = useHistory();
     const isModarator = useIsModarator();
+    const [navItems,setNavItems] = useState(['home', 'shop','cart','checkout']);
+
 
     useEffect(()=>{
-        if(isModarator){
-            navItems.push('dashboard')
+        if(isModarator &&  !navItems.includes('dashboard')){
+            setNavItems([...navItems,'dashboard'])
         }
     },[isModarator])
 

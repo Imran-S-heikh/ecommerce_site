@@ -22,6 +22,7 @@ import { useRecoilValue } from 'recoil';
 import { cartState } from '../recoil/user/user.selector';
 import ProductSearch from '../molecules/ProductSearch.mole';
 import { singleProductId } from '../recoil/product/product.aton';
+import { useIsInit } from '../customHooks';
 
 
 const createStyle = makeStyles(theme => ({
@@ -89,27 +90,22 @@ export default function Header() {
     const [cartOpen, setCartOpen] = useState(false);
     const cart = useRecoilValue(cartState);
     const history = useHistory();
+    const isInit = useIsInit();
 
-    useEffect(()=>{
-        const mode = localStorage.getItem('@mode')
-        if(mode === 'dark'){
-            setDarkMode(true)
-        }else{
-            setDarkMode(false)
+
+    useEffect(() => {
+        if (!isInit) {
+            if (darkMode) {
+                localStorage.setItem('@mode', 'dark')
+            } else {
+                localStorage.setItem('@mode', 'light')
+            }
         }
-    },[])
-
-    useEffect(()=>{
-        if(darkMode){
-            localStorage.setItem('@mode','dark')
-        }else{
-            localStorage.setItem('@mode','light')
-        }
-    },[darkMode])
+    }, [darkMode])
 
 
 
-   
+
 
 
     const handleLogOut = () => {
@@ -117,7 +113,7 @@ export default function Header() {
         document.cookie = 'jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
-    const handleProduct = (id)=>{
+    const handleProduct = (id) => {
         setProductId(id);
         history.push('/single')
     }
@@ -171,7 +167,7 @@ export default function Header() {
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                        <Box  style={{ position: 'relative' }}>
+                        <Box style={{ position: 'relative' }}>
                             <ClickAwayListener onClickAway={() => setPersonOpen(false)}>
                                 <Tooltip title="My Account" arrow>
                                     <IconButton className={classes.button} onClick={() => setPersonOpen(!personOpen)}>
@@ -240,10 +236,26 @@ export default function Header() {
                                         </ListItemText>
                                         </MenuItem>
                                     </Hide>
+                                    <MenuItem onClick={handleLogOut}>
+                                        <ListItemIcon classes={{ root: classes.listIcon }}>
+                                            <FormGroup style={{ width: 'max-content' }}>
+                                                <FormControlLabel
+                                                    control={<Switch checked={darkMode}
+                                                        onChange={() => setDarkMode(!darkMode)}
+                                                        color="primary" />}
+                                                    label="Dark Mode"
+                                                    // labelPlacement="start"
+                                                />
+                                            </FormGroup>
+                                        </ListItemIcon>
+                                        {/* <ListItemText>
+                                            Dark Mode
+                                        </ListItemText> */}
+                                    </MenuItem>
                                 </MenuList>
                             </MenuContainer>
                         </Box>
-                        <ClickAwayListener onClickAway={() => setSettingsOpen(false)}>
+                        {/* <ClickAwayListener onClickAway={() => setSettingsOpen(false)}>
                             <Box display={{ xs: 'none', md: 'block' }} style={{ position: 'relative' }}>
                                 <Tooltip title="Settings" arrow>
                                     <IconButton className={classes.button} onClick={() => setSettingsOpen(!settingsOpen)}>
@@ -264,11 +276,11 @@ export default function Header() {
                                     </Box>
                                 </MenuContainer>
                             </Box>
-                        </ClickAwayListener>
+                        </ClickAwayListener> */}
                     </div>
                 </Container>
             </AppBar>
-            <ProductSearch getId={handleProduct}/>
+            <ProductSearch getId={handleProduct} />
             <MainDrawer open={drawerOpen} setOpen={setDrawerOpen}>
                 <NavMenu styleProp={{ flxd: 'column', py: 10, fz: 12 }} showIcon={true} />
             </MainDrawer>

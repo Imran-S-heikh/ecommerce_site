@@ -67,10 +67,6 @@ export default function Dashboard() {
 
     const theme = useTheme();
 
-    useEffect(() => {
-        theme.palette.type = 'dark'
-    }, []);
-
     return (
         <div className={classes.root}>
             <AppBar

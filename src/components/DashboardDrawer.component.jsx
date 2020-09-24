@@ -134,16 +134,16 @@ export default function DashboardDrawer() {
                                         </ListItemIcon>
                                         <ListItemText className={classes.white}>
                                             Create A Product
-                                </ListItemText>
+                                        </ListItemText>
                                     </MenuItem>
-                                    <MenuItem onClick={() => setRoute(routes.EDIT_PRODUCT)} className={classes.menuItem} button={true} >
+                                    {/* <MenuItem onClick={() => setRoute(routes.EDIT_PRODUCT)} className={classes.menuItem} button={true} >
                                         <ListItemIcon className={classes.white}>
                                             <UpdateIcon />
                                         </ListItemIcon>
                                         <ListItemText className={classes.white}>
                                             Update Product
-                                </ListItemText>
-                                    </MenuItem>
+                                        </ListItemText>
+                                    </MenuItem> */}
                                     <MenuItem onClick={() => setRoute(routes.VIEW_PRODUCTS)} className={classes.menuItem} button={true} >
                                         <ListItemIcon className={classes.white}>
                                             <ViewListIcon />

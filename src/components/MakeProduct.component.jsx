@@ -36,7 +36,6 @@ const createStyles = makeStyles(theme => ({
 
 
 export default function MakeProduct(props) {
-
     const setAlert = useSetRecoilState(alertSnackbarState);
     const classes = createStyles();
     const [color, setColor] = useState(props.color || []);
@@ -67,10 +66,6 @@ export default function MakeProduct(props) {
 
 
     const submitRef = useRef();
-
-    useEffect(() => {
-        console.log(brand)
-    }, [brand])
 
     useEffect(()=>{
         catchAsync(async ()=>{

@@ -52,6 +52,8 @@ function App() {
     }
   });
 
+  console.log(theme)
+
   useEffect(() => {
     const checkMe = catchAsync(async () => {
       const response = await checkUser();

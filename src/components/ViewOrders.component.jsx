@@ -54,7 +54,7 @@ export default function ViewOrders() {
     const [order, setOrder] = useState(null)
 
     useEffect(() => {
-        fetchData(`?page=${page}&limit=${rowsPerPage}`)
+        fetchData(`?page=${page}&limit=${rowsPerPage}&sort=-orderedAt`)
     }, [])
 
     useEffect(() => {

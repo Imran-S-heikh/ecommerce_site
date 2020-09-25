@@ -12,16 +12,14 @@ import { updateOrder } from '../request/order.request';
 
 
 
-export default function CheckoutForm({ clientSecret,orderId,setDialog }) {
+export default function CheckoutForm({ clientSecret,orderId,setDialog,handleSuccess }) {
     const user = useRecoilValue(userState);
     const setAlert = useSetRecoilState(alertSnackbarState);
     const setLoader = useSetRecoilState(loaderState);
-    const setUserCart = useSetRecoilState(userCartState);
     const stripre = useStripe();
     const elements = useElements();
     const formRef = useRef();
     const theme = useTheme();
-    const history = useHistory();
 
     const element_option = {
         style: {
@@ -57,10 +55,7 @@ export default function CheckoutForm({ clientSecret,orderId,setDialog }) {
         if(result.error){
             setAlert({open: true,message: 'Payment Failed',severity: 'error'})
         }else{
-            const response = await updateOrder({ paymentStatus: 'paid' }, orderId);
-            setAlert({open: true,message: 'Payment Successful',severity: 'success'})
-            history.push('/home')
-            setUserCart([]);
+            handleSuccess()
 
         }
         setLoader(false);

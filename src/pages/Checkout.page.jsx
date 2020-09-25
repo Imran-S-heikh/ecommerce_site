@@ -12,12 +12,14 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { cartState } from '../recoil/user/user.selector';
 import { useSetRecoilState } from 'recoil';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
-import { Redirect } from 'react-router-dom';
-import { userState } from '../recoil/user/user.atoms';
+import { Redirect, useHistory } from 'react-router-dom';
+import { userCartState, userState } from '../recoil/user/user.atoms';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import CheckoutForm from '../components/CheckoutForm.component';
 import { getCoupon } from '../request/other.request';
+import { PayPalButton } from 'react-paypal-button-v2';
+import { updateOrder } from '../request/order.request';
 
 const stripe_key = 'pk_test_51HPJo6IvWIe2khAihM3N4JnnVCeShsbEZv9qyCVFumpX2msHAjqWkqJ7mumtwpJbBRxkdZTq5vWwxXOhXuKX1IUc003JLceeIC';
 const stripe_promise = loadStripe(stripe_key);
@@ -36,15 +38,23 @@ export default function Checkout() {
     const [phone, setPhone] = useState(2343434)
     const [clientSecret, setClientSecret] = useState(null);
     const [orderId, setOrderId] = useState(null);
+    const orderIdRef = useRef(null);
     const [coupon, setCoupon] = useState(null);
     const [isValidCoupon, setIsvalidCoupon] = useState(false)
     const [discount, setDiscount] = useState(0);
+    const [paymentMethod, setPaymentMethod] = useState(null);
+    const setUserCart = useSetRecoilState(userCartState);
+    const history = useHistory();
+
+    useEffect(() => {
+        console.log({ orderId, from: 'useEffect' })
+    }, [orderId]);
 
 
     const handleCouponCode = catchAsync(async () => {
         if (!coupon) return;
         const response = await getCoupon(coupon);
-        
+
         if (checkStatus(response) && response.data.doc.coupons[0].code === coupon) {
             const coupon = response.data.doc.coupons[0];
             const { catagories, productTypes, brands, id } = response.data.doc.coupons[0].validFor;
@@ -103,6 +113,7 @@ export default function Checkout() {
     }
 
     const handleStripePayment = catchAsync(async () => {
+        setPaymentMethod('stripe')
         const data = {
             products: cart.products.map(product => ({ id: product._id, quantity: product.count })),
             country,
@@ -116,10 +127,11 @@ export default function Checkout() {
         }
         setLoader(true)
         const response = await checkoutRequest(data);
-        console.log(response.data)
         if (checkStatus(response)) {
             setClientSecret(response.data.clientSecret)
             setOrderId(response.data.orderId)
+            orderIdRef.current = response.data.orderId;
+
         }
         setLoader(false)
         // if(checkStatus(response) && stripe){
@@ -128,7 +140,36 @@ export default function Checkout() {
         //     });
         // }
 
-    })
+    });
+
+    const handlePaypalPayment = async () => {
+        const data = {
+            products: cart.products.map(product => ({ id: product._id, quantity: product.count })),
+            country,
+            state,
+            paymentMethod: 'paypal',
+            address,
+            email: user?.email
+        }
+        if (isValidCoupon) {
+            data.couponCode = coupon
+        }
+        setLoader(true)
+        const response = await checkoutRequest(data);
+        setLoader(false)
+        setOrderId(response.data.orderId);
+        orderIdRef.current = response.data.orderId;
+
+        return response.data.paypalOrderId;
+    }
+
+    const handleSucces = async () => {
+        const response = await updateOrder({ paymentStatus: 'paid' }, orderIdRef.current);
+        console.log({ response, orderId })
+        setAlert({ open: true, message: 'Payment Successful', severity: 'success' })
+        history.push('/home')
+        setUserCart([]);
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -220,6 +261,10 @@ export default function Checkout() {
                                                                 <StripeLogoWhite height={25} />
                                                             }
                                                         </Button>
+                                                        <PayPalButton
+                                                            createOrder={handlePaypalPayment}
+                                                            onApprove={handleSucces}
+                                                        />
                                                     </Box>
                                                     <Button onClick={previousStep} color="primary">Previous</Button>
                                                 </Box>
@@ -300,9 +345,9 @@ export default function Checkout() {
                     </Grid>
                 </Grid>
             </Container>
-            <Dialog open={Boolean(clientSecret)}>
+            <Dialog open={paymentMethod === 'stripe'}>
                 <Elements stripe={stripe_promise}>
-                    <CheckoutForm orderId={orderId} clientSecret={clientSecret} setDialog={setClientSecret} />
+                    <CheckoutForm handleSuccess={handleSucces} orderId={orderId} clientSecret={clientSecret} setDialog={setClientSecret} />
                 </Elements>
             </Dialog>
         </div>

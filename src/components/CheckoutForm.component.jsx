@@ -2,17 +2,15 @@ import { Box, Button, Typography, useTheme } from '@material-ui/core'
 import { TramOutlined } from '@material-ui/icons';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import React, { useRef } from 'react'
-import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
-import { userCartState, userState } from '../recoil/user/user.atoms';
-import { updateOrder } from '../request/order.request';
+import { userState } from '../recoil/user/user.atoms';
 
 
 
 
-export default function CheckoutForm({ clientSecret,orderId,setDialog,handleSuccess }) {
+export default function CheckoutForm({ clientSecret,orderId,handleSuccess }) {
     const user = useRecoilValue(userState);
     const setAlert = useSetRecoilState(alertSnackbarState);
     const setLoader = useSetRecoilState(loaderState);
@@ -33,9 +31,8 @@ export default function CheckoutForm({ clientSecret,orderId,setDialog,handleSucc
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setDialog(false);
 
-        if (!stripre || !elements || !clientSecret || !orderId) {
+        if (!stripre || !elements) {
             setAlert({open: true,message: 'Failed to Intialize Payment',severity: 'error'})
             return;
         }

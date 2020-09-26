@@ -56,12 +56,17 @@ export const updateUser = catchAsync(async (data,id) => {
 })
 
 export const getAdmins = catchAsync(async () => {
-    const response = await request({}, `/users/admins`,'POST');
+    const response = await request({}, `/users/admins`);
     return response;
 })
 
 export const signinWithGoogle = catchAsync(async (data) => {
-    const response = await request(data, `/users/signinWithGoogle`,'POST');
+    const response = await request(data, `/users/signinWithGoogle`);
+    return response;
+})
+
+export const signinWithFacebook = catchAsync(async (data) => {
+    const response = await request(data, `/users/signinWithFacebook`);
     return response;
 })
 

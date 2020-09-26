@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, Paper, Typography, Button, Grid, Box, TextField, Link, Dialog, ClickAwayListener } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/user/user.atoms';
 import { useState } from 'react';
 import { catchAsync, checkStatus } from '../utils';
-import { userLogin, forgetPassword, signinWithGoogle } from '../request/user.requset';
+import { userLogin, forgetPassword, signinWithGoogle, signinWithFacebook } from '../request/user.requset';
 import { alertSnackbarState, loaderState } from '../recoil/atoms';
 import { useRef } from 'react';
 import MailIcon from '@material-ui/icons/Mail';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
+import { ReactComponent as FbLoginLogo } from '../assets/LoginWithFaceBook.svg';
 import { useFetch } from '../customHooks';
 
 export default function Signin() {
@@ -25,6 +27,11 @@ export default function Signin() {
     const [resetEmail, setResetEmail] = useState(null);
     const [messagePopup, setMessagePopup] = useState(false);
     const formRef = useRef();
+    const fbButtonRef = useRef();
+
+    useEffect(() => {
+        fbButtonRef.current = document.querySelector('.fb-login-button');
+    }, [])
 
 
     if (user) {
@@ -35,7 +42,7 @@ export default function Signin() {
 
 
     const handleLogin = async () => {
-        const response = await fetch(userLogin,{ email, password })
+        const response = await fetch(userLogin, { email, password })
         if (checkStatus(response)) {
             setUser(response.data.user);
             setAlertSnackbar({ open: true, message: 'Logged In Successfully', time: 4000, severity: 'success' })
@@ -64,13 +71,21 @@ export default function Signin() {
 
     const handleGoogleSuccess = async ({ code }) => {
         if (code) {
-            const response = await fetch(signinWithGoogle,{ code })
+            const response = await fetch(signinWithGoogle, { code })
             if (checkStatus(response)) {
                 setUser(response.data.user)
-                setAlertSnackbar({ open: true, message: 'Login Successful With Google',severity: 'success' })
+                setAlertSnackbar({ open: true, message: 'Login Successful With Google', severity: 'success' })
             }
         } else {
             setAlertSnackbar({ open: true, message: 'Failed To Login', severity: 'error' })
+        }
+    }
+
+    const handleFacebookSuccess = async (fbRes) => {
+        const response = await fetch(signinWithFacebook, { userID: fbRes.userID, accessToken: fbRes.accessToken });
+        if (checkStatus(response)) {
+            setUser(response.data.user)
+            setAlertSnackbar({ open: true, message: 'Login Successful With Facebook', severity: 'success' })
         }
     }
 
@@ -103,7 +118,33 @@ export default function Signin() {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Paper>
-                            <Box p={4}>
+                            <Box pt={2} ml={2} display="flex" flexDirection={{xs: 'column', sm: 'row'}}  alignItems="center">
+                                <Box >
+                                    <GoogleLogin
+                                        buttonText="Login With Google"
+                                        clientId={process.env.REACT_APP_CLIENT_APT}
+                                        onSuccess={handleGoogleSuccess}
+                                        onFailure={handleGoogleFailure}
+                                        cookiePolicy="single_host_origin"
+                                        responseType="code"
+                                        redirectUri="postmessage"
+                                    />
+                                </Box>
+
+                                <Box>
+                                    <Box display="none">
+                                        <FacebookLogin
+                                            appId={process.env.REACT_APP_FB_ID}
+                                            callback={handleFacebookSuccess}
+                                            cssClass="fb-login-button"
+                                        />
+                                    </Box>
+                                    <Button onClick={() => console.log(fbButtonRef.current.click())}>
+                                        <FbLoginLogo />
+                                    </Button>
+                                </Box>
+                            </Box>
+                            <Box p={4} pt={2}>
                                 <Box>
                                     <Typography variant="h5" gutterBottom>
                                         Login
@@ -121,22 +162,6 @@ export default function Signin() {
                                         <Button onClick={handleLogin} variant="outlined" color="primary">
                                             Login
                                         </Button>
-                                    </Box>
-                                    <Box px={1}>
-                                        <Typography>
-                                            OR
-                                        </Typography>
-                                    </Box>
-                                    <Box>
-                                        <GoogleLogin
-                                            buttonText="Login With Google"
-                                            clientId={process.env.REACT_APP_CLIENT_APT}
-                                            onSuccess={handleGoogleSuccess}
-                                            onFailure={handleGoogleFailure}
-                                            cookiePolicy="single_host_origin"
-                                            responseType="code"
-                                            redirectUri="postmessage"
-                                        />
                                     </Box>
                                 </Box>
                                 <Typography style={{ cursor: 'pointer' }} component="div" variant="subtitle2" color="priamry" align="right">

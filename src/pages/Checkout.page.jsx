@@ -3,53 +3,38 @@ import { Box, Container, Grid, Typography, Button, TextField, Stepper, Step, Ste
 import Hide from '../molecules/Hide.mole';
 import { ReactComponent as StripeLogoSlate } from '../assets/stripe-logo-slate.svg';
 import { ReactComponent as StripeLogoWhite } from '../assets/stripe-logo-white.svg';
+import { ReactComponent as PaypalLogo } from '../assets/paypal-logo.svg';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import { checkoutRequest } from '../request/product.request';
 import { catchAsync, checkStatus } from '../utils';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { cartState } from '../recoil/user/user.selector';
 import { useSetRecoilState } from 'recoil';
-import { alertSnackbarState, loaderState } from '../recoil/atoms';
-import { Redirect, useHistory } from 'react-router-dom';
-import { userCartState, userState } from '../recoil/user/user.atoms';
+import { alertSnackbarState} from '../recoil/atoms';
+import { Redirect} from 'react-router-dom';
+import { userState } from '../recoil/user/user.atoms';
 import { useEffect } from 'react';
 import { useRef } from 'react';
-import CheckoutForm from '../components/CheckoutForm.component';
 import { getCoupon } from '../request/other.request';
-import { PayPalButton } from 'react-paypal-button-v2';
-import { updateOrder } from '../request/order.request';
+import PaypalCheckout from '../molecules/PaypalCheckout.mole';
+import StripeCheckout from '../molecules/StripeCheckout.mole';
 
-const stripe_key = 'pk_test_51HPJo6IvWIe2khAihM3N4JnnVCeShsbEZv9qyCVFumpX2msHAjqWkqJ7mumtwpJbBRxkdZTq5vWwxXOhXuKX1IUc003JLceeIC';
-const stripe_promise = loadStripe(stripe_key);
+
 
 export default function Checkout() {
     const theme = useTheme();
     const cart = useRecoilValue(cartState);
     const setAlert = useSetRecoilState(alertSnackbarState);
-    const setLoader = useSetRecoilState(loaderState);
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(1);
     const [user] = useRecoilState(userState);
     const [address, setAddress] = useState('address')
     const [country, setCountry] = useState('Country-1')
     const [state, setState] = useState('state')
     const [zipCode, setZipCode] = useState(1024)
     const [phone, setPhone] = useState(2343434)
-    const [clientSecret, setClientSecret] = useState(null);
-    const [orderId, setOrderId] = useState(null);
-    const orderIdRef = useRef(null);
     const [coupon, setCoupon] = useState(null);
     const [isValidCoupon, setIsvalidCoupon] = useState(false)
     const [discount, setDiscount] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState(null);
-    const setUserCart = useSetRecoilState(userCartState);
-    const history = useHistory();
-
-    useEffect(() => {
-        console.log({ orderId, from: 'useEffect' })
-    }, [orderId]);
-
 
     const handleCouponCode = catchAsync(async () => {
         if (!coupon) return;
@@ -82,7 +67,6 @@ export default function Checkout() {
                     isValid.push(productValid);
                 });
 
-                console.log({ isValid })
 
                 if (isValid.includes(false)) {
                     setAlert({ open: true, message: 'Coupon Is Not valid', severity: 'error' });
@@ -111,64 +95,20 @@ export default function Checkout() {
         setAlert({ open: true, message: 'You Don\'t have product for Checkout' })
         return <Redirect to="/shop" />
     }
-
-    const handleStripePayment = catchAsync(async () => {
-        setPaymentMethod('stripe')
+    const getData = ()=>{
         const data = {
             products: cart.products.map(product => ({ id: product._id, quantity: product.count })),
             country,
             state,
-            paymentMethod: 'stripe',
+            paymentMethod,
             address,
             email: user?.email
         }
         if (isValidCoupon) {
             data.couponCode = coupon
         }
-        setLoader(true)
-        const response = await checkoutRequest(data);
-        if (checkStatus(response)) {
-            setClientSecret(response.data.clientSecret)
-            setOrderId(response.data.orderId)
-            orderIdRef.current = response.data.orderId;
 
-        }
-        setLoader(false)
-        // if(checkStatus(response) && stripe){
-        //     const result = await stripe.redirectToCheckout({
-        //         sessionId: response.data.session.id
-        //     });
-        // }
-
-    });
-
-    const handlePaypalPayment = async () => {
-        const data = {
-            products: cart.products.map(product => ({ id: product._id, quantity: product.count })),
-            country,
-            state,
-            paymentMethod: 'paypal',
-            address,
-            email: user?.email
-        }
-        if (isValidCoupon) {
-            data.couponCode = coupon
-        }
-        setLoader(true)
-        const response = await checkoutRequest(data);
-        setLoader(false)
-        setOrderId(response.data.orderId);
-        orderIdRef.current = response.data.orderId;
-
-        return response.data.paypalOrderId;
-    }
-
-    const handleSucces = async () => {
-        const response = await updateOrder({ paymentStatus: 'paid' }, orderIdRef.current);
-        console.log({ response, orderId })
-        setAlert({ open: true, message: 'Payment Successful', severity: 'success' })
-        history.push('/home')
-        setUserCart([]);
+        return data;
     }
 
     const handleSubmit = (event) => {
@@ -253,18 +193,23 @@ export default function Checkout() {
                                             <Hide hide={!(activeStep === 1)}>
                                                 <Box>
                                                     <Typography variant="h6" align="center">Select Payment Method</Typography>
-                                                    <Box my={2}>
-                                                        <Button startIcon={<LocalShippingIcon />} style={{ marginRight: 10 }} variant="outlined">Cash On Delivery</Button>
-                                                        <Button onClick={handleStripePayment} color="primary" variant="outlined">
-                                                            {theme.palette.type === 'light' ?
-                                                                <StripeLogoSlate height={25} /> :
-                                                                <StripeLogoWhite height={25} />
-                                                            }
-                                                        </Button>
-                                                        <PayPalButton
-                                                            createOrder={handlePaypalPayment}
-                                                            onApprove={handleSucces}
-                                                        />
+                                                    <Box my={2} display="flex">
+                                                        <Box>
+                                                            <Button startIcon={<LocalShippingIcon />} style={{ marginRight: 10 }} variant="outlined">Cash On Delivery</Button>
+                                                        </Box>
+                                                        <Box>
+                                                            <Button onClick={()=>setPaymentMethod('stripe')} color="primary" variant="outlined">
+                                                                {theme.palette.type === 'light' ?
+                                                                    <StripeLogoSlate height={25} /> :
+                                                                    <StripeLogoWhite height={25} />
+                                                                }
+                                                            </Button>
+                                                        </Box>
+                                                        <Box ml={1}>
+                                                            <Button onClick={()=>setPaymentMethod('paypal')} variant="outlined" color="primary">
+                                                                <PaypalLogo height={25}/>
+                                                            </Button>
+                                                        </Box>
                                                     </Box>
                                                     <Button onClick={previousStep} color="primary">Previous</Button>
                                                 </Box>
@@ -346,9 +291,10 @@ export default function Checkout() {
                 </Grid>
             </Container>
             <Dialog open={paymentMethod === 'stripe'}>
-                <Elements stripe={stripe_promise}>
-                    <CheckoutForm handleSuccess={handleSucces} orderId={orderId} clientSecret={clientSecret} setDialog={setClientSecret} />
-                </Elements>
+                <StripeCheckout getData={getData} />
+            </Dialog>
+            <Dialog open={paymentMethod === 'paypal'}>
+                <PaypalCheckout getData={getData}/>
             </Dialog>
         </div>
     )

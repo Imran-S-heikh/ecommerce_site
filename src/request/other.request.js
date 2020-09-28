@@ -30,3 +30,9 @@ export const deleteCoupon = catchAsync(async (data)=>{
     const response = await request(data,`/others/coupons`,'DELETE')
     return response;
 });
+
+export const paypalPaymentCapture = catchAsync(async (data)=>{
+    const response = await request(data,`/others/paypalPaymentCapture`)
+    return response;
+});
+

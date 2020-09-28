@@ -100,7 +100,6 @@ export default function Checkout() {
             products: cart.products.map(product => ({ id: product._id, quantity: product.count })),
             country,
             state,
-            paymentMethod,
             address,
             email: user?.email
         }
@@ -293,7 +292,7 @@ export default function Checkout() {
             <Dialog open={paymentMethod === 'stripe'}>
                 <StripeCheckout getData={getData} />
             </Dialog>
-            <Dialog open={paymentMethod === 'paypal'}>
+            <Dialog open={paymentMethod === 'paypal'} onClick={()=>setPaymentMethod(null)} onClose={()=>setPaymentMethod(null)}>
                 <PaypalCheckout getData={getData}/>
             </Dialog>
         </div>
